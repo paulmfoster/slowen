@@ -1,0 +1,461 @@
+
+/* Color scheme based on: https://www.colorhexa.com/85bb65 */
+/* #85BB65 is the color of the green ink on dollar bills */
+/* #5F9341 is a darker version of this color */
+
+body {
+  color: #336699;
+  background-color: #FFFFFF;
+  font-family: verdana, helvetica, arial, sans-serif;
+  font-size: 78%;  /* Enables font size scaling in MSIE */
+  margin: 0;
+  padding: 0;
+}
+
+html > body {
+  font-size: 9.5pt;
+}
+
+.doNotDisplay {
+  display: none !important;
+}
+
+/* ##### Header ##### */
+
+#header {
+  color: white;
+  background-color: #85BB65;
+  margin: 0 0 2em 0;
+  padding: 1em 2.5mm 1ex 4mm;
+  border-bottom: 2px solid white;
+}
+
+.header-title {
+  margin: 0;
+  padding: 0;
+}
+
+.header-title a {
+  color: #FFFF00;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 83%;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.header-title > a {
+  font-size: 105%;  /* For fully standards-compliant user agents */
+}
+
+.header-title span {
+  color: white;
+  background-color: transparent;
+  font-weight: normal;
+}
+
+.header-links {
+  font-size: 89%;
+  position: absolute;
+  right: 2ex;
+  top: 2.25em;
+}
+
+[class~="header-links"] {
+  top: 1.75em;  /* For fully standards-compliant user agents */
+}
+
+.header-links a {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 1ex;
+}
+
+.header-links a:hover {
+  color: #FFFFFF;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+
+/* ##### Side Bar ##### */
+
+#side-bar {
+  font-size: 95%;
+  text-align: right;
+  width: 10em;
+  float: left;
+  clear: left;
+}
+
+.navhead {
+  color: #FFFFFF;
+  background-color: #5F9341;
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.5ex 1em 0.5ex 0.5ex;
+  border-top: 1px solid #336699;
+}
+
+.side-bar-title {
+  color: #FFFFFF;
+  background-color: #5F9341;
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.5ex 1em 0.5ex 0.5ex;
+  border-top: 1px solid #336699;
+}
+
+#side-bar ul {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0;
+}
+
+#side-bar li {
+  margin: 0;
+  /* padding: 1ex 1em 1ex 0.5ex; */
+  padding: 1px 1px 1px 1px;
+  border-top: 1px solid #336699;
+}
+
+#side-bar a {
+  color: #FF0000; /* #336699;*/
+  font-weight: bold;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 0.5ex 0.5ex;
+  display: block;
+}
+
+#side-bar a:hover {
+  color: white;
+  background-color: #5F9341;
+  text-decoration: none;
+}
+
+.side-bar-text {
+  /* text-align: justify; */
+  margin: 0;
+  padding: 1ex 1.5ex;
+  display: block;
+  border-top: 1px solid #336699;
+}
+
+#side-bar .sideBarText a {
+  text-decoration: underline;
+}
+
+#side-bar .sideBarText a:hover {
+  text-decoration: none;
+}
+
+.thisPage {
+  font-weight: bold;
+}
+
+
+/* ##### Main Copy ##### */
+
+#main-copy {
+  color: black;
+  line-height: 1.5em;
+  margin: 0 5mm 0 10.5em;
+  padding: 0 1em 1ex 1em;
+}
+
+p {
+  margin: 1em 0 1.5em 0;
+  padding: 0;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+.box {
+  color: black;
+  background-color: transparent;
+  margin: 0 0 1em 0;
+  padding: 2ex 2em 0.25em 2em;
+  border: 1px solid #336699;
+  width: 50%;
+}
+
+
+#main-copy h1 {
+  font-family: "trebuchet ms", verdana, tahoma, sans-serif;
+  font-size: 156%;
+  font-weight: bold;
+  margin: 0.25em 0 0.25em 0;
+  padding: 0;
+}
+
+#main-copy a {
+  color: #336699;
+/*  background-color: transparent; */
+  text-decoration: none;
+}
+
+#main-copy a:hover {
+  color: red;
+  text-decoration: none;
+}
+
+dt {
+  font-weight: bold;
+  margin: 0;
+  padding: 0 0 0.5ex 0;
+}
+
+dd {
+  margin: 0 0 1.5em 1.5em;
+  padding: 0;
+}
+
+label {
+    text-align: right;
+    font-weight: bold;
+}
+
+legend {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+select {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    background-color: #5F9341;
+    color: white;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: white;
+    color: red;
+}
+
+button[type="button"] {
+	background-color: #5F9341;
+	color: white;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button[type="button"]:hover {
+	background-color: white;
+	color: red;
+}
+
+
+.fancybutton {
+    background-color: #85BB65;
+    color: white;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fancybutton:hover {
+    background-color: white;
+    color: red;
+}
+
+.fancysubmit {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* ##### Footer ##### */
+
+#footer {
+  color: white;
+  background-color: #85BB65;
+  font-size: 85%;
+  margin: 0;
+  padding: 1.25ex 4mm;
+  clear: both;
+}
+
+#footer .left {
+  float: left;
+  clear: left;
+}
+
+#footer .right {
+  text-align: right;
+}
+
+#footer a {
+  color: white;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+#footer a:hover {
+  text-decoration: none;
+}
+
+.subFooter {
+  font-size: 85%;
+  line-height: 1.5em;
+  margin: 0;
+  padding: 1ex 4mm;
+}
+
+.subFooter a {
+  color: #336699;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.subFooter a:hover {
+  text-decoration: none;
+}
+
+.hmenu {
+  color: black;
+  margin: 0;
+  padding: 1ex 1ex 1ex 1.5mm;
+}
+
+.hmenu a {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 0.75ex 0 0.5ex;
+}
+
+.hmenu a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+dl {
+  margin: 1em 1ex 2em 1ex;
+  padding: 0;
+}
+
+dt {
+  font-weight: bold;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+dd {
+  margin: 0 0 2em 2em;
+  padding: 0;
+}
+
+.failure-message {
+    border: 4px solid #F00;
+	background: yellow;
+	font-size: 120%;
+	line-height: 1.6em;
+	color: red;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.success-message {
+    border: 4px solid #00F;
+	background: #CCCCCC;
+	font-size: 120%;
+	line-height: 1.6em;
+	color: blue;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.required {
+	background: #FFFFCC;
+}
+
+table {
+	border-collapse: collapse;
+	/* border: 1px solid #000000; */
+}
+
+th {
+	background-color: black;
+	color: white;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+table a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+td {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.align-right {
+	text-align: right;
+}
+
+.red {
+	color: red;
+}
+
+.snug {
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+
+}
+
+.row0 {
+	background-color: #FFFFFF;
+}
+
+.row1 {
+	background-color: #CCCCCC;
+}
+
+/* lessening bot form fill-in */
+.hidden {
+	display: none;
+	visibility: hidden;
+}
