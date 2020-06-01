@@ -30,8 +30,6 @@ include 'init.php';
  * unless they have been included elsewhere before.
  **********************************************************************/
 
-include 'classes/date.lib.php';
-
 /**********************************************************************
  * Controller Variable Declaration Section
  *

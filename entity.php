@@ -24,16 +24,12 @@
 
 /// ================= Application specific variables
 
-$cfg = array();
-$cfg['programmer_email'] = "paulf@dudley.mars.lan";
-$cfg['charset'] = "us-ascii";
-$cfg['language'] = "en_us";
+$cfg = parse_ini_file('config/config.ini');
 
 $return_to = 'index.php';
 $app_subdir = 'slowen';
 $app_nick = 'slowen';
 $app_name = 'Slowen';
-$app_prefix = 'sl';
 $app_links = array(
 	array('url' => $return_to, 'txt' => 'Home')
 );
@@ -66,16 +62,10 @@ session_start();
 
 // ================== Define entities
 
-$entities = array(
-	array(
-		'entity_num' => 1,
-		'entity_name' => 'Personal'
-	),
-	array(
-		'entity_num' => 2,
-		'entity_name' => 'Business'
-	)
-);
+$entities = array();
+foreach ($cfg['entity'] as $index => $value) {
+	$entities[] = array('entity_num' => $index, 'entity_name' => $value);
+}
 
 // ================== External functions needed
 

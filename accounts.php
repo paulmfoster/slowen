@@ -52,9 +52,21 @@ include 'init.php';
 
 $accounts = $sm->get_accounts();
 
+$atnames = array(
+	' ' => '',
+	'I' => '(inc)',
+	'E' => '(exp)',
+	'L' => '(liab)',
+	'A' => '(asset)',
+	'Q' => '(eqty)',
+	'R' => '(ccard)',
+	'C' => '(chkg)',
+	'S' => '(svgs)'
+);
+
 $acct_options = array();
 foreach ($accounts as $account) {
-	$acct_options[] = array('lbl' => $account['name'], 'val' => $account['acct_id']);
+	$acct_options[] = array('lbl' => $account['name'] . ' ' . $atnames[$account['acct_type']], 'val' => $account['acct_id']);
 }
 
 $fields = array(

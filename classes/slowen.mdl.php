@@ -586,6 +586,30 @@ class slowen
 		return $accounts;
 	}
 
+	function get_checking_accounts()
+	{
+		$sql = "SELECT * FROM accounts WHERE acct_type = 'C' ORDER BY lower(name)";
+		$accounts = $this->db->query($sql)->fetch_all();
+
+		return $accounts;
+	}
+
+	function get_expense_accounts()
+	{
+		$sql = "SELECT * FROM accounts WHERE acct_type = 'E' ORDER BY lower(name)";
+		$accounts = $this->db->query($sql)->fetch_all();
+
+		return $accounts;
+	}
+
+	function get_income_accounts()
+	{
+		$sql = "SELECT * FROM accounts WHERE acct_type = 'I' ORDER BY lower(name)";
+		$accounts = $this->db->query($sql)->fetch_all();
+
+		return $accounts;
+	}
+
 	function get_acct_name($acct_id)
 	{
 		$sql = "SELECT name FROM accounts WHERE acct_id = $acct_id";

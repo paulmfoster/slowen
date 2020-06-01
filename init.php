@@ -12,13 +12,19 @@
  */
 
 /* #############################################################
+ * Configuration
+ * ############################################################# */
+
+$cfg = parse_ini_file('config/config.ini');
+
+/* #############################################################
  * Session start
  * ############################################################# */
 
 ini_set('session.gc_maxlifetime', 2592000);
 ini_set('session.cookie_lifetime', 2592000);
 session_set_cookie_params(2592000);
-session_name('slowen');
+session_name($cfg['session_cookie_name']);
 session_start();
 
 if (empty($_SESSION['entity_num'])) {
@@ -67,12 +73,6 @@ include 'messages.php';
  * Configuration
  * ############################################################# */
 
-$cfg = array();
-$cfg['programmer_email'] = "paulf@dudley.mars.lan";
-$cfg['charset'] = "us-ascii";
-$cfg['language'] = "en_us";
-$cfg['to'] = 'paulf@localhost';
-
 define('DECIMALS', 2);
 define('DECIMAL_SYMBOL', '.');
 
@@ -101,10 +101,8 @@ $max_statuses = count($statuses);
  * ############################################################# */
 
 include 'classes/database.lib.php';
-$dbcfg = array();
-$dbcfg['dbdriv'] = 'SQLite3';
-$dbcfg['dbdata'] = 'slowen' . $_SESSION['entity_num'] . '.sq3';
-$db = new database($dbcfg);
+$cfg['dbdata'] = 'slowen' . $_SESSION['entity_num'] . '.sq3';
+$db = new database($cfg);
 
 include 'classes/slowen.mdl.php';
 $sm = new slowen($db);

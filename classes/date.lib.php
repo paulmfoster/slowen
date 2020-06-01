@@ -1019,7 +1019,7 @@ class date
 			return '';
 		}
 
-		$indt = self::set($date_format, $american_date);
+		$indt = self::set($date_template, $american_date);
 		if (!empty($indt))
 			$outdt = self::get($indt, 'Y-m-d');
 		else
@@ -1182,7 +1182,7 @@ class date
 
 	static public function version()
 	{
-		return 8.4;
+		return 8.5;
 	}
 
 };
