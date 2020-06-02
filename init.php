@@ -114,7 +114,7 @@ $sm = new slowen($db);
 include 'navlinks.php';
 
 include 'classes/date.lib.php';
-$date_template = 'mdy|m/d/y|m-d-y';
+$date_template = $cfg['date_template'];
 
 /* #############################################################
  * Common functions
