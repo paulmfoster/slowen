@@ -11,6 +11,10 @@
 
 <?php elseif ($stage == 2): ?>
 
+<?php if ($expenses === FALSE): ?>
+<h2>No expenses for the week</h2>
+<?php else: ?>
+
 <table>
 <tr><th>Date</th><th>Payee</th><th>Memo</th><th>Category</th><th>Amount</th></tr>
 
@@ -44,6 +48,8 @@
 <?php endforeach; ?>
 
 </table>
+
+<?php endif; ?>
 
 <?php endif; ?>
 
