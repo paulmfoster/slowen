@@ -200,7 +200,7 @@ elseif ($condition == 'prelim_entered') {
 	$stmt_start_bal = int2dec(dec2int($_POST['stmt_start_bal']));
 	$stmt_end_bal = int2dec(dec2int($_POST['stmt_end_bal']));
 	$stmt_close_date = date::reformat($date_template, $_POST['stmt_close_date'], 'm/d/y');
-	$txns = $sm->get_transactions($_POST['from_acct']);
+	$txns = $sm->get_uncleared_transactions($_POST['from_acct']);
 
 	$view_file = 'views/reconlist.view.php';
 

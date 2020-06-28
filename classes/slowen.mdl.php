@@ -213,6 +213,58 @@ class slowen
 		
 	}
 
+	/**
+	 * Get transactions for display
+	 * P parameter gets transactions by payee
+	 * C parameter gets transactions by category
+	 * (blank) parameter gets transactions by from_acct
+	 *
+	 * @param int payee_id, to_acct, or nothing
+	 * @type char 'P' for payees, 'C' for categories, ' ' for neither
+	 *
+	 * @return array Full data needed for the register screen display
+	 */
+
+	function get_uncleared_transactions($param)
+	{
+		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE journal.from_acct = $param AND journal.status = ' ' ORDER BY txn_dt, checkno, txnid";
+
+		$txns = $this->db->query($sql)->fetch_all();	
+
+		if ($txns === FALSE)
+			return FALSE;
+
+		$max_txns = count($txns);
+
+		if ($type == 'F') {
+			$open_bal = $this->get_open_bal($param);
+			$end_bal = $open_bal;
+		}
+
+		// massage dates, amounts
+		for ($i = 0; $i < $max_txns; $i++) {
+			
+			$txns[$i]['x_txn_dt'] = date::reformat('Y-m-d', $txns[$i]['txn_dt'], 'm/d/y');
+
+			if ($txns[$i]['amount'] < 0) {
+				$txns[$i]['debit'] = int2dec(abs($txns[$i]['amount']));
+				$txns[$i]['credit'] = '';
+			}
+			else {
+				$txns[$i]['credit'] = int2dec($txns[$i]['amount']);
+				$txns[$i]['debit'] = '';
+			}
+
+			if ($type == 'F') {
+				$end_bal += $txns[$i]['amount'];
+				$txns[$i]['balance'] = int2dec($end_bal);
+			}
+		}
+
+		return $txns;
+		
+	}
+
 	function get_splits($txnid)
 	{
 		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.payee_id = s.payee_id LEFT JOIN accounts AS a ON a.acct_id = s.to_acct WHERE txnid = $txnid";
