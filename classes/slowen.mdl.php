@@ -236,11 +236,6 @@ class slowen
 
 		$max_txns = count($txns);
 
-		if ($type == 'F') {
-			$open_bal = $this->get_open_bal($param);
-			$end_bal = $open_bal;
-		}
-
 		// massage dates, amounts
 		for ($i = 0; $i < $max_txns; $i++) {
 			
@@ -255,10 +250,6 @@ class slowen
 				$txns[$i]['debit'] = '';
 			}
 
-			if ($type == 'F') {
-				$end_bal += $txns[$i]['amount'];
-				$txns[$i]['balance'] = int2dec($end_bal);
-			}
 		}
 
 		return $txns;

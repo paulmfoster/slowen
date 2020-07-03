@@ -25,12 +25,6 @@
 <th>Status</th>
 <th>Debit</th>
 <th>Credit</th>
-<th>Balance</th>
-</tr>
-
-<tr class="row<?php echo ($row++ & 1); ?>">
-<td colspan="7"></td>
-<td class="align-right"><?php echo $x_open_bal; ?></td>
 </tr>
 
 <!-- start of records -->
@@ -58,7 +52,6 @@
 
 <td class="align-right"><?php echo $txn['debit']; ?></td>
 <td class="align-right"><?php echo $txn['credit']; ?></td>
-<td class="align-right"><?php echo $txn['balance']; ?></td>
 </tr>
 <?php endforeach; /* transaction loop */ ?>
 
