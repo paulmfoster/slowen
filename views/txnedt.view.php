@@ -96,7 +96,7 @@
 &nbsp;
 <?php
 if ($max_txns > 1 || $txn['status'] == 'R' || $txn['status'] == 'V') {
-	echo int2dec($txns[$z]['amount']);
+	echo int2dec($txn['amount']);
 }
 else {
 	$form->text('amount', int2dec($txn['amount']));
