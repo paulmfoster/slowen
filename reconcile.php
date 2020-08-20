@@ -71,19 +71,19 @@ if (isset($_POST['s1'])) {
 	if (!isset($_POST['stmt_start_bal']) || !isset($_POST['stmt_end_bal'])) {
 		// user failed to provide either of the stmt balances we asked for
 		$errors++;
-		emsg($messages['F1609']);	
+		emsg('F', 'Beginning and/or ending balance omitted');
 	} 
 
 	if (empty($_POST['stmt_close_date'])) {
 		// user omitted a statement close date
 		$errors++;
-		emsg($messages['F1636']);
+		emsg('F', 'No closing date provided');
 	}
 
 	if ($acct['rec_bal'] != dec2int($_POST['stmt_start_bal'])) {
 		// starting balances don't match
 		$errors++;
-		emsg($messages['F1610']);
+		emsg('F', "Statement and computer starting balances don't match.");
 	}
 
 	if ($errors) {
@@ -102,12 +102,12 @@ elseif (isset($_POST['s3'])) {
 	if ($data === TRUE) {
 		// everything balances
 		$sm->finish_reconciliation($_POST['from_acct'], $_POST['stmt_end_bal'], $_POST['stmt_close_date'], $cleared_list);
-		emsg($messages['S1612']);
+		emsg('S', "Reconciliation passes checks. Congratulations.");
 		$condition = 'new';
 	}
 	else {
 		// reconciliation failed
-		emsg($messages['F1611']);
+		emsg('F', "Statement and computer final balances don't match.");
 		$condition = 'failed';
 	}
 
@@ -199,7 +199,7 @@ elseif ($condition == 'prelim_entered') {
 	$x_open_bal = $acct['x_open_bal'];
 	$stmt_start_bal = int2dec(dec2int($_POST['stmt_start_bal']));
 	$stmt_end_bal = int2dec(dec2int($_POST['stmt_end_bal']));
-	$stmt_close_date = date::reformat($date_template, $_POST['stmt_close_date'], 'm/d/y');
+	$stmt_close_date = pdate::reformat($date_template, $_POST['stmt_close_date'], 'm/d/y');
 	$txns = $sm->get_uncleared_transactions($_POST['from_acct']);
 
 	$view_file = 'views/reconlist.view.php';

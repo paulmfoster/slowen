@@ -1,7 +1,7 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="<?php echo $base_url . 'txnadd.php'; ?>" method="post">
+<form action="<?php echo $base_url . 'txnaddo.php'; ?>" method="post">
 
 <fieldset>
 <table>
@@ -28,7 +28,7 @@
 <td><label for="txn_dt">Date</label>
 &nbsp;
 <!-- txn_dt -->
-<?php $form->date('txn_dt', pdate::get(pdate::now(), 'Y-m-d')); ?>
+<?php $form->text('txn_dt', date::get(date::now(), 'm/d/y')); ?>
 </td>
 <td>
 <label for="checkno">Check No</label>
@@ -87,7 +87,7 @@
 <td><label for="recon_dt">Recon Dt</label>
 &nbsp;
 <!-- recon_dt -->
-<?php $form->date('recon_dt'); ?>
+<?php $form->text('recon_dt'); ?>
 </td>
 </tr>
 

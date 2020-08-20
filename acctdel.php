@@ -81,7 +81,7 @@ elseif (isset($_POST['s1'])) {
 		exit();
 	}
 	else {
-		emsg($messages['F1626']);
+		emsg('F', 'Account deletion FAILED.');
 		header('Location: ' . $base_url . 'accounts.php');
 		exit();
 	}

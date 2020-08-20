@@ -1,79 +1,16 @@
 <?php
 
-/**
- * This file was created, with controller, model and view smashed
- * together, because other implementations tended to result in infinite
- * recursions. It just seemed simpler to have entity.php its own single
- * file with its only dependencies being the header and footer views and
- * the CSS and favicon files.
- */
+include 'init.php';
 
-/**********************************************************************
- * Copyright Section
- **********************************************************************/
-
-/**
- * @package apps
- * @copyright  2017, Paul M. Foster <paulf@quillandmouse.com>
- * @author Paul M. Foster <paulf@quillandmouse.com>
- * @license LICENSE file
- * @version 2.0
- */
-
-// ================== Definitions
-
-/// ================= Application specific variables
-
-$cfg = parse_ini_file('config/config.ini');
-
-$return_to = 'index.php';
-$app_subdir = 'slowen';
-$app_nick = 'slowen';
-$app_name = 'Slowen';
-$app_links = array(
-	array('url' => $return_to, 'txt' => 'Home')
-);
-
-/// ================= End of application specific variables
-
-$page_title = 'Select Entity';
-
-$protocol = 'http://';
-$http_host = $_SERVER['HTTP_HOST'];
-
-$base_dir = dirname(realpath(__FILE__)) . DIRECTORY_SEPARATOR;
-$base_url = sprintf("%s%s/%s%s", $protocol, $http_host, $app_subdir, DIRECTORY_SEPARATOR);
-
-$css = $base_url . $app_nick . '.css';
-$favicon = $base_url . 'favicon.ico';
-
-$func_links = array(
-	array('url' => 'index.php', 'txt' => 'Home')
-);
-
-
-// ================== Session details
-
-ini_set('session.gc_maxlifetime', 2592000);
-ini_set('session.cookie_lifetime', 2592000);
-session_set_cookie_params(2592000);
-session_name($cfg['session_cookie_name']);
-session_start();
-
-// ================== Define entities
+// entities should be specified in the config file, parsed in
+// init.php. 
 
 $entities = array();
 foreach ($cfg['entity'] as $index => $value) {
 	$entities[] = array('entity_num' => $index, 'entity_name' => $value);
 }
 
-// ================== External functions needed
-
-include 'includes/navigation.inc.php';
-include 'includes/messages.inc.php';
-include 'navlinks.php';
-
-// ================== User input handling
+// process user input
 	
 if (!empty($_POST)) {
 	$num = count($entities);
@@ -81,49 +18,16 @@ if (!empty($_POST)) {
 		if ($_POST['entity_num'] == $entities[$i]['entity_num']) {
 			$_SESSION['entity_num'] = $_POST['entity_num'];
 			$_SESSION['entity_name'] = $entities[$i]['entity_name'];
-			$_SESSION['messages'][] = 'S0012 Entity has been set to ' . $_SESSION['entity_name'] . '.';
+			emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
 			break;
 		}
 	}
 }
 
-// ================== header view
+// set up for page display
 
-include $base_dir . 'views/head.view.php';
-
-// ================== Main contents view
-
-?>
-
-<form method="post" action="entity.php">
-
-<table>
-<?php $num = count($entities); ?>
-<?php for ($i = 0; $i < $num; $i++): ?>
-<tr>
-	<td>
-	<h2>
-	<input type="radio" id="entity_num" name="entity_num" value="<?php echo $entities[$i]['entity_num']; ?>" <?php if ($i == 0) echo 'checked="checked"'; ?>/>
-	</h2>
-	</td>
-	<td>
-	<h2>
-		<?php echo $entities[$i]['entity_name']; ?>
-	</h2>
-	</td>
-</tr>
-<?php endfor; ?>
-</table>
-<p>
-<input type="submit" id="selected" name="selected" value="Select"/>
-</p>
-
-</form>
-
-<?php
-
-// ================== footer view
-
-include $base_dir . 'views/footer.view.php';
+$page_title = 'Select Entity';
+$view_file = 'views/entity.view.php';
+include 'view.php';
 
 

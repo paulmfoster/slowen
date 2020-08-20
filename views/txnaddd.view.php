@@ -1,7 +1,7 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="<?php echo $base_url . 'txnadd.php'; ?>" method="post">
+<form action="<?php echo $base_url . 'txnaddi.php'; ?>" method="post">
 
 <fieldset>
 <table>
@@ -14,13 +14,6 @@
 </td>
 </tr>
 
-<tr>
-<td><label>Inter-Account Transfer?</label></td>
-<td>
-<?php $form->checkbox('xfer', 0); ?>
-</td>
-</tr>
-
 </table>
 
 <table>
@@ -28,13 +21,9 @@
 <td><label for="txn_dt">Date</label>
 &nbsp;
 <!-- txn_dt -->
-<?php $form->date('txn_dt', pdate::get(pdate::now(), 'Y-m-d')); ?>
+<?php $form->text('txn_dt', date::get(date::now(), 'm/d/y')); ?>
 </td>
 <td>
-<label for="checkno">Check No</label>
-&nbsp;
-<!-- checkno -->
-<?php $form->text('checkno'); ?>
 </td>
 </tr>
 
@@ -77,29 +66,10 @@
 
 <table>
 
-<tr>
-<td><label for="status">Status</label>
-&nbsp;
-<!-- status -->
-<?php $form->select('status', ' '); ?>
-</td>
-
-<td><label for="recon_dt">Recon Dt</label>
-&nbsp;
-<!-- recon_dt -->
-<?php $form->date('recon_dt'); ?>
-</td>
-</tr>
-
 <!-- amount -->
 <tr>
 <td>
-<label for="dr_amount">Debit</label>
-&nbsp;
-<?php $form->text('dr_amount'); ?>
-</td>
-<td>
-<label for="cr_amount">Credit</label>
+<label for="cr_amount">Amount</label>
 &nbsp;
 <?php $form->text('cr_amount'); ?>
 </td>

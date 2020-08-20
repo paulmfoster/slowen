@@ -134,12 +134,12 @@ if (isset($_GET['acct_id'])) {
 }
 elseif (isset($_POST['s1'])) {
 	if ($sm->update_account($_POST)) {
-		emsg($messages['S1623']);
+		emsg('S', "Account edits SAVED");
 		header('Location: ' . $base_url . 'accounts.php');
 		exit();
 	}
 	else {
-		emsg($messages['F1624']);
+		emsg('F', "Account update FAILED");
 		header('Location: ' . $base_url . 'accounts.php');
 		exit();
 	}
