@@ -40,6 +40,7 @@ if (empty($_SESSION['entity_num'])) {
 	exit();
 }
 
+$common_dir = 'common/';
 include $common_dir . 'errors.inc.php';
 include $common_dir . 'numbers.inc.php';
 include $common_dir . 'messages.inc.php';
