@@ -41,7 +41,7 @@ Example: credit card balances are normally negative. Bank acct balances are norm
 <label for="stmt_close_date">Closing Date</label>
 </td>
 <td>
-<?php $form->text('stmt_close_date'); ?>
+<?php $form->date('stmt_close_date'); ?>
 </td>
 </tr>
 
