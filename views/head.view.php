@@ -25,9 +25,9 @@
 
     <div id="header">
 	  	<h1 class="header-title">
-		<span style="color: yellow"><?php echo $app_name; ?></span>
+		<span style="color: yellow"><?php echo $cfg['app_name']; ?></span>
 		&nbsp;
-		(<?php echo $_SESSION['entity_name']; ?>)
+		(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
 		&nbsp;
 		<span><?php echo '&nbsp;' . $page_title; ?></span>
 		</h1>

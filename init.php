@@ -22,9 +22,7 @@ else {
 }
 $base_url = sprintf("%s%s/%s", $protocol, $http_host, $app_subdir);
 
-$app_name = 'Slowen';
-
-$css = $base_url . 'slowen' . '.css';
+$css = $base_url . $cfg['app_nick'] . '.css';
 $favicon = $base_url . 'favicon.ico';
 
 
@@ -73,30 +71,12 @@ $statuses = array(
 );
 $max_statuses = count($statuses);
 
-$cfg['dbdata'] = 'slowen' . $_SESSION['entity_num'] . '.sq3';
+$cfg['dbdata'] = $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
 $db = new database($cfg);
 
 $sm = new slowen($db);
 
-$nav_links = [
-	'Slowen' => [
-		'Account List' => 'acctlist.php',
-		'Search' => 'search.php',
-		'Show Balances' => 'balances.php',
-		'Weekly Expenses' => 'expenses.php',
-		'Transaction Entry' => 'txnadd.php',
-		'Reconcile' => 'reconcile.php',
-		'Audit' => 'audit.php',
-		'Payees' => 'payees.php',
-		'Accounts' => 'accounts.php',
-		'Introduction' => 'history.php',
-		'Home' => 'index.php',
-		'Select Entity' => 'entity.php'
-	],
-	'Bugs' => [	
-		'File Bug Report/Feature Request' => 'bugs.php'
-	]
-];
+include 'navlinks.php';
 
 $date_template = $cfg['date_template'];
 

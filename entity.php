@@ -1,9 +1,38 @@
 <?php
 
-include 'init.php';
+$cfg = parse_ini_file('config/config.ini');
 
-// entities should be specified in the config file, parsed in
-// init.php. 
+// session duration: one month
+
+ini_set('session.gc_maxlifetime', 2592000);
+session_set_cookie_params(2592000);
+
+session_name($cfg['session_name']);
+session_start();
+
+$protocol = 'http://';
+$http_host = $_SERVER['HTTP_HOST'];
+$base_dir = dirname(realpath(__FILE__)) . DIRECTORY_SEPARATOR;
+$base_dir_len = strlen($base_dir);
+$doc_root = $_SERVER['DOCUMENT_ROOT'];
+$doc_root_len = strlen($doc_root);
+if ($base_dir_len == $doc_root_len) {
+	$app_subdir = '';
+}                                                                                                                                               
+else {
+	$app_subdir = substr($base_dir, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+}
+$base_url = sprintf("%s%s/%s", $protocol, $http_host, $app_subdir);
+
+$css = $base_url . $cfg['app_nick'] . '.css';
+$favicon = $base_url . 'favicon.ico';
+
+$common_dir = 'common/';
+include $common_dir . 'errors.inc.php';
+include $common_dir . 'navigation.inc.php';
+include $common_dir . 'messages.inc.php';
+
+include 'navlinks.php';
 
 $entities = array();
 foreach ($cfg['entity'] as $index => $value) {
@@ -29,5 +58,4 @@ if (!empty($_POST)) {
 $page_title = 'Select Entity';
 $view_file = 'views/entity.view.php';
 include 'view.php';
-
 
