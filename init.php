@@ -72,8 +72,8 @@ $statuses = array(
 $max_statuses = count($statuses);
 
 $cfg['dbdata'] = $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
-$db = new database($cfg);
 
+$db = new database($cfg);
 $sm = new slowen($db);
 
 include 'navlinks.php';

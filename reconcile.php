@@ -59,6 +59,8 @@ elseif (isset($_POST['s3'])) {
 
 if ($condition == 'new') {
 
+	// the first entry screen
+
 	$accts = $sm->get_bank_accts();
 	
 	$from_options = array();
@@ -141,7 +143,7 @@ elseif ($condition == 'prelim_entered') {
 	$x_open_bal = $acct['x_open_bal'];
 	$stmt_start_bal = int2dec(dec2int($_POST['stmt_start_bal']));
 	$stmt_end_bal = int2dec(dec2int($_POST['stmt_end_bal']));
-	$stmt_close_date = pdate::reformat('Y-m-d', $_POST['stmt_close_date'], 'm/d/y');
+	$stmt_close_date = $_POST['stmt_close_date'];
 	$txns = $sm->get_uncleared_transactions($_POST['from_acct']);
 
 	$view_file = 'views/reconlist.view.php';
