@@ -398,7 +398,7 @@ class slowen
 		}
 
 		if ($post['txntype'] == 'single' || $post['txntype'] == 'splits') {
-			$post['txn_dt'] = pdate::reformat($date_template, $post['txn_dt'], 'Y-m-d');
+			// $post['txn_dt'] = pdate::reformat($date_template, $post['txn_dt'], 'Y-m-d');
 			$post['amount'] = dec2int($post['amount']);
 			$rec = $this->db->prepare('journal', $post);
 			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
