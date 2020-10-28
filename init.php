@@ -30,7 +30,7 @@ $favicon = $base_url . 'favicon.ico';
 ini_set('session.gc_maxlifetime', 2592000);
 ini_set('session.cookie_lifetime', 2592000);
 session_set_cookie_params(2592000);
-session_name($cfg['session_cookie_name']);
+session_name($cfg['session_name']);
 session_start();
 
 if (empty($_SESSION['entity_num'])) {

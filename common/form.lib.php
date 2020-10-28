@@ -125,6 +125,10 @@ class form
 			$str .= $this->key_value('class', $fld['class']);
 		}
 
+		if (isset($fld['javascript'])) {
+			$str .= ' ' . $fld['javascript'];
+		}
+
 		$str .= '/>' . PHP_EOL;
 
 		echo $str;
@@ -244,7 +248,7 @@ class form
 		echo $str;
 	}
 
-	function radio_option($str, $option, $checked_value)
+	function radio_option($str, $option, $checked_value = NULL)
 	{
 		$str .= $this->key_value('value', $option['val']);
 
