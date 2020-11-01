@@ -20,7 +20,7 @@ Open Date
 </label>
 </td>
 <td>
-<?php $form->text('open_dt'); ?>
+<?php $form->date('open_dt'); ?>
 </td>
 </tr>
 
@@ -31,7 +31,7 @@ Reconciliation Date
 </label>
 </td>
 <td>
-<?php $form->text('recon_dt'); ?>
+<?php $form->date('recon_dt'); ?>
 </td>
 </tr>
 

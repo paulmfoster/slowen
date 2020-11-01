@@ -75,15 +75,11 @@ $fields = array(
 	),
 	'open_dt' => array(
 		'name' => 'open_dt',
-		'type' => 'text',
-		'size' => 10,
-		'maxlength' => 10
+		'type' => 'date'
 	),
 	'recon_dt' => array(
 		'name' => 'recon_dt',
-		'type' => 'text',
-		'size' => 10,
-		'maxlength' => 10
+		'type' => 'date'
 	),
 	'acct_type' => array(
 		'name' => 'acct_type',
