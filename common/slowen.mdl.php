@@ -651,14 +651,6 @@ class slowen
 	{
 		global $date_template;
 
-		// process dates
-		if (!empty($post['open_dt'])) {
-			$post['open_dt'] = pdate::reformat($date_template, $post['open_dt'], 'Y-m-d');
-		}
-		if (!empty($post['recon_dt'])) {
-			$post['recon_dt'] = pdate::reformat($date_template, $post['recon_dt'], 'Y-m-d');
-		}
-
 		if (!empty($post['rec_bal'])) {
 			$post['rec_bal'] = dec2int($post['rec_bal']);
 		}
@@ -713,12 +705,6 @@ class slowen
 			return FALSE;
 		}
 
-		if (!empty($post['open_dt'])) {
-			$post['open_dt'] = pdate::reformat($date_template, $post['open_dt'], 'Y-m-d');
-		}
-		if (!empty($post['recon_dt'])) {
-			$post['recon_dt'] = pdate::reformat($date_template, $post['recon_dt'], 'Y-m-d');
-		}
 		$post['open_bal'] = dec2int($post['open_bal']);
 		$post['rec_bal'] = dec2int($post['rec_bal']);
 

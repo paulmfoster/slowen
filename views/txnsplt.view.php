@@ -45,7 +45,7 @@ Credit&nbsp;
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('sltxnadd.php'); ?>
+<?php form::abandon('txnadd.php'); ?>
 </p>
 
 </form>
