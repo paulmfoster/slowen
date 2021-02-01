@@ -1,10 +1,10 @@
 
 <?php if ($stage == 1): ?>
 
-<form method="post" action="expenses.php">
-<label>From: </label><?php $form->date('from_date', $ifrom_date); ?>
+<form method="post" action="index.php?c=report&m=expenses2">
+<label>From: </label><?php $form->date('from_date'); ?>
 &nbsp;
-<label>To: </label><?php $form->date('to_date', $ito_date); ?>
+<label>To: </label><?php $form->date('to_date'); ?>
 <p>
 <?php $form->submit('s1'); ?>
 </form>
@@ -23,7 +23,7 @@
 <tr>
 
 <td>
-<?php echo pdate::reformat('Y-m-d', $expense['txn_dt'], 'm/d/y'); ?>
+<?php echo pdate::iso2am($expense['txn_dt']); ?>
 </td>
 
 <td>

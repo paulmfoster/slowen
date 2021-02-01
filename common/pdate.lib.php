@@ -464,6 +464,7 @@ class pdate
 			}
 		}
 
+
 		$d = date_create_from_format($fmt, $date_str);
 		$e = date_format($d, 'Ymd');
 
@@ -1058,6 +1059,18 @@ class pdate
 		return $outdt;
 	}
 
+	static function now2iso()
+	{
+		$dt = self::now();
+		return sprintf('%d-%02d-%02d', $dt['y'], $dt['m'], $dt['d']);
+	}
+
+	static function now2am()
+	{
+		$dt = self::now();
+		return sprintf('%02d/%02d/%02d', $dt['m'], $dt['d'], substr($dt['y'], 2));
+	}
+
 	/************************************************************
 	 * INTROSPECTION METHODS
 	 ***********************************************************/
@@ -1182,7 +1195,7 @@ class pdate
 
 	static public function version()
 	{
-		return 8.5;
+		return 8.6;
 	}
 
 };

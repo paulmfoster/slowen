@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta http-equiv="content-type" content="application/xhtml+xml;" charset="<?php echo $cfg['charset']; ?>" />
+  <meta http-equiv="content-type" content="application/xhtml+xml" charset="<?php echo $this->cfg['charset']; ?>" />
     <meta name="author" content="Paul M. Foster" />
     <meta name="generator" content="vim, php" />
 
-<link rel="shortcut icon" href="<?php echo $favicon; ?>">
+<link rel="shortcut icon" href="<?php echo $this->cfg['base_url']; ?>favicon.ico">
 <!-- reload CSS each time -->
-<link rel="stylesheet" type="text/css" href="<?php echo $css . '?v=' . date('His'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->cfg['base_url']; ?>slowen.css?v=<?php echo date('His'); ?>">
 
     <title><?php echo $page_title; ?></title>
   </head>
@@ -26,7 +26,7 @@
 
     <div id="header">
 	  	<h1 class="header-title">
-		<span style="color: yellow"><?php echo $cfg['app_name']; ?></span>
+		<span style="color: yellow"><?php echo $this->cfg['app_name']; ?></span>
 		&nbsp;
 		(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
 		&nbsp;
@@ -37,8 +37,8 @@
 
     <!-- ##### Side Bar ##### -->
 
-<div class="nav-left">
-<?php echo hiernavs($nav_links); ?>
+<div id="side-bar">
+<?php echo $this->nav->show(); ?>
 </div>
 
     <!-- ##### Main Copy ##### -->

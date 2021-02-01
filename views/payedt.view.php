@@ -1,9 +1,9 @@
-<form method="post" action="<?php echo $base_url; ?>payedt.php">
+<form method="post" action="index.php?c=payee&m=edit2">
 <label>Payee Name</label>&nbsp;
-<?php $form->hidden('payee_id', $payee['payee_id']); ?>
-<?php $form->text('name', $payee['name']); ?>
+<?php $form->hidden('payee_id'); ?>
+<?php $form->text('name'); ?>
 <br/>
-<?php form::abandon('payees.php'); ?>
+<?php form::abandon('index.php?c=payee'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </form>

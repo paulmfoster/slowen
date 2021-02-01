@@ -1,7 +1,9 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="<?php echo $base_url . 'othadd.php'; ?>" method="post">
+<form action="index.php?c=addtxn&m=other2" method="post">
+
+<?php $form->hidden('txntype'); ?>
 
 <fieldset>
 <table>
@@ -28,7 +30,7 @@
 <td><label for="txn_dt">Date</label>
 &nbsp;
 <!-- txn_dt -->
-<?php $form->date('txn_dt', pdate::get(pdate::now(), 'Y-m-d')); ?>
+<?php $form->date('txn_dt', pdate::now2iso()); ?>
 </td>
 <td>
 <label for="checkno">Check No</label>
@@ -134,7 +136,7 @@
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
+<?php form::abandon('index.php?c=addtxn&m=add'); ?>
 </p>
 
 

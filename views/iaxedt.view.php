@@ -1,118 +1,96 @@
 
-<form action="<?php echo $base_url . 'txnedt.php'; ?>" method="post">
+<form action="index.php?c=transaction&m=editx" method="post">
 
-<?php $iaxform->hidden('txnid', $txns[0]['txnid']); ?>
-<?php $iaxform->hidden('txntype', 'iaxfer'); ?>
-<?php $iaxform->hidden('acct_id', $acct_id); ?>
+<?php $form->hidden('txnid', $txns[0]['txnid']); ?>
+<?php $form->hidden('id1'); ?>
+<?php $form->hidden('id2'); ?>
 
 <h2>Inter-Account Transfer</h2>
 
 <h3>Transaction ID: <?php echo $txns[0]['txnid']; ?></h3>
 
-<?php foreach ($txns as $txn): ?>
-
-<?php $iaxform->hidden('iaxid', $txn['id']); ?>
-<?php $iaxform->hidden('from_acct', $txn['from_acct']); ?>
-
-<fieldset>
 <table>
 
 <tr>
-<td><label for="from_acct">From Acct</label></td>
+<td><label for="txn_dt">Date</label></td>
 <td>
-<!-- from_acct -->
-<?php echo $txn['from_acct'] . ' ' . $txn['from_acct_name']; ?>
+<?php $form->date('txn_dt', $txns[0]['txn_dt']); ?>
+</td>
+</tr>
+
+<tr>
+<td>
+<label for="checkno">Check No</label></td>
+<td>
+<?php $form->text('checkno', $txns[0]['checkno']); ?>
+</td>
+</tr>
+
+<tr>
+<td><label>Status</label></td>
+<td>
+<?php echo $this->statuses[$txns[0]['status']]; ?>
+</td>
+</tr>
+
+<tr>
+<td><label>Recon Dt</label></td>
+<td>
+<?php echo pdate::iso2am($txns[0]['recon_dt']); ?>
 </td>
 </tr>
 
 </table>
 
 <table>
+
 <tr>
-<td><label for="txn_dt">Date</label>
-&nbsp;
-<!-- txn_dt -->
-<?php $iaxform->text('txn_dt', date::reformat('Y-m-d', $txn['txn_dt'], 'm/d/y')); ?>
+<td><label>Accounts</label></td>
+<td>
+<?php echo $txns[0]['from_acct'] . ' ' . $txns[0]['from_acct_name']; ?>
 </td>
 <td>
-<label for="checkno">Check No</label>
-&nbsp;
-<!-- checkno -->
-<?php $iaxform->text('checkno', $txn['checkno']); ?>
+<?php echo $txns[1]['from_acct'] . ' ' . $txns[1]['from_acct_name']; ?>
 </td>
 </tr>
 
-</table>
-</fieldset>
+<tr>
+<td><label>Payee</label></td>
+<td>
+<?php $form->select('payee_id1', $txns[0]['payee_id']); ?>
+</td>
+<td>
+<?php $form->select('payee_id2', $txns[1]['payee_id']); ?>
+</td>
+</tr>
 
-<fieldset>
+<tr>
+<td><label>Memo</label></td>
+<td>
+<?php $form->text('memo1', $txns[0]['memo']); ?>
+</td>
+<td>
+<?php $form->text('memo2', $txns[1]['memo']); ?>
+</td>
+</tr>
+
+<tr>
+<td><label>Amount</label></td>
+<td>
+<?php echo int2dec($txns[0]['amount']); ?>
+</td>
+<td>
+<?php echo int2dec($txns[1]['amount']); ?>
+</td>
+</tr>
 
 <table>
 
-<tr>
-<td><label for="payee_id">Payee</label></td>
-<td>
-<!-- payee_id -->
-<?php $iaxform->select('payee_id', $txn['payee_id']); ?>
-</td>
-</tr>
-
-<tr>
-<td><label for="memo">Memo</label></td>
-<td>
-<!-- memo -->
-<?php $iaxform->text('memo', $txn['memo']); ?>
-</td>
-</tr>
-
-<tr>
-<td><label for="to_acct">Category/Acct</label></td>
-<td>
-<!-- to_acct -->
-<?php echo $txn['to_acct_name']; ?>
-</td>
-</tr>
-
-</table>
-
-</fieldset>
-
-<fieldset>
-
-<table>
-
-<tr>
-<td><label for="status">Status</label>
-&nbsp;
-<!-- status -->
-<?php echo $statuses[$txn['status']]; ?>
-</td>
-
-<td><label for="recon_dt">Recon Dt</label>
-&nbsp;
-<!-- recon_dt -->
-<?php echo date::reformat('Y-m-d', $txn['recon_dt'], 'm/d/y'); ?>
-</td>
-</tr>
-
-<!-- amount -->
-<tr>
-<td>
-<label for="amount">Amount</label>
-&nbsp;
-<?php echo int2dec($txn['amount']); ?>
-</td>
-</tr>
-</table>
-
-</fieldset>
-<br/>
-<?php endforeach; ?>
 
 <p>
-<?php $iaxform->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('txnshow.php?txnid=' . $txns[0]['txnid']); ?>
+<?php form::abandon('index.php?c=transaction&m=show&txnid=' . $txns[0]['txnid']); ?>
 </p>
 
 

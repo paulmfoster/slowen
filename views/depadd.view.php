@@ -1,7 +1,11 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="<?php echo $base_url . 'depadd.php'; ?>" method="post">
+<form action="index.php?c=addtxn&m=verify" method="post">
+
+<?php $form->hidden('txntype'); ?>
+<?php $form->hidden('status'); ?>
+<?php $form->hidden('recon_dt'); ?>
 
 <fieldset>
 <table>
@@ -22,7 +26,7 @@
 <td><label for="txn_dt">Date</label>
 &nbsp;
 <!-- txn_dt -->
-<?php $form->date('txn_dt', pdate::get(pdate::now(), 'Y-m-d')); ?>
+<?php $form->date('txn_dt', pdate::now2iso()); ?>
 </td>
 </tr>
 
@@ -70,7 +74,7 @@
 <td>
 <label for="cr_amount">Credit</label>
 &nbsp;
-<?php $form->text('cr_amount'); ?>
+<?php $form->text('amount'); ?>
 </td>
 </tr>
 </table>
@@ -80,7 +84,7 @@
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
+<?php form::abandon('index.php?c=addtxn&m=add'); ?>
 </p>
 
 

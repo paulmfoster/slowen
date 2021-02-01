@@ -28,7 +28,7 @@ To Acct/Category
 Transaction Date
 </td>
 <td>
-<?php echo $data['x_txn_dt']; ?>
+<?php echo pdate::iso2am($data['txn_dt']); ?>
 </td>
 </tr>
 
@@ -100,7 +100,7 @@ To Acct/Category
 Transaction Date
 </td>
 <td>
-<?php echo $data['x_txn_dt']; ?>
+<?php echo pdate::iso2am($data['txn_dt']); ?>
 </td>
 </tr>
 
@@ -143,12 +143,12 @@ Amount
 </table>
 
 
-<form action="<?php $base_url . 'xfervrfy.php'; ?>" method="post">
+<form action="index.php?c=addtxn&m=xfer3" method="post">
 
 <p>
-<?php $form->submit('s1'); ?>
+<?php $form->submit('s2'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
+<?php form::abandon('index.php?c=addtxn&m=add'); ?>
 </p>
 
 </form>

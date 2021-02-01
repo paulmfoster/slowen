@@ -1,5 +1,6 @@
 
-<h2>Welcome to Slowen, version <?php echo $sm->version(); ?></h2>
+<div style="width: 50%">
+<h2>Welcome to Slowen</h2>
 
 <div class="box">
 
@@ -164,4 +165,5 @@ author, since it took me an awful long time to write the original code.
 <strong>Paul M. Foster, programmer at large</strong>
 </p>
 
+</div>
 </div>

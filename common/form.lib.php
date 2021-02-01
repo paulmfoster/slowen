@@ -12,14 +12,19 @@ class form
 	// Added the capability to call constructor without a fields
 	// argument. We add a set() routine later to compensate.
 	
-	function __construct($fields = array())
+	function __construct($fields = [])
 	{
 		$this->fields = $fields;
 	}
 
-	function set($fields = array())
+	function set($fields = [])
 	{
 		$this->fields = $fields;
+	}
+
+	function clear()
+	{
+		$this->fields = [];
 	}
 
 	// =======================================================
@@ -121,8 +126,13 @@ class form
 			$str .= $this->key_value('maxlength', $fld['maxlength']);
 		}
 
-		if (isset($fld['class'])) {
-			$str .= $this->key_value('class', $fld['class']);
+		if (isset($fld['javascript'])) {
+			$str .= ' ' . $fld['javascript'];
+		}
+
+		// added for HTML5
+		if (isset($fld['required'])) {
+			$str .= 'required';
 		}
 
 		$str .= '/>' . PHP_EOL;
@@ -151,6 +161,11 @@ class form
 
 		if (isset($fld['class'])) {
 			$str .= $this->key_value('class', $fld['class']);
+		}
+
+		// added for HTML5
+		if (isset($fld['required'])) {
+			$str .= 'required';
 		}
 
 		$str .= '/>' . PHP_EOL;
@@ -184,6 +199,11 @@ class form
 			$str .= $this->key_value('class', $fld['class']);
 		}
 
+		// added for HTML5
+		if (isset($fld['required'])) {
+			$str .= 'required';
+		}
+
 		$str .= '/>' . PHP_EOL;
 
 		echo $str;
@@ -194,10 +214,21 @@ class form
 		$this->mismatch($field_name, 'select');
 
 		$fld = $this->fields[$field_name];
+		if (isset($fld['multi']) && $fld['multi'] == 1) {
+			$multi = TRUE;
+		}
+		else {
+			$multi = FALSE;
+		}
 		$opts = $this->fields[$field_name]['options'];
 
 		$str = '<select ';
-		$str .= $this->key_value('name', $fld['name']);
+		if ($multi) {
+			$str .= $this->key_value('name', $fld['name'] . '[]');
+		}
+		else {
+			$str .= $this->key_value('name', $fld['name']);
+		}
 		$str .= $this->key_value('id', $fld['name']);
 		if (isset($fld['class'])) {
 			$str .= $this->key_value('class', $fld['class']);
@@ -205,11 +236,15 @@ class form
 		if (isset($fld['size'])) {
 			$str .= $this->key_value('size', $fld['size']);
 		}
-		if (isset($fld['multi'])) {
-			if ($fld['multi'] == 1) {
-				$str .= 'multiple ';
-			}
+		if ($multi) {
+			$str .= 'multiple ';
 		}
+
+		// added for HTML5
+		if (isset($fld['required'])) {
+			$str .= 'required';
+		}
+
 		$str .= '>' . PHP_EOL;
 
 		foreach ($opts as $option) {
@@ -244,7 +279,7 @@ class form
 		echo $str;
 	}
 
-	function radio_option($str, $option, $checked_value)
+	function radio_option($str, $option, $checked_value = NULL)
 	{
 		$str .= $this->key_value('value', $option['val']);
 
@@ -431,6 +466,11 @@ class form
 			$str .= $this->key_value('wrap', $parms['wrap']);
 		}
 
+		// added for HTML5
+		if (isset($fld['required'])) {
+			$str .= 'required';
+		}
+
 		$str .= '>' . PHP_EOL;
 
 		if (!is_null($content)) {
@@ -544,29 +584,11 @@ class form
 
 	static function button($legend, $link)
 	{
-		/*
-		$str = '<a href="' . $link . '">';
-		$str .= '<button type="button">';
-		$str .= $legend;
-		$str .= '</button></a>' . PHP_EOL;
-
-		echo $str;
-		 */
-		 
-		/*
-		$str = '<button type="button">';
-		$str .= '<a href="' . $link . '">';
-		$str .= $legend;
-		$str .= '</a>';
-		$str .= '</button>';
-
-		echo $str;
-		 */
-
 		$str = '<button ';
+		// this 1em font size is to handle problems with some browsers
+		// (Chromium)
 		$str .= "style=\"font-size:1em\" onclick=\"window.location.href='$link';\">$legend</button>";
 		echo $str;
-	
 	}
 
 	static function abandon($link)
@@ -579,22 +601,71 @@ class form
 	// Other Routines
 	// =======================================================
 
-	function check_requireds($post)
+	/**
+	 * check_files()
+	 *
+	 * This does a job similar to check_requireds() except that it does
+	 * so against the FILES array (passed in)
+	 *
+	 * @parm array $files The FILES array
+	 * @return boolean Upload okay?
+	 */
+
+	function check_files($files)
 	{
-		$errors = 0;
-		foreach ($this->fields as $fld_arr) {
-			if (isset($fld_arr['required']) && $fld_arr['required'] == 1) {
-				if (!isset($post[$fld_arr['name']])) {
-					$errors++;
+		foreach ($this->fields as $fld) {
+			if ($fld['type'] == 'file') {
+			   	if (isset($fld['required']) && $fld['required'] == 1) {
+					if (!isset($files[$fld['name']])) {
+						return FALSE;
+					}
+					elseif ($files[$fld['name']]['error'] != 0) {
+						return FALSE;
+					}
 				}
 			}
 		}
-		return $errors ? FALSE : TRUE;
+		return TRUE;
+	}
+
+	/**
+	 * check_requireds()
+	 *
+	 * This iterates through the fields and checks for any which have
+	 * the "required" component set. These are checked against the POST
+	 * array (passed in) and if there are discrepancies, it returns
+	 * FALSE. Else, TRUE. To save execution cycles, it stops at the
+	 * first failure.
+	 *
+	 * @param array $post The POST array
+	 * @return boolean All required fields are there?
+	 */
+
+	function check_requireds($post)
+	{
+		foreach ($this->fields as $fld) {
+			if ($fld['type'] != 'file') {
+				if (isset($fld['required']) && $fld['required'] == 1) {
+					if (!isset($post[$fld['name']])) {
+						return FALSE;
+					}
+					elseif (!is_array($post[$fld['name']])) {
+						if (strlen($post[$fld['name']]) == 0) {
+							return FALSE;
+						}
+					}
+					elseif (empty($post[$fld['name']])) { // is an array
+						return FALSE;
+					}
+				}
+			}
+		}
+		return TRUE;
 	}
 
 	function version()
 	{
-		return 2.0;
+		return 2.5;
 	}
 }
 

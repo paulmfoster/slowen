@@ -1,11 +1,12 @@
 
-<form action="<?php echo $base_url . 'txnsplt.php'; ?>" method="post">
+<form action="index.php?c=addtxn&m=verify" method="post">
 
-<?php $form->hidden('max_splits', $_SESSION['form_data']['max_splits']); ?>
+<?php $form->hidden('from_split'); ?>
+<?php $form->hidden('max_splits'); ?>
 
 <table>
 
-<?php for ($j = 0; $j < $_SESSION['form_data']['max_splits']; $j++): ?>
+<?php for ($j = 0; $j < $txn['max_splits']; $j++): ?>
 
 <td>
 
@@ -45,7 +46,7 @@ Credit&nbsp;
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
+<?php form::abandon('index.php?c=addtxn&m=add'); ?>
 </p>
 
 </form>

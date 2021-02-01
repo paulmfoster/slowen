@@ -1,10 +1,7 @@
 
-<form action="<?php echo $base_url . 'txnedt.php'; ?>" method="post">
+<form action="index.php?c=transaction&m=edit1" method="post">
 
-<?php $txn = $txns[0]; ?>
-
-<?php $form->hidden('txnid', $txn['txnid']); ?>
-<?php $form->hidden('acct_id', $acct_id); ?>
+<?php $form->hidden('txnid'); ?>
 
 <h3>Transaction ID: <?php echo $txn['txnid']; ?></h3>
 
@@ -79,13 +76,13 @@
 <td><label for="status">Status</label>
 &nbsp;
 <!-- status -->
-<?php echo $statuses[$txn['status']]; ?>
+<?php echo $this->statuses[$txn['status']]; ?>
 </td>
 
 <td><label for="recon_dt">Recon Dt</label>
 &nbsp;
 <!-- recon_dt -->
-<?php echo pdate::reformat('Y-m-d', $txn['recon_dt'], 'm/d/y'); ?>
+<?php echo pdate::iso2am($txn['recon_dt']); ?>
 </td>
 </tr>
 
@@ -95,6 +92,7 @@
 <label for="amount">Amount</label>
 &nbsp;
 <?php
+$max_txns = 1;
 if ($max_txns > 1 || $txn['status'] == 'R' || $txn['status'] == 'V') {
 	echo int2dec($txn['amount']);
 }
@@ -108,19 +106,10 @@ else {
 
 </fieldset>
 
-<!-- SPLITS HERE -->
-
-<?php if ($txns[0]['split']): ?>
-<?php $form->hidden('txntype', 'splits'); ?>
-<?php include 'views/splitedt.view.php'; ?>
-<?php else: ?>
-<?php $form->hidden('txntype', 'single'); ?>
-<?php endif; ?>
-
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon("txnshow.php?acct_id={$acct_id}&txnid={$txn['txnid']}"); ?>
+<?php form::abandon("index.php?c=transaction&m=show&txnid={$txn['txnid']}"); ?>
 </p>
 
 

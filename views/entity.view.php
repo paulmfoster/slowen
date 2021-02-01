@@ -1,22 +1,21 @@
 
-<form method="post" action="entity.php">
+<form method="post" action="index.php?c=master&m=entity2">
 
 <table>
-<?php $num = count($entities); ?>
-<?php for ($i = 0; $i < $num; $i++): ?>
+<?php foreach ($entities as $entity): ?>
 <tr>
 	<td>
 	<h2>
-	<input type="radio" id="entity_num" name="entity_num" value="<?php echo $entities[$i]['entity_num']; ?>" <?php if ($i == 0) echo 'checked="checked"'; ?>/>
+	<input type="radio" id="entity_num" name="entity_num" value="<?php echo $entity['entity_num']; ?>"/>
 	</h2>
 	</td>
 	<td>
 	<h2>
-		<?php echo $entities[$i]['entity_name']; ?>
+		<?php echo $entity['entity_name']; ?>
 	</h2>
 	</td>
 </tr>
-<?php endfor; ?>
+<?php endforeach; ?>
 </table>
 <p>
 <input type="submit" id="selected" name="selected" value="Select"/>

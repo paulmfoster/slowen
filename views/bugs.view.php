@@ -1,5 +1,5 @@
 
-<form action="bugs.php" method="post">
+<form action="index.php?c=bugs&m=send" method="post">
 
 <?php $form->hidden('app_title'); ?>
 

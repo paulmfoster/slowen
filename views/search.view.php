@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $base_url . 'search.php';?>">
+<form method="post" action="index.php?c=report&m=results">
 
 <label for="vendor">Search by payee/vendor</label>
 

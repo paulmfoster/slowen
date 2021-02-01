@@ -1,5 +1,5 @@
-<form method="post" action="<?php echo $base_url; ?>paydel.php">
-<?php $form->hidden('payee_id', $payee['payee_id']); ?>
+<form method="post" action="index.php?c=payee&m=delete2">
+<?php $form->hidden('payee_id'); ?>
 <table>
 
 <tr>
@@ -23,7 +23,7 @@
 </table>
 
 <p>
-<?php form::abandon('payees.php'); ?>
+<?php form::abandon('index.php?c=payee'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </p>

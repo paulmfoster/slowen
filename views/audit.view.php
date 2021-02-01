@@ -1,7 +1,7 @@
 <?php if ($state == 0): ?>
 
 <strong>Enter month and year:&nbsp;</strong>
-<form method="post" action="<?php echo $base_url . 'audit.php'; ?>">
+<form method="post" action="index.php?c=audit&m=show">
 <?php $form->select('month'); ?>
 &nbsp;
 <?php $form->select('year'); ?>

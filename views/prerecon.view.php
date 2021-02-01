@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $base_url . 'reconcile.php'; ?>">
+<form method="post" action="index.php?c=recon&m=list">
 
 <!-- Preliminary screen -->
 
@@ -54,7 +54,7 @@ Example: credit card balances are normally negative. Bank acct balances are norm
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('reconcile.php'); ?>
+<?php form::abandon('index.php?c=recon'); ?>
 </p>
 
 </form>

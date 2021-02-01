@@ -1,5 +1,5 @@
-<form method="post" action="<?php echo $base_url . 'acctdel.php'; ?>">
-<?php $form->hidden('acct_id', $acct['acct_id']); ?>
+<form method="post" action="index.php?c=account&m=delete2">
+<?php $form->hidden('acct_id'); ?>
 <table>
 
 <tr>
@@ -43,7 +43,7 @@
 <strong>Open Date</strong>
 </td>
 <td>
-<?php echo $acct['x_open_dt']; ?>
+<?php echo pdate::iso2am($acct['open_dt']); ?>
 </td>
 </tr>
 
@@ -52,7 +52,7 @@
 <strong>Reconciliation Date</strong>
 </td>
 <td>
-<?php echo $acct['x_recon_dt']; ?>
+<?php echo pdate::iso2am($acct['recon_dt']); ?>
 </td>
 </tr>
 
@@ -70,7 +70,7 @@
 <strong>Opening Balance</strong>
 </td>
 <td>
-<?php echo $acct['x_open_bal']; ?>
+<?php echo int2dec($acct['open_bal']); ?>
 </td>
 </tr>
 
@@ -79,14 +79,14 @@
 <strong>Reconciled Balance</strong>
 </td>
 <td>
-<?php echo $acct['x_rec_bal']; ?>
+<?php echo int2dec($acct['rec_bal']); ?>
 </td>
 </tr>
 
 </table>
 
 <p>
-<?php form::abandon($base_url . 'accounts.php'); ?>
+<?php form::abandon('index.php?c=account'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 

@@ -1,8 +1,8 @@
-<form method="post" action="<?php echo $base_url; ?>payadd.php">
+<form method="post" action="index.php?c=payee&m=add2">
 <strong>Payee Name</strong>&nbsp;
 <?php $form->text('name'); ?>
 <br/>
-<?php form::abandon('payees.php'); ?>
+<?php form::abandon('index.php?c=payee'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </form>

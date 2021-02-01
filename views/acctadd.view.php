@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $base_url . 'acctadd.php'; ?>">
+<form method="post" action="index.php?c=account&m=add2">
 <table>
 
 <tr>
@@ -93,7 +93,7 @@ Reconciled Balance
 </table>
 
 <p>
-<?php echo form::abandon($base_url . 'accounts.php'); ?>
+<?php echo form::abandon('index.php?c=account'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </p>

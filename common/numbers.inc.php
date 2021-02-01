@@ -1,35 +1,83 @@
 <?php
 
-/**
- * @package grotblog
- * @copyright 2016, Paul M. Foster <paulf@quillandmouse.com>
- * @author Paul M. Foster <paulf@quillandmouse.com>
- * @license LICENSE file
- * @version 1.0
+/*
+if (!defined('DECIMALS')) {
+	define('DECIMALS', 2);
+}
+if (!defined('DECIMAL_SYMBOL')) {
+	define('DECIMAL_SYMBOL', '.');
+}
  */
 
-define('NUMBERS_INC_PHP', TRUE);
-
 /**
- * Turns a number with a possible decimal point into an integer by
- * effectively multiplying it by the number of decimals in use by
- * this locale. This is all done with string manipulation for two 
- * reasons: 1) to avoid any possible distortions introduced by rounding 
- * or straight mathematical manipulation; 2) because this function is 
- * usually used on numbers returning from user input, which are always 
- * regurned as strings.
+ * Converts fractional dollar amounts to pennies. Works for any
+ * currency.
  *
- * Note: Don't let users get cute by using parentheses and such to 
- * indicate negative numbers. Negative numbers should be indicated by a 
- * single dash or minus sign to the immediate left of the left-most 
- * digit of the number. Also, tell them not to include currency symbols 
- * as part of the number string. This function won't care, but the 
- * database back end may well care.
+ * This function does not round or truncate numbers. It turns a number
+ * like this: 123.45 to this: 12345. It assumes you want to store
+ * decimal numbers in a database as integers. Signs are allowed, but are
+ * only returned if negative.
  *
- * @param string $number The number to be modified.
+ * Incidentally, this doesn't work in PHP 7.3:
  *
- * @return string The number, pictured as an integer.
+ * $n = intval(20.15 * pow(10, DECIMALS)); // == 20.14
+ *
+ * @param string The number you wish to convert
+ * @return string The converted number
  */
+
+function dec2int($number)
+{
+	// trim first
+	$number = trim($number);
+	if (empty($number)) {
+		return '0';
+	}
+
+	// handle signs
+	$neg = '';
+	if ($number[0] == '+') {
+		$number = ltrim($number, '+');
+	}
+	elseif ($number[0] == '-') {
+		$number = ltrim($number, '-');
+		$neg = '-';
+	}
+
+	// test for decimal point
+	$decpt = strpos($number, DECIMAL_SYMBOL);
+	if ($decpt === FALSE) {
+		// no decimal point
+		$unsigned = $number . str_repeat('0', DECIMALS);
+	}
+	else {
+		// decimal point present
+		$len = strlen($number);
+
+		$left = substr($number, 0, $decpt);
+		$right = substr($number, $decpt + 1);
+
+		$rlen = strlen($right);
+		$slop = $rlen - DECIMALS;
+
+		if ($slop > 0) {
+			// too many decimals; truncate
+			$right = substr($right, 0, DECIMALS);
+		}
+		elseif ($slop < 0) {
+			// pad on the right with zeroes
+			$right = $right . str_repeat('0', abs($slop));
+		}
+		// may be leading zeroes, so remove them
+		$unsigned = ltrim($left . $right, '0');
+	}
+
+	$new = $neg . $unsigned;
+
+	return $new;
+}
+
+/*
 
 function dec2int($number)
 {
@@ -89,12 +137,36 @@ function dec2int($number)
 	}
 }
 
+ */
+
+function int2dec($number = 0)
+{
+	// don't process if the number is already decimalized
+	if (strpos($number, DECIMAL_SYMBOL) !== FALSE) {
+		return $number;
+	}
+
+	$len = strlen($number);
+	$short = $len - DECIMALS - 1;
+	if ($short < 0) {
+		$number = str_repeat('0', abs($short)) . $number;
+		$len -= $short;
+	}
+
+	$left = substr($number, 0, $len - DECIMALS);
+	$right = substr($number, $len - DECIMALS);
+
+	return $left . '.' . $right;
+}
+
+
 /**
  * This converts a string representation of an integer
  * into a string representation of money (in the U.S.,
  * for example, 200 would be 2.00).
  */
 
+/*
 function int2dec($number)
 {
 	// don't process if the number is already decimalized
@@ -121,4 +193,4 @@ function int2dec($number)
 	}
 	return $new_number;
 }
-
+ */

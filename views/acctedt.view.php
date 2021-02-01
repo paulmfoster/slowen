@@ -1,5 +1,5 @@
-<form method="post" action="<?php echo $base_url . 'acctedt.php'; ?>">
-<?php $form->hidden('acct_id', $acct['acct_id']); ?>
+<form method="post" action="index.php?c=account&m=edit2">
+<?php $form->hidden('acct_id'); ?>
 <table>
 
 <tr>
@@ -84,7 +84,7 @@ Opening Balance
 </label>
 </td>
 <td>
-<?php $form->text('open_bal', $acct['x_open_bal']); ?>
+<?php $form->text('open_bal', int2dec($acct['open_bal'])); ?>
 </td>
 </tr>
 
@@ -95,14 +95,14 @@ Reconciled Balance
 </label>
 </td>
 <td>
-<?php $form->text('rec_bal', $acct['x_rec_bal']); ?>
+<?php $form->text('rec_bal', int2dec($acct['rec_bal'])); ?>
 </td>
 </tr>
 
 </table>
 
 <p>
-<?php form::abandon($base_url . 'accounts.php'); ?>
+<?php form::abandon('index.php?c=account'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </p>

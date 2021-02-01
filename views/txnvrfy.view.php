@@ -28,7 +28,7 @@ To Acct/Category
 Transaction Date
 </td>
 <td>
-<?php echo $data['x_txn_dt']; ?>
+<?php echo pdate::iso2am($data['txn_dt']); ?>
 </td>
 </tr>
 
@@ -37,7 +37,7 @@ Transaction Date
 Check No
 </td>
 <td>
-<?php echo $data['checkno']; ?>
+<?php echo $data['checkno'] ?? ''; ?>
 </td>
 </tr>
 
@@ -64,7 +64,14 @@ Memo
 Amount
 </td>
 <td>
-<?php echo 'DR ' . $data['dr_amount'] . ' | CR ' . $data['cr_amount']; ?>
+<?php
+if ($data['amount'] < 0) {
+	echo 'DR ' . abs($data['amount']);
+}
+else {
+	echo "CR {$data['amount']}";
+}
+?>
 </td>
 </tr>
 
@@ -82,7 +89,7 @@ Status
 Recon Date
 </td>
 <td>
-<?php echo $data['x_recon_dt']; ?>
+<?php echo pdate::iso2am($data['recon_dt']); ?>
 </td>
 </tr>
 
@@ -119,7 +126,7 @@ To Acct/Category
 Transaction Date
 </td>
 <td>
-<?php echo $data['x_txn_dt']; ?>
+<?php echo pdate::iso2am($data['txn_dt']); ?>
 </td>
 </tr>
 
@@ -128,7 +135,7 @@ Transaction Date
 Check No
 </td>
 <td>
-<?php echo $data['checkno']; ?>
+<?php echo $data['checkno'] ?? ''; ?>
 </td>
 </tr>
 
@@ -155,7 +162,14 @@ Memo
 Amount
 </td>
 <td>
-<?php echo 'DR ' . $data['cr_amount'] . ' | CR ' . $data['dr_amount']; ?>
+<?php
+if ($data['amount'] < 0) {
+	echo 'CR ' . abs($data['amount']);
+}
+else {
+	echo 'DR ' . $data['amount'];
+}
+?>
 </td>
 </tr>
 
@@ -173,7 +187,7 @@ Status
 Recon Date
 </td>
 <td>
-<?php echo $data['x_recon_dt']; ?>
+<?php echo pdate::iso2am($data['recon_dt']); ?>
 </td>
 </tr>
 
@@ -258,12 +272,12 @@ Credit
 
 <?php endif; ?>
 
-<form action="<?php $base_url . 'txnvrfy.php'; ?>" method="post">
+<form action="index.php?c=addtxn&m=save" method="post">
 
 <p>
-<?php $form->submit('s1'); ?>
+<?php $form->submit('s3'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
+<?php form::abandon('index.php?c=addtxn&m=add'); ?>
 </p>
 
 </form>

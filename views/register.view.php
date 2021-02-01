@@ -24,21 +24,21 @@
 <tr class="row<?php echo $row++ & 1;?>">
 <td>
 
-<a href="txnshow.php?acct_id=<?php echo $acct['acct_id']; ?>&txnid=<?php echo $txn['txnid']; ?>">Show</a>
+<a href="index.php?c=transaction&m=show&txnid=<?php echo $txn['txnid']; ?>">Show</a>
 <br/>
-<a href="txnedt.php?acct_id=<?php echo $acct['acct_id']; ?>&txnid=<?php echo $txn['txnid']; ?>">Edit</a>
+<a href="index.php?c=transaction&m=edit&txnid=<?php echo $txn['txnid']; ?>">Edit</a>
 <br/>
-<a href="txnvoid.php?txnid=<?php echo $txn['txnid']; ?>">Void</a>
+<a href="index.php?c=transaction&m=void&txnid=<?php echo $txn['txnid']; ?>">Void</a>
 
 </td>
-<td><?php echo $txn['x_txn_dt']; ?></td>
+<td><?php echo pdate::iso2am($txn['txn_dt']); ?></td>
 <td><?php echo $txn['checkno']; ?></td>
 <td><?php echo ($txn['split'] == 1) ? 'Y' : 'N'; ?></td>
 <td><?php echo $txn['payee_name'] . '<br/>' . $txn['memo'] . '<br/>' . $txn['to_acct_name']; ?></td>
 <td><?php echo $txn['status']; ?></td>
-<td class="align-right"><?php echo $txn['debit']; ?></td>
-<td class="align-right"><?php echo $txn['credit']; ?></td>
-<td class="align-right"><?php echo $txn['balance']; ?></td>
+<td class="align-right"><?php echo !empty($txn['debit']) ? int2dec($txn['debit']) : ''; ?></td>
+<td class="align-right"><?php echo !empty($txn['credit']) ? int2dec($txn['credit']) : ''; ?></td>
+<td class="align-right"><?php echo int2dec($txn['balance']); ?></td>
 </tr>
 <?php endforeach; ?>
 </table>

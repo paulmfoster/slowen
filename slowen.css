@@ -52,7 +52,7 @@ p {
   padding: 0;
 }
 
-.Box {
+.box {
   color: black;
   background-color: transparent;
   margin: 0 0 1em 0;
@@ -223,7 +223,7 @@ td {
 
 /* =============================== */
 
-.nav-left {
+#side-bar {
 	font-weight: bold;
   font-size: 1.2em;
   text-align: right;
@@ -232,7 +232,7 @@ td {
   clear: left;
 }
 
-.nav-left .navhead {
+#side-bar .navhead {
   color: #FFFFFF;
   background-color: #AA3366;
   font-size: 100%;
@@ -242,21 +242,21 @@ td {
   border-top: 1px solid #993366;
 }
 
-.nav-left ul {
+#side-bar ul {
   list-style-type: none;
   list-style-position: outside;
   margin: 0;
   padding: 0;
 }
 
-.nav-left li {
+#side-bar li {
   margin: 0;
   /* padding: 1ex 1em 1ex 0.5ex; */
   padding: 1px 1px 1px 1px;
   border-top: 1px solid #993366;
 }
 
-.nav-left a {
+#side-bar a {
   color: #FF0000;
   font-weight: bold;
   background-color: transparent;
@@ -265,7 +265,7 @@ td {
   display: block;
 }
 
-.nav-left a:hover {
+#side-bar a:hover {
   color: white;
   background-color: #AA3366;
   text-decoration: none;
