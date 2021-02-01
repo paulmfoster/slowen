@@ -4,9 +4,13 @@ body {
   color: #993366;
   background-color: #FFFFFF;
   font-family: verdana, helvetica, arial, sans-serif;
-  font-size: 0.8em;  /* Enables font size scaling in MSIE */
+  font-size: 80%;  /* Enables font size scaling in MSIE */
   margin: 0;
   padding: 0;
+}
+
+input, select, textarea, button {
+	font-size: 100%;
 }
 
 .doNotDisplay {
@@ -266,3 +270,4 @@ td {
   background-color: #AA3366;
   text-decoration: none;
 }
+

@@ -801,7 +801,14 @@ class slowen
 
 		$sql = "select splits.to_acct as cat_no, sum(splits.amount) as amount, accounts.name as cat_name from splits, journal, accounts where journal.txnid = splits.txnid and accounts.acct_id = splits.to_acct and accounts.acct_type = '$inc_exp' and journal.txn_dt >= '$iso_from_date' and journal.txn_dt <= '$iso_to_date' group by splits.to_acct order by splits.to_acct";
 		$s = $this->db->query($sql)->fetch_all();
-		$smax = count($s);
+		// 2021-01-30 add test for no splits
+		if ($s === FALSE) {
+			// if we got to here, there are no splits
+			$smax = 0;
+		}
+		else {
+			$smax = count($s);
+		}
 
 		// create an array of category numbers from the journal table
 

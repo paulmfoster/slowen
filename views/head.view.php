@@ -6,7 +6,8 @@
     <meta name="generator" content="vim, php" />
 
 <link rel="shortcut icon" href="<?php echo $favicon; ?>">
-<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>">
+<!-- reload CSS each time -->
+<link rel="stylesheet" type="text/css" href="<?php echo $css . '?v=' . date('His'); ?>">
 
     <title><?php echo $page_title; ?></title>
   </head>

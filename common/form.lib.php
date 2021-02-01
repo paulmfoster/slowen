@@ -125,10 +125,6 @@ class form
 			$str .= $this->key_value('class', $fld['class']);
 		}
 
-		if (isset($fld['javascript'])) {
-			$str .= ' ' . $fld['javascript'];
-		}
-
 		$str .= '/>' . PHP_EOL;
 
 		echo $str;
@@ -248,7 +244,7 @@ class form
 		echo $str;
 	}
 
-	function radio_option($str, $option, $checked_value = NULL)
+	function radio_option($str, $option, $checked_value)
 	{
 		$str .= $this->key_value('value', $option['val']);
 
@@ -548,12 +544,29 @@ class form
 
 	static function button($legend, $link)
 	{
+		/*
 		$str = '<a href="' . $link . '">';
 		$str .= '<button type="button">';
 		$str .= $legend;
 		$str .= '</button></a>' . PHP_EOL;
 
 		echo $str;
+		 */
+		 
+		/*
+		$str = '<button type="button">';
+		$str .= '<a href="' . $link . '">';
+		$str .= $legend;
+		$str .= '</a>';
+		$str .= '</button>';
+
+		echo $str;
+		 */
+
+		$str = '<button ';
+		$str .= "style=\"font-size:1em\" onclick=\"window.location.href='$link';\">$legend</button>";
+		echo $str;
+	
 	}
 
 	static function abandon($link)
