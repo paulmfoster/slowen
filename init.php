@@ -61,38 +61,6 @@ function load_model($name)
 	return $obj;
 }
 
-function in_get($varname = NULL, $destination = NULL)
-{
-	if (is_null($destination)) {
-		relocate('index.php');
-	}
-	if (is_null($varname)) {
-		relocate($destination);
-	}
-
-	$var = $_GET[$varname] ?? NULL;
-	if (is_null($var)) {
-		relocate($destination);
-	}
-	return $var;
-}
-
-function in_post($varname = NULL, $destination = NULL)
-{
-	if (is_null($destination)) {
-		relocate('index.php');
-	}
-	if (is_null($varname)) {
-		relocate($destination);
-	}
-
-	$var = $_POST[$varname] ?? NULL;
-	if (is_null($var)) {
-		relocate($destination);
-	}
-	return $var;
-}
-
 function view_file($name)
 {
 	global $cfg;
@@ -185,6 +153,22 @@ $post_entity = $_POST['entity_num'] ?? NULL;
 
 if (is_null($post_entity)) {
 	if (is_null($sess_entity)) {
+		$_SESSION['entity_num'] = 1;
+		$_SESSION['entity_name'] = $cfg['entity'][1];
+	}
+}
+else {
+	$_SESSION['entity_num'] = $_POST['entity_num'];
+	$_SESSION['entity_name'] = $cfg['entity'][$_POST['entity_num']];
+	emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
+}
+
+/*
+$sess_entity = $_SESSION['entity_num'] ?? NULL;
+$post_entity = $_POST['entity_num'] ?? NULL;
+
+if (is_null($post_entity)) {
+	if (is_null($sess_entity)) {
 		$page_title = 'Set Entity';
 		$view_file = view_file('entity');
 		include 'view.php';
@@ -196,6 +180,8 @@ else {
 	$_SESSION['entity_name'] = $cfg['entity'][$_POST['entity_num']];
 	emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
 }
+
+ */
 
 // entity must be establish before this point, so we can instantiate the
 // database
