@@ -1,13 +1,9 @@
-<form method="post" action="<?php echo $base_url; ?>payees.php">
+<form method="post" action="<?php echo $destination; ?>">
 <label>Payee</label>&nbsp;
 <?php $form->select('payee_id'); ?>
 <br/>
-<?php form::abandon('payees.php'); ?>
+<?php form::abandon('index.php'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
-&nbsp;
-<?php $form->submit('s2'); ?>
-&nbsp;
-<?php $form->submit('s3'); ?>
 </form>
 

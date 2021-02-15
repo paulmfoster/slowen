@@ -1,9 +1,8 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="<?php echo $base_url . 'depadd.php'; ?>" method="post">
+<form action="depvrfy.php" method="post">
 
-<fieldset>
 <table>
 
 <tr>
@@ -14,24 +13,14 @@
 </td>
 </tr>
 
-
-</table>
-
-<table>
 <tr>
 <td><label for="txn_dt">Date</label>
-&nbsp;
+</td>
+<td>
 <!-- txn_dt -->
-<?php $form->date('txn_dt', pdate::get(pdate::now(), 'Y-m-d')); ?>
+<?php $form->date('txn_dt', pdate::now2iso()); ?>
 </td>
 </tr>
-
-</table>
-</fieldset>
-
-<fieldset>
-
-<table>
 
 <tr>
 <td><label for="payee_id">Payee Name</label></td>
@@ -57,25 +46,17 @@
 </td>
 </tr>
 
-</table>
-
-</fieldset>
-
-<fieldset>
-
-<table>
-
 <!-- amount -->
 <tr>
 <td>
 <label for="cr_amount">Credit</label>
-&nbsp;
+</td>
+<td>
 <?php $form->text('cr_amount'); ?>
 </td>
 </tr>
 </table>
 
-</fieldset>
 
 <p>
 <?php $form->submit('s1'); ?>

@@ -26,7 +26,7 @@ a check number, you may find that the splits share that check number.
 <?php for ($j = 0; $j < $max_txns; $j++): ?>
 <tr class="row<?php echo $k++ & 1;?>">
 <td><?php echo $transactions[$j]['from_acct_name']; ?></td>
-<td><?php echo $transactions[$j]['x_txn_dt']; ?></td>
+<td><?php echo pdate::iso2am($transactions[$j]['txn_dt']); ?></td>
 <td><?php echo $transactions[$j]['checkno']; ?></td>
 <td>
 <?php 

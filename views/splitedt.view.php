@@ -25,7 +25,7 @@
 
 <?php for ($b = 0; $b < $max_splits; $b++): ?>
 
-<?php $sform->hidden('split_id', $splits[$b]['id']); ?>
+<?php $form->hidden('split_id', $splits[$b]['id']); ?>
 
 <fieldset>
 <table>
@@ -35,28 +35,28 @@
 <td rowspan="4"><?php echo $b + 1; ?></td>
 <td><label>Payee</label></td>
 <td>
-<?php $sform->select('split_payee_id', $splits[$b]['payee_id']); ?>
+<?php $form->select('split_payee_id', $splits[$b]['payee_id']); ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Destination Acct</label></td>
 <td>
-<?php $sform->select('split_to_acct', $splits[$b]['to_acct']); ?>
+<?php $form->select('split_to_acct', $splits[$b]['to_acct']); ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Memo</label></td>
 <td>
-<?php $sform->text('split_memo', $splits[$b]['memo']); ?>
+<?php $form->text('split_memo', $splits[$b]['memo']); ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Amount</label></td>
 <td>
-<?php $sform->text('split_amount', int2dec($splits[$b]['amount'])); ?>
+<?php $form->text('split_amount', int2dec($splits[$b]['amount'])); ?>
 </td>
 </tr>
 

@@ -1,7 +1,5 @@
 <?php
 
-// @copyright  2020, Paul M. Foster <paulf@quillandmouse.com>
-
 include 'init.php';
 
 $action = $_POST['s1'] ?? 'virgin';
@@ -11,7 +9,7 @@ if ($action == 'virgin') {
 		'app_title' => [
 			'name' => 'app_title',
 			'type' => 'hidden',
-			'value' => $app_name
+			'value' => $cfg['app_name']
 		],
 		'name' => [
 			'name' => 'name',
@@ -23,14 +21,16 @@ if ($action == 'virgin') {
 			'name' => 'email',
 			'type' => 'text',
 			'size' => 50,
-			'maxlength' => 50
+			'maxlength' => 50,
+			'required' => 1
 		],
 		'remark' => [
 			'name' => 'remark',
 			'type' => 'textarea',
 			'rows' => 20,
 			'cols' => 50,
-			'size' => 1024
+			'size' => 1024,
+			'required' => 1
 		],
 		's1' => [
 			'name' => 's1',
@@ -39,7 +39,7 @@ if ($action == 'virgin') {
 		]
 	];
 
-	$form = new form($fields);
+	$form->set($fields);
 }
 else {
 	if (empty($_POST['email'])) {
@@ -50,22 +50,22 @@ else {
 	}
 	else {
 
-		$msg = 'Application = ' . $app_name . "\n";
+		$msg = 'Application = ' . $cfg['app_name'] . "\n";
 		$msg .= 'Name = ' . $_POST['name'] . "\n";
 		$msg .= 'Email = ' . $_POST['email'] . "\n\n";
 		$msg .= 'Remarks = ' . $_POST['remark'] . "\n\n";
 
-		mail('paulf@quillandmouse.com', 'Bug Report or Feature Request for ' . $app_name , $msg);
+		mail($cfg['programmer_email'], 'Bug Report or Feature Request for ' . $cfg['app_name'] , $msg);
 		emsg('S', 'Thanks for your feedback. It is appreciated.');
 
-		header('Location: ' . $base_url . 'index.php');
+		header('Location: ' . $cfg['base_url'] . 'index.php');
 		exit();
 	}
 }
 
 $focus_field = 'name';
 $page_title = 'Bug/Feature Report';
-$view_file = 'views/bugs.view.php';
+$view_file = view_file('bugs');
 
 include 'view.php';
 

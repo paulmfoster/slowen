@@ -6,9 +6,9 @@
 // head and footer files
 
 $views = array();
-$views[] = $base_dir . 'views/head.view.php';
-$views[] = $base_dir . $view_file;
-$views[] = $base_dir . 'views/footer.view.php';
+$views[] = $cfg['viewdir'] . 'head.view.php';
+$views[] = $view_file;
+$views[] = $cfg['viewdir'] . 'footer.view.php';
 
 foreach ($views as $view) {
 	include $view;

@@ -1,7 +1,5 @@
 
-<h2>Welcome to Slowen, version <?php echo $sm->version(); ?></h2>
-
-<div class="box">
+<h2>Welcome to Slowen</h2>
 
 <p>
 If you're relatively young, you probably track your checking and credit
@@ -164,4 +162,3 @@ author, since it took me an awful long time to write the original code.
 <strong>Paul M. Foster, programmer at large</strong>
 </p>
 
-</div>

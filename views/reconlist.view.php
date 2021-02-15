@@ -1,16 +1,16 @@
 
-<form method="post" action="<?php echo $base_url . 'reconcile.php'; ?>">
+<form method="post" action="reconcile3.php">
 
 <!-- Listing screen -->
 
 <?php $row = 0; ?>
 
 <!-- data from prior screen -->
-<?php $form->hidden('stmt_start_bal', $stmt_start_bal); ?>
-<?php $form->hidden('stmt_close_date', $stmt_close_date); ?>
-<?php $form->hidden('stmt_end_bal', $stmt_end_bal); ?>
-<?php $form->hidden('from_acct', $from_acct); ?>
-<?php $form->hidden('from_acct_name', $from_acct_name); ?>
+<?php $form->hidden('stmt_start_bal'); ?>
+<?php $form->hidden('stmt_close_date'); ?>
+<?php $form->hidden('stmt_end_bal'); ?>
+<?php $form->hidden('from_acct'); ?>
+<?php $form->hidden('from_acct_name'); ?>
 
 <h2><?php echo $from_acct_name; ?></h2>
 
@@ -32,7 +32,7 @@
 
 <tr class="row<?php echo ($row++ & 1); ?>">
 
-<td><?php echo $txn['x_txn_dt']; ?></td>
+<td><?php echo pdate::iso2am($txn['txn_dt']); ?></td>
 <td><?php echo $txn['checkno']; ?></td>
 
 <td><?php echo $txn['split'] ? 'Yes' : 'No'; ?></td>

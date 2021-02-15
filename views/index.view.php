@@ -3,83 +3,194 @@
 
 <div class="box">
 
-<h2>Account List</h2>
-<p>
-This allows you select which account to view a "register" for.
-A register lists all the transactions for that account in order,
-along with the balance of the account for each transaction.
-Select the account, and you will see the register.
-</p>
-<h2>Search</h2>
-<p>
-Allows the user to search for transactions matching a given
-payee or category. The first screen allows selection of a payee
-or category. The second displays the transactions found.
-</p>
-<h2>Show Balances</h2>
-<p>
-In the first screen, you select a date. The following screen
-will show the balances of all accounts as of the end of that
-date.
-</p>
-<h2>Transaction Entry</h2>
-<p>
-This allows the user to enter a transaction into any account
-in the system.
-</p>
-<h2>Reconcile</h2>
-<p>
-The first screen allows you to select an account. The second
-screen shows all the transactions for that account, and allows
-the user to mark as "cleared" any transaction which shows up
-on your statement. Ultimately, the system then checks that
-everything adds up. A message appears telling you whether everything
-adds up or doesn't.
-</p>
-<h2>Audit</h2>
-<p>
-The first screen allows selection of the month and year. The
-next screen shows the balance differences across each account
-(using opening and closing dates for that month). It also shows
-income and expense amounts for that month. At the end, it checks
-all the figures to arrive at a check amount, which should be
-zero. This analysis is ideal for ensuring that your figures
-are correct for your tax returns. This is exactly what any
-tax professional would do in preparing your tax return.
-</p>
-<h2>Payees</h2>
-<p>
-Here's where you can add, edit or delete payees.
-</p>
-<h2>Accounts</h2>
-<p>
-Here's where you can add, edit or delete accounts.
-</p>
-<h2>Introduction</h2>
-<p>
-The history of this program, in case you're interested.
-</p>
-<h2>Home</h2>
-<p>
-This page.
-</p>
-<h2>Select Entity</h2>
-<p>
-One of the worst things which can happen with taxes is to mix
-personal and business income and expenses. It was for this reason
-that this setting was extablished. This allows you to specify more
-than one entity for which to do accounting. Like your personal versus
-your business accounts. Or any other division (like two separate
-businesses). No two or more entities can share accounts, payees,
-transactions or categories, thus ensuring there's no "leakage"
-between different entities.
-</p>
-<p>
-This setting precedes all other work in Slowen. You have to
-select an entity before any other work is done in Slowen.
-</p>
+<h3>Slowen Menu</h3>
+
+<dl>
+	<dt>Change Entity</dt>
+	<dd>
+Slowen can monitor more than one set of accounts. Each set is called an
+"entity". Entities can be things like your personal accounts and your
+business accounts.
+</dd>
+</dl>
+
+<hr/>
+
+<h3>Accounts Menu</h3>
+<dl>
+<dt>Register</dt>
+
+<dd>
+
+This function allows you to show a register for any account. In the
+register view, you may edit, void or call for a detailed view of any
+transaction.
+
+</dd>
+
+<dt>Reconcile</dt>
+<dd>
+
+This allows you do reconcile any account with your statement from the
+bank or credit card company.
+
+</dd>
+
+<dt>Add</dt>
+<dd>
+
+Here you may add checking, savings, credit card, income or expense accounts.
+</dd>
+
+<dt>Delete</dt>
+<dd>Here you can delete any account so long as it isn't connected with any transactions.
+</dd>
+
+<dt>Edit</dt>
+<dd>Here you may edit the details of an account, such as its name.
+</dd>
+
+</dl>
+
+<hr/>
+
+<h3>Payees Menu</h3>
+
+<dl>
+
+<dt>Add</dt>
+<dd>This function allows you to add payees.
+</dd>
+
+<dt>Delete</dt>
+<dd>This allows you to delete a payee, so long as it is not used in any transactions.
+</dd>
+
+<dt>Edit</dt>
+<dd>Here you may edit the details of a given payee.
+</dd>
+
+</dl>
+
+<hr/>
+
+<h3>Transactions Menu</h3>
+
+Here you may enter the various types of transactions.
+
+<dl>
+
+<dt>Check</dt>
+<dd>
+
+Checks are entered only from a bank account. Other transaction similar
+to checks can be entered without a check number here, but it's primarily
+intended for recording thecks.
+</dd>
+
+<dt>Deposit</dt>
+<dd>
+
+This selection is for entering deposits. This is money coming *in* to a
+bank account.
+</dd>
+
+<dt>Credit Card</dt>
+<dd>
+
+Here you enter credit card charges.
+</dd>
+
+<dt>Transfer</dt>
+<dd>
+
+This choice is for inter-account transfers. An example of this would be
+where you write a check to pay a credit card bill. For inter-account
+transfers, two transactions are generated from the user's data entry.
+One entry shows the money going out of the checking account, and the
+other shows the money coming into the credit card account.
+</dd>
+
+<dt>Other/Split</dt>
+<dd>
+
+This is for anything not covered above, though any of the above transactions can be entered here. In particular, this covers **splits**. Splits are transaction where there is one or more payee or account involved. For example, this could be a business deposit where you have multiple checks from multiple customers for multiple purposes. Or any other transaction of this type. You will enter the number of "splits", and be shown a screen for entering the details for each one.
+</dd>
+
+</dl>
+
+<hr/>
+
+<h3>Search Menu</h3>
+
+<dl>
+<dt>Categories</dt>
+<dd>
+
+This choice allows you to search transactions by account or category.
+</dd>
+
+<dt>
+<dt>Payees</dt>
+<dd>
+
+This choice allows you to search transactions by payee.
+</dd>
+
+</dl>
+
+<hr/>
+
+<h3>Reports</h3>
+
+<dl>
+
+<dt>Balances</dt>
+<dd>
+
+This will give you the balances of all the accounts as of the date you enter.
+</dd>
+
+<dt>Expenses</dt>
+<dd>
+
+This will give you the totals for each expense category for a given span
+of dates. Generally, you will use this to determine the expenses for a
+week, but any span of dates will work.
+</dd>
+
+<dt>Monthly Audit</dt>
+<dd>
+
+This would typically be used at the end of a month to determine what has
+been spent, and what has been earned, broken down and checked to
+determine of everything balances.
+</dd>
+
+<dt>Yearly Audit</dt>
+<dd>
+
+This is a report which shows everything needed to fill out your tax
+returns, as above, but for a whole year.
+</dd>
+
+</dl>
+
+<hr/>
+
+<h3>Help Menu</h3>
+
+<dl>
+<dt>Introduction</dt>
+<dd>This screen.</dd>
+
+<dt>History</dt>
+<dd>
+
+This shows the history and some technical details for this software.
+</dd>
+
+</dl>
 
 </div>
-
-
 

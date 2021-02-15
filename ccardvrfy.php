@@ -1,40 +1,26 @@
 <?php
 
 include 'init.php';
+memory::merge($_POST);
+memory::set('amount', - $_POST['dr_amount']);
+$trans = load_model('addtxn');
 
-if (!isset($_SESSION['form_data'])) {
-	header('Location: ' . $base_url . 'txnadd.php');
-	exit();
-}
+$fields = array(
+	's1' => array(
+		'name' => 's1',
+		'type' => 'submit',
+		'value' => 'Confirm'
+	)
+);
+$form->set($fields);
 
-if (isset($_POST['s1'])) {
-	$_SESSION['form_data'] = array_merge($_SESSION['form_data'], $_POST);
-	$sm->add_transaction($_SESSION['form_data']);
-	unset($_SESSION['form_data']);
-	header('Location: ' . $base_url . 'txnadd.php');
-	exit();
-}
-else {
-
-	$fields = array(
-		's1' => array(
-			'name' => 's1',
-			'type' => 'submit',
-			'value' => 'Confirm'
-		)
-	);
-
-	$form = new form($fields);
-
-	$data = $_SESSION['form_data'];
-	$names = $sm->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
-	$data['from_acct_name'] = $names['from_acct_name'];
-	$data['to_acct_name'] = $names['to_acct_name'];
-	$data['payee_name'] = $names['payee_name'];
-	$data['x_txn_dt'] = pdate::reformat('Y-m-d', $_SESSION['form_data']['txn_dt'], 'm/d/y');
-}
+$data = memory::get_all();
+$names = $trans->get_names($_POST['from_acct'], $_POST['payee_id'], $_POST['to_acct']);
+$data['from_acct_name'] = $names['from_acct_name'];
+$data['to_acct_name'] = $names['to_acct_name'];
+$data['payee_name'] = $names['payee_name'];
 
 $page_title = 'Confirm Credit Card Charge';
-$view_file = 'views/ccardvrfy.view.php';
+$view_file = view_file('ccardvrfy');
 include 'view.php';
 

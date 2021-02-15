@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $base_url . 'acctadd.php'; ?>">
+<form method="post" action="acctadd2.php">
 <table>
 
 <tr>
@@ -20,7 +20,7 @@ Open Date
 </label>
 </td>
 <td>
-<?php $form->date('open_dt'); ?>
+<?php $form->date('open_dt', pdate::now2iso()); ?>
 </td>
 </tr>
 
@@ -93,7 +93,7 @@ Reconciled Balance
 </table>
 
 <p>
-<?php echo form::abandon($base_url . 'accounts.php'); ?>
+<?php echo form::abandon('acctadd.php'); ?>
 &nbsp;
 <?php $form->submit('s1'); ?>
 </p>

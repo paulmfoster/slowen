@@ -1,10 +1,9 @@
 
-<form action="<?php echo $base_url . 'txnedt.php'; ?>" method="post">
+<form action="<?php echo 'txnupd.php'; ?>" method="post">
 
 <?php $txn = $txns[0]; ?>
 
 <?php $form->hidden('txnid', $txn['txnid']); ?>
-<?php $form->hidden('acct_id', $acct_id); ?>
 
 <h3>Transaction ID: <?php echo $txn['txnid']; ?></h3>
 
@@ -85,7 +84,7 @@
 <td><label for="recon_dt">Recon Dt</label>
 &nbsp;
 <!-- recon_dt -->
-<?php echo pdate::reformat('Y-m-d', $txn['recon_dt'], 'm/d/y'); ?>
+<?php echo pdate::iso2am($txn['recon_dt']); ?>
 </td>
 </tr>
 
@@ -120,7 +119,7 @@ else {
 <p>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon("txnshow.php?acct_id={$acct_id}&txnid={$txn['txnid']}"); ?>
+<?php form::abandon("txnshow.php?txnid={$txn['txnid']}"); ?>
 </p>
 
 

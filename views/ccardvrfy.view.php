@@ -28,7 +28,7 @@ To Acct/Category
 Transaction Date
 </td>
 <td>
-<?php echo $data['x_txn_dt']; ?>
+<?php echo pdate::iso2am($data['txn_dt']); ?>
 </td>
 </tr>
 
@@ -62,7 +62,7 @@ Amount
 </table>
 
 
-<form action="<?php $base_url . 'ccardvrfy.php'; ?>" method="post">
+<form action="txnsave.php" method="post">
 
 <p>
 <?php $form->submit('s1'); ?>

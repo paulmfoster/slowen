@@ -1,89 +1,29 @@
 <?php
 
-/**********************************************************************
- * Copyright Section
- **********************************************************************/
-
-/**
- * @package apps
- * @copyright  2017, Paul M. Foster <paulf@quillandmouse.com>
- * @author Paul M. Foster <paulf@quillandmouse.com>
- * @license LICENSE file
- * @version 2.0
- */
-
-/**********************************************************************
- * Initialization File Section
- *
- * Include the common initialization file here
- * If we're in the common area already, comment line 2 out.
- * If we're in an application area, comment out line 1.
- **********************************************************************/
-
 include 'init.php';
+memory::merge($_POST);
 
-/**********************************************************************
- * Includes Section
- *
- * All files which should be included should be included here,
- * unless they have been included elsewhere before.
- **********************************************************************/
-
-
-/**********************************************************************
- * Controller Variable Declaration Section
- *
- * Declare any variables here.
- **********************************************************************/
-
-
-/**********************************************************************
- * Class Instantiation Section
- *
- * Instantiate whatever classes are needed for this application.
- * Link them to the superobject.
- **********************************************************************/
-
-
-/**********************************************************************
- * Data Preparation Section
- *
- * Data needed for the views may be defined here.
- **********************************************************************/
-
-
-/**********************************************************************
- * User Input Handling Section
- *
- * Check POST or GET variables, handle as needed.
- **********************************************************************/
-
-if (isset($_POST['s1'])) {
-	// user filled in splits data
-	$_SESSION['form_data'] = array_merge($_SESSION['form_data'], $_POST);
-	header('Location: ' . $base_url . 'txnvrfy.php');
-	exit();
+if (!empty($_POST['cr_amount'])) {
+	memory::set('amount', $_POST['cr_amount']);
+}
+elseif (!empty($_POST['dr_amount'])) {
+	memory::set('amount', $_POST['dr_amount']);
+}
+else {
+	memory::set('amount', 0);
 }
 
-if (!isset($_SESSION['form_data'])) {
-	header('Location: ' . $base_url . 'txnadd.php');
-	exit();
+$trans = load_model('addtxn');
+
+$split = $_POST['split'] ?? 0;
+if ($split == 0) {
+	relocate('othvrfy.php');
 }
 
-$atnames = array(
-	' ' => '(none)',
-	'I' => '(inc)',
-	'E' => '(exp)',
-	'L' => '(liab)',
-	'A' => '(asset)',
-	'Q' => '(eqty)',
-	'R' => '(ccard)',
-	'C' => '(chkg)',
-	'S' => '(svgs)'
-);
+$max_splits = $_POST['max_splits'];
 
-$payees = $sm->get_payees();
-$to_accts = $sm->get_split_to_accounts();
+$payees = $trans->get_payees();
+$to_accts = $trans->get_split_to_accounts();
 $payee_options = array();
 foreach ($payees as $payee) {
 	$payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
@@ -98,7 +38,8 @@ foreach ($to_accts as $to_acct) {
 $fields = array(
 	'max_splits' => array(
 		'name' => 'max_splits',
-		'type' => 'hidden'
+		'type' => 'hidden',
+		'value' => $_POST['max_splits']
 	),
 	'split_payee_id' => array(
 		'name' => 'split_payee_id[]',
@@ -137,15 +78,7 @@ $fields = array(
 
 $form = new form($fields);
 
-
-/**********************************************************************
- * Screen Setup Section
- *
- * Set the various view variables
- * Load views.
- **********************************************************************/
-
 $page_title = 'Splits Entry';
-$view_file = 'views/txnsplt.view.php';
+$view_file = view_file('txnsplt');
 include 'view.php';
 

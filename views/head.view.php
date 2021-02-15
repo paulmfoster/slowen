@@ -1,51 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <meta http-equiv="content-type" content="application/xhtml+xml;" charset="<?php echo $cfg['charset']; ?>" />
-    <meta name="author" content="Paul M. Foster" />
-    <meta name="generator" content="vim, php" />
+  	<head>
+  		<meta http-equiv="content-type" content="application/xhtml+xml" charset="<?php echo $cfg['charset']; ?>" />
+		<meta name="author" content="Paul M. Foster" />
+		<meta name="generator" content="vim, php" />
 
-<link rel="shortcut icon" href="<?php echo $favicon; ?>">
-<!-- reload CSS each time -->
-<link rel="stylesheet" type="text/css" href="<?php echo $css . '?v=' . date('His'); ?>">
+		<link rel="shortcut icon" href="<?php echo $cfg['base_url']; ?>favicon.ico">
+		<!-- reload CSS each time -->
+		<link rel="stylesheet" type="text/css" href="<?php echo $cfg['base_url']; ?>slowen.css?v=<?php echo date('His'); ?>">
 
-    <title><?php echo $page_title; ?></title>
-  </head>
+		<title><?php echo $page_title; ?></title>
+	</head>
 
 <?php if (isset($focus_field)): ?>
 	<body onLoad="document.getElementById('<?php echo $focus_field; ?>').focus();">
 <?php else: ?>
-  <body>
+	<body>
 <?php endif; ?>
-<a href="#top">
-    <!-- For non-visual user agents: -->
-      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
 
+<a href="#top"></a>
 
-    <!-- ##### Header ##### -->
-
-    <div id="header">
-	  	<h1 class="header-title">
-		<span style="color: yellow"><?php echo $cfg['app_name']; ?></span>
+	<div id="header-block">
+		<h1 class="header-title">
+		<span style="color: #993366"><?php echo $cfg['app_name']; ?></span>
 		&nbsp;
 		(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
 		&nbsp;
 		<span><?php echo '&nbsp;' . $page_title; ?></span>
 		</h1>
-    </div>
+	</div>
 
-
-    <!-- ##### Side Bar ##### -->
-
-<div class="nav-left">
-<?php echo hiernavs($nav_links); ?>
+<div id="left-block">
+<?php include $cfg['viewdir'] . 'menu.html'; ?>
 </div>
 
-    <!-- ##### Main Copy ##### -->
+<!--div id="side-bar">
+echo $nav->show(); ?>
+</div> -->
 
-    <div id="main-copy">
-
-        <a name="Top"></a> 
+<div id="main-block">
 
 <!-- MESSAGES ------------------------------>
 <?php show_messages(); ?>

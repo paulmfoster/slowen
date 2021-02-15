@@ -1,8 +1,7 @@
 
-<form method="post" action="txnvoid.php">
+<form method="post" action="txnvoid2.php">
 
-<?php $form->hidden('txnid', $txns[0]['txnid']); ?>
-<?php $form->hidden('from_acct', $txns[0]['from_acct']); ?>
+<?php $form->hidden('txnid'); ?>
 
 <p>
 <label>CONFIRM you wish to void this transaction</label>
@@ -48,7 +47,7 @@
 <label>Date</label>
 </td>
 <td>
-<?php echo $txn['x_txn_dt']; ?>
+<?php echo pdate::iso2am($txn['txn_dt']); ?>
 </td>
 </tr>
 
@@ -111,7 +110,7 @@
 <label>Reconciliation Date</label>
 </td>
 <td>
-<?php echo $txn['x_recon_dt']; ?>
+<?php echo pdate::iso2am($txn['recon_dt']); ?>
 </td>
 </tr>
 

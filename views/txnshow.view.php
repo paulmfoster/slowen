@@ -33,7 +33,7 @@
 <label>Date</label>
 </td>
 <td>
-<?php echo $txn['x_txn_dt']; ?>
+<?php echo pdate::iso2am($txn['txn_dt']); ?>
 </td>
 </tr>
 
@@ -96,7 +96,7 @@
 <label>Reconciliation Date</label>
 </td>
 <td>
-<?php echo $txn['x_recon_dt']; ?>
+<?php echo pdate::iso2am($txn['recon_dt']); ?>
 </td>
 </tr>
 
@@ -162,12 +162,12 @@ else {
 <?php endforeach; ?>
 
 <p>
-<?php form::button('Edit', "txnedt.php?acct_id={$acct_id}&txnid={$txns[0]['txnid']}"); ?>
+<?php form::button('Edit', "txnedt.php?txnid={$txns[0]['txnid']}"); ?>
 &nbsp;
 <?php if ($txns[0]['status'] != 'V'): ?>
 <?php form::button('Void', 'txnvoid.php?txnid=' . $txns[0]['txnid']); ?>
 &nbsp;
 <?php endif; ?>
-<?php form::abandon("register.php?acct_id=$acct_id"); ?>
+<?php form::abandon("index.php"); ?>
 </p>
 

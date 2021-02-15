@@ -1,52 +1,49 @@
 
-<form action="<?php echo $base_url . 'txnsplt.php'; ?>" method="post">
+<form action="othvrfy.php" method="post">
 
-<?php $form->hidden('max_splits', $_SESSION['form_data']['max_splits']); ?>
+<?php $form->hidden('max_splits'); ?>
 
 <table>
 
-<?php for ($j = 0; $j < $_SESSION['form_data']['max_splits']; $j++): ?>
+<?php for ($j = 0; $j < $max_splits; $j++): ?>
 
-<td>
+<tr>
+<td><label>Payee</label></td>
+<td><?php $form->select('split_payee_id'); ?></td>
+</tr>
 
-<!-- payee_id -->
-Payee&nbsp;
-<?php $form->select('split_payee_id'); ?>
+<tr>
+<td><label>Category</label></td>
+<td><?php $form->select('split_to_acct'); ?></td>
+</tr>
 
-<br/>
+<tr>
+<td><label>Memo</label></td>
+<td><?php $form->text('split_memo'); ?></td>
+</tr>
 
-<!-- to_acct -->
-Category&nbsp;
-<?php $form->select('split_to_acct'); ?>
+<tr>
+<td><label>Debit</label></td>
+<td><?php $form->text('split_dr_amount'); ?></td>
+</tr>
 
-<br/>
-
-<!-- memo -->
-Memo&nbsp;
-<?php $form->text('split_memo'); ?>
-
-<br/>
-
-<!-- amount -->
-Debit&nbsp;
-<?php $form->text('split_dr_amount'); ?>
-&nbsp;
-Credit&nbsp;
-<?php $form->text('split_cr_amount'); ?>
-
-</td>
-
+<tr>
+<td><label>Credit</label></td>
+<td><?php $form->text('split_cr_amount'); ?></td>
 </tr>
 
 <?php endfor; ?>
 
-</table>
-
-<p>
+<tr>
+<td>
 <?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('txnadd.php'); ?>
-</p>
+<?php form::abandon('othadd.php'); ?>
+</td>
+<td></td>
+</tr>
+
+</table>
 
 </form>
 

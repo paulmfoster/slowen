@@ -1,41 +1,27 @@
 <?php
 
 include 'init.php';
+$trans = load_model('addtxn');
+memory::merge($_POST);
+memory::set('amount', $_POST['cr_amount']);
 
-if (!isset($_SESSION['form_data'])) {
-	header('Location: ' . $base_url . 'txnadd.php');
-	exit();
-}
+$fields = array(
+	's1' => array(
+		'name' => 's1',
+		'type' => 'submit',
+		'value' => 'Confirm'
+	)
+);
 
-if (isset($_POST['s1'])) {
-	$_SESSION['form_data'] = array_merge($_SESSION['form_data'], $_POST);
-	$sm->add_transaction($_SESSION['form_data']);
-	unset($_SESSION['form_data']);
-	header('Location: ' . $base_url . 'txnadd.php');
-	exit();
-}
-else {
+$form->set($fields);
 
-	$fields = array(
-		's1' => array(
-			'name' => 's1',
-			'type' => 'submit',
-			'value' => 'Confirm'
-		)
-	);
-
-	$form = new form($fields);
-
-	$data = $_SESSION['form_data'];
-	$names = $sm->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
-	$data['from_acct_name'] = $names['from_acct_name'];
-	$data['to_acct_name'] = $names['to_acct_name'];
-	$data['payee_name'] = $names['payee_name'];
-	$data['x_txn_dt'] = pdate::reformat('Y-m-d', $_SESSION['form_data']['txn_dt'], 'm/d/y');
-
-}
+$data = $_POST;
+$names = $trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
+$data['from_acct_name'] = $names['from_acct_name'];
+$data['to_acct_name'] = $names['to_acct_name'];
+$data['payee_name'] = $names['payee_name'];
 
 $page_title = 'Confirm Deposit';
-$view_file = 'views/depvrfy.view.php';
+$view_file = view_file('depvrfy');
 include 'view.php';
 

@@ -1,37 +1,14 @@
 <?php
 
-// add deposit 
-
 include 'init.php';
 
-if (!empty($_POST)) {
+memory::clear();
+$trans = load_model('addtxn');
 
-	$_SESSION['form_data'] = $_POST;
-	header('Location: ' . $base_url . 'depvrfy.php');
-	exit();
-	
-}
-
-// blank existing data
-unset($_POST);
-unset($_SESSION['form_data']);
-
-$accounts = $sm->get_accounts();
-$payees = $sm->get_payees();
-$from_accts = $sm->get_from_accounts();
-$to_accts = $sm->get_to_accounts();
-
-$atnames = array(
-	' ' => '',
-	'I' => '(inc)',
-	'E' => '(exp)',
-	'L' => '(liab)',
-	'A' => '(asset)',
-	'Q' => '(eqty)',
-	'R' => '(ccard)',
-	'C' => '(chkg)',
-	'S' => '(svgs)'
-);
+$accounts = $trans->get_accounts();
+$payees = $trans->get_payees();
+$from_accts = $trans->get_from_accounts();
+$to_accts = $trans->get_to_accounts();
 
 $from_options = array();
 foreach($from_accts as $from_acct) {
@@ -90,11 +67,10 @@ $fields = array(
 		'value' => 'Save'
 	)
 );
-
-$form = new form($fields);
+$form->set($fields);
 
 $page_title = 'Enter Deposit';
-$view_file = 'views/depadd.view.php';
+$view_file = view_file('depadd');
 
 include 'view.php';
 

@@ -34,8 +34,6 @@ Here are figures to assist in determining why.<h3>
 </td>
 </tr>
 
-<tr><td></td><td></td></tr>
-
 <tr>
 <td>
 <label>Statement Ending Balance</label>
@@ -62,8 +60,6 @@ Here are figures to assist in determining why.<h3>
 <?php echo $data['check_bal']; ?>
 </td>
 </tr>
-
-<tr><td></td><td></td></tr>
 
 <tr>
 <td>

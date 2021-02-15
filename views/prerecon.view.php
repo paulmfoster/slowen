@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $base_url . 'reconcile.php'; ?>">
+<form method="post" action="reconcile2.php">
 
 <!-- Preliminary screen -->
 

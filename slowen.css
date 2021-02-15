@@ -1,85 +1,89 @@
-/* main color for this variant: #993366 */
+/* main color for this variant: #3366cc */
 
 body {
-  color: #993366;
-  background-color: #FFFFFF;
-  font-family: verdana, helvetica, arial, sans-serif;
-  font-size: 80%;  /* Enables font size scaling in MSIE */
-  margin: 0;
-  padding: 0;
+	color: #3366cc;
+	background-color: #FFFFFF;
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 0.8em;  /* 80% Enables font size scaling in MSIE */
+	margin: 0;
+	padding: 0;
 }
 
+/* Chromium browsers shrinks fonts */
 input, select, textarea, button {
 	font-size: 100%;
 }
 
 .doNotDisplay {
-  display: none !important;
+	display: none !important;
 }
 
 /* ##### Header ##### */
 
-#header {
-  color: white;
-  background-color: #993366; 
-  margin: 0 0 2em 0;
-  padding: 1em 2.5mm 1ex 4mm;
-  border-bottom: 2px solid white;
+#header-block {
+	/*
+	color: white;
+	background-color: #3366cc;
+	*/
+	color: #3366cc;
+	margin: 0 0 0 0; /* 3 2em */
+	padding: 1em 2.5mm 1em 4mm;
+	border-bottom: 5px solid #3366cc;
 }
 
 .header-title {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
-.thisPage {
-  font-weight: bold;
+#left-block {
+	width: 12%;
+	float: left;
+	margin: 1em 1em 0 0;
 }
 
+#main-block {
+	color: black;
+	line-height: 1.5em;
+	font-size: 1.1em;
+	/* margin: 0 5mm 0 10.5em; */
+	padding: 1em 1em 1em 1em;
+	margin: 0 0 0 12%;
+	min-height: 25em;
+	display: block;
+}
 
-/* ##### Main Copy ##### */
+#main-block h1 {
+	font-family: "trebuchet ms", verdana, tahoma, sans-serif;
+	font-size: 156%;
+	font-weight: bold;
+	margin: 0.25em 0 0.25em 0;
+	padding: 0;
+}
 
-#main-copy {
-  color: black;
-  line-height: 1.5em;
-  font-size: 1.1em;
-  margin: 0 5mm 0 10.5em;
-  padding: 0 1em 1ex 1em;
+#main-block a {
+	color: #3366cc;
+	text-decoration: none;
+}
+
+#main-block a:hover {
+	color: red;
+	text-decoration: none;
 }
 
 p {
-  margin: 1em 0 1.5em 0;
-  padding: 0;
+	margin: 1em 0 1.5em 0;
+	padding: 0;
 }
 
-.Box {
-  color: black;
-  background-color: transparent;
-  margin: 0 0 1em 0;
-  padding: 2ex 2em 0.25em 2em;
-  border: 1px solid #993366;
-}
 
-#main-copy {
-	margin: 0 0 0 12%;
-}
-
-#main-copy h1 {
-  font-family: "trebuchet ms", verdana, tahoma, sans-serif;
-  font-size: 156%;
-  font-weight: bold;
-  margin: 0.25em 0 0.25em 0;
-  padding: 0;
-}
-
-#main-copy a {
-  color: #993366;
-  text-decoration: none;
-}
-
-#main-copy a:hover {
-  color: red;
-  text-decoration: none;
+.box {
+	color: black;
+	width: 50%;
+	/* background-color: transparent; */
+	/* margin: 0 0 1em 5em; */
+	/* padding: 2em 2em 0 2em; */
+	/* border: 1px solid #3366cc; */
 }
 
 label {
@@ -105,28 +109,33 @@ select {
 }
 
 button {
-	background-color: #993366;
-	color: #ffffff;
+	/* background-color: #3366cc; */
+	/* color: #ffffff; */
+	color: #3366cc;
 	font-weight: bold;
-	padding: 5px;
+	padding: 5px 2px 5px 2px;
+	border-radius: 10px;
 }
 
 button:hover {
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
+	/* color: #3366cc; */
 	color: #993366;
 	font-weight: bold;
-	padding: 5px;
+	/* padding: 5px; */
 }
 
 input[type="submit"] {
-	background-color: #993366;
-	color: #ffffff;
+	/* background-color: #3366cc; */
+	/* color: #ffffff; */
+	color: #3366cc;
 	font-weight: bold;
 	padding: 5px;
+	border-radius: 10px;
 }
 
 input[type="submit"]:hover {
-	background-color: #ffffff;
+	/* background-color: #ffffff; */
 	color: #993366;
 	font-weight: bold;
 	padding: 5px;
@@ -136,22 +145,7 @@ input[type="date"] {
 	padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
-.textbox {
-	width: 50%;
-}
-
-
 /* ##### Footer ##### */
-
-#footer {
-  color: white;
-  background-color: #993366;
-  font-size: 85%;
-  margin: 0;
-  padding: 1.25ex 4mm;
-  clear: both;
-}
-
 
 .required {
 	background: #FFFFCC;
@@ -159,11 +153,10 @@ input[type="date"] {
 
 table {
 	border-collapse: collapse;
-	/* border: 1px solid #000000; */
 }
 
 th {
-	background-color: #993366;
+	background-color: #3366cc;
 	color: white;
 	padding-left: 1em;
 	padding-right: 1em;
@@ -203,27 +196,42 @@ td {
 
 .failure-message{
 	/* border: 4px solid #F00; */
-	background: yellow;
+	background-color: yellow;
 	font-size: 120%;
 	line-height: 1.6em;
 	color: red;
-	padding-left: 10px;
+	padding: 0.5em 0 0.5em 1em;
 	font-weight: bold;
-	padding: 1em;
+	padding: 0.5em;
+	display: block;
+	max-width : 500px;
+    word-wrap: break-word;
+	border-bottom: 1px solid white;
 }
 
 .success-message {
-	background: blue;
+	/* background: #3366cc; */
+	/* color: white; */
 	color: white;
+	background-color: #3366cc;
 	font-size: 120%;
 	line-height: 1.6em;
-	padding: 1em 0 1em 1em;
+	padding: 0.5em 0 0.5em 1em;
+	font-weight: bold;
+	max-width : 500px;
+    word-wrap: break-word;
+	border-bottom: 1px solid white;
+}
+
+dt {
 	font-weight: bold;
 }
 
 /* =============================== */
 
-.nav-left {
+/* used earlier for menus */
+
+#side-bar {
 	font-weight: bold;
   font-size: 1.2em;
   text-align: right;
@@ -232,31 +240,31 @@ td {
   clear: left;
 }
 
-.nav-left .navhead {
+#side-bar .navhead {
   color: #FFFFFF;
   background-color: #AA3366;
   font-size: 100%;
   font-weight: bold;
   margin: 0;
   padding: 0.5ex 1em 0.5ex 0.5ex;
-  border-top: 1px solid #993366;
+  border-top: 1px solid #3366cc;
 }
 
-.nav-left ul {
+#side-bar ul {
   list-style-type: none;
   list-style-position: outside;
   margin: 0;
   padding: 0;
 }
 
-.nav-left li {
+#side-bar li {
   margin: 0;
   /* padding: 1ex 1em 1ex 0.5ex; */
   padding: 1px 1px 1px 1px;
-  border-top: 1px solid #993366;
+  border-top: 1px solid #3366cc;
 }
 
-.nav-left a {
+#side-bar a {
   color: #FF0000;
   font-weight: bold;
   background-color: transparent;
@@ -265,9 +273,19 @@ td {
   display: block;
 }
 
-.nav-left a:hover {
+#side-bar a:hover {
   color: white;
   background-color: #AA3366;
   text-decoration: none;
+}
+
+#footer {
+  color: #3366cc;
+  /* background-color: #3366cc; */
+  font-size: 1em;
+  margin-top: 2em;
+  padding: 1.25em 1em;
+  clear: both;
+  border-top: 5px solid #3366cc;
 }
 
