@@ -1,7 +1,7 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="txnsplt.php" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <table>
 

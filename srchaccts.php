@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$rpt = load_model('report');
+$rpt = model('report');
 
 $categories = $rpt->get_accounts();
 
@@ -25,7 +25,5 @@ $fields = array(
 );
 $form->set($fields);
 
-$page_title = 'Search By Category/Account';
-$view_file = view_file('srchaccts');
-include 'view.php';
+view('Search By Category/Account', [], 'results.php', 'srchaccts');
 

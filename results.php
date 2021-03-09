@@ -1,7 +1,9 @@
 <?php
 
+// show search results
+
 include 'init.php';
-$rpt = load_model('report');
+$rpt = model('report');
 
 $acct = $_POST['category'] ?? NULL;
 $payee = $_POST['payee'] ?? NULL;
@@ -13,11 +15,10 @@ elseif (!is_null($payee)) {
 	$transactions = $rpt->get_transactions($payee, 'P');
 }
 else {
-	relocate('index.php');
+	redirect('index.php');
 }
 
-$page_title = 'Search Results';
-$view_file = view_file('results');
-include 'view.php';
+view('Search Results', ['transactions' => $transactions], '', 'results');
+
 
 

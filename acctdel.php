@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 $accounts = $accts->get_accounts();
 
@@ -25,8 +25,5 @@ $fields = array(
 
 $form->set($fields);
 
-$page_title = 'Delete Account: Select Account';
-$view_file = view_file('accounts');
-$destination = 'acctdel2.php';
-include 'view.php';
+view('Delete Account: Select Account', [], 'acctdel2.php', 'accounts');
 

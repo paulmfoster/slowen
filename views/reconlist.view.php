@@ -1,5 +1,5 @@
 
-<form method="post" action="reconcile3.php">
+<form method="post" action="<?php echo $return; ?>">
 
 <!-- Listing screen -->
 

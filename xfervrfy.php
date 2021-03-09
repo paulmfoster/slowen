@@ -1,7 +1,9 @@
 <?php
 
+// user has entered xfer transaction; now verify it
+
 include 'init.php';
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 
 $fields = array(
 	's1' => array(
@@ -20,7 +22,5 @@ $data['from_acct_name'] = $names['from_acct_name'];
 $data['to_acct_name'] = $names['to_acct_name'];
 $data['payee_name'] = $names['payee_name'];
 
-$page_title = 'Confirm Inter-Account Transfer';
-$view_file = view_file('xfervrfy');
-include 'view.php';
+view('Confirm Inter-Account Transfer', ['data' => $data], 'txnsave.php', 'xfervrfy');
 

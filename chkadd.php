@@ -3,7 +3,7 @@
 include 'init.php';
 
 memory::clear();
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 
 $accounts = $trans->get_accounts();
 $payees = $trans->get_payees();
@@ -76,8 +76,5 @@ $fields = array(
 
 $form->set($fields);
 
-$page_title = 'Enter Check';
-$view_file = view_file('chkadd');
-
-include 'view.php';
+view('Enter Check', [], 'chkvrfy.php', 'chkadd');
 

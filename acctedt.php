@@ -1,7 +1,9 @@
 <?php
 
+// first step to editing an account
+
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 $accounts = $accts->get_accounts();
 
@@ -23,10 +25,7 @@ $fields = array(
 	)
 );
 
-$form = new form($fields);
+$form->set($fields);
 
-$page_title = 'Edit Account: Select Account';
-$view_file = view_file('accounts');
-$destination = 'acctedt2.php';
-include 'view.php';
+view('Edit Account: Select Account', [], 'acctedt2.php', 'accounts');
 

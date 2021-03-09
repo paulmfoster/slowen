@@ -18,30 +18,28 @@
 	<body>
 <?php endif; ?>
 
+<!-- HEADER -->
 <a href="#top"></a>
 
-	<div id="header-block">
-		<h1 class="header-title">
-		<span style="color: #993366"><?php echo $cfg['app_name']; ?></span>
-		&nbsp;
-		(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
-		&nbsp;
-		<span><?php echo '&nbsp;' . $page_title; ?></span>
-		</h1>
-	</div>
+<div id="header">
+	<h1 class="header-title">
+	<span class="app-name"><?php echo $cfg['app_name']; ?></span>
+	&nbsp;
+	(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
+	&nbsp;
+	<span><?php echo '&nbsp;' . $page_title; ?></span>
+	</h1>
+</div>
+<!-- END OF HEADER -->
 
-<div id="left-block">
-<?php include $cfg['viewdir'] . 'menu.html'; ?>
+<div id="left-nav">
+<?php echo $nav->show(); ?>
 </div>
 
-<!--div id="side-bar">
-echo $nav->show(); ?>
-</div> -->
+<div id="content">
 
-<div id="main-block">
-
-<!-- MESSAGES ------------------------------>
+<!-- MESSAGES -->
 <?php show_messages(); ?>
-<!-- END OF MESSAGES ---------------------->
+<!-- END OF MESSAGES -->
 
 <!-- Main view file below -->

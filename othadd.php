@@ -2,7 +2,7 @@
 
 include 'init.php';
 memory::clear();
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 
 $accounts = $trans->get_accounts();
 $payees = $trans->get_payees();
@@ -114,8 +114,5 @@ $fields = array(
 );
 $form->set($fields);
 
-$page_title = 'Enter Transaction';
-$view_file = view_file('othadd');
-
-include 'view.php';
+view('Enter Transaction', [], 'txnsplt.php', 'othadd');
 

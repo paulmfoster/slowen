@@ -15,11 +15,13 @@ $ifrom_date = pdate::get($ofrom_date, 'Y-m-d');
 $fields = array(
 	'from_date' => array(
 		'name' => 'from_date',
-		'type' => 'date'
+		'type' => 'date',
+		'value' => $ifrom_date
 	),
 	'to_date' => array(
 		'name' => 'to_date',
-		'type' => 'date'
+		'type' => 'date',
+		'value' => $ito_date
 	),
 	's1' => array(
 		'name' => 's1',
@@ -30,7 +32,5 @@ $fields = array(
 
 $form->set($fields);
 
-$view_file = view_file('expenses');
-$page_title = 'Weekly Expenses';
-include 'view.php';
+view('Weekly Expenses', [], 'expenses2.php', 'expenses');
 

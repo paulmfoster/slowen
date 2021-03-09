@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$rpt = load_model('report');
+$rpt = model('report');
 
 $payees = $rpt->get_payees();
 
@@ -16,15 +16,13 @@ $fields = array(
 		'type' => 'select',
 		'options' => $payee_options
 	),
-	's2' => array(
-		'name' => 's2',
+	's1' => array(
+		'name' => 's1',
 		'type' => 'submit',
 		'value' => 'Search'
 	)
 );
 $form->set($fields);
 
-$page_title = 'Search';
-$view_file = view_file('srchpays');
-include 'view.php';
+view('Search Payees', [], 'results.php', 'srchpays');
 

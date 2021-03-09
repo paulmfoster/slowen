@@ -1,7 +1,7 @@
 
 <strong>Enter month and year for monthly audit.</strong>
 
-<form method="post" action="audit2.php">
+<form method="post" action="<?php echo $return; ?>">
 <table>
 <tr>
 	<td><?php $form->select('month'); ?></td>

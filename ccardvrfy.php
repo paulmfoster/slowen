@@ -1,9 +1,11 @@
 <?php
 
+// user has entered a credit card charge; now user must verify it
+
 include 'init.php';
 memory::merge($_POST);
 memory::set('amount', - $_POST['dr_amount']);
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 
 $fields = array(
 	's1' => array(
@@ -20,7 +22,5 @@ $data['from_acct_name'] = $names['from_acct_name'];
 $data['to_acct_name'] = $names['to_acct_name'];
 $data['payee_name'] = $names['payee_name'];
 
-$page_title = 'Confirm Credit Card Charge';
-$view_file = view_file('ccardvrfy');
-include 'view.php';
+view('Confirm Credit Card Charge', ['data' => $data], 'txnsave.php', 'ccardvrfy');
 

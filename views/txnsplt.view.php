@@ -1,5 +1,5 @@
 
-<form action="othvrfy.php" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <?php $form->hidden('max_splits'); ?>
 

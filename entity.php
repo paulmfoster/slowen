@@ -7,7 +7,5 @@ foreach ($cfg['entity'] as $index => $value) {
 	$entities[] = array('entity_num' => $index, 'entity_name' => $value);
 }
 
-$page_title = 'Select Entity';
-$view_file = view_file('entity');
-include 'view.php';
+view('Select Entity', ['entities' => $entities], 'index.php', 'entity');
 

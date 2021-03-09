@@ -13,11 +13,11 @@ else {
 	memory::set('amount', 0);
 }
 
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 
 $split = $_POST['split'] ?? 0;
 if ($split == 0) {
-	relocate('othvrfy.php');
+	redirect('othvrfy.php');
 }
 
 $max_splits = $_POST['max_splits'];
@@ -76,9 +76,7 @@ $fields = array(
 	)
 );
 
-$form = new form($fields);
+$form->set($fields);
 
-$page_title = 'Splits Entry';
-$view_file = view_file('txnsplt');
-include 'view.php';
+view('Splits Entry', ['max_splits' => $_POST['max_splits']], 'othvrfy.php', 'txnsplt');
 

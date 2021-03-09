@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$rpt = load_model('report');
+$rpt = model('report');
 
 if (!empty($_POST['last_dt'])) {
 	$today = $_POST['last_dt'];
@@ -14,13 +14,17 @@ else {
 
 if ($bals === FALSE) {
 	emsg('F', 'Date is too early to show balances');
-	relocate('balances.php');
+	redirect('balances.php');
 }
 else {
 	$nbals = count($bals);
 }
 
-$page_title = 'Balances';
-$view_file = view_file('balances2');
-include 'view.php';
+$d = [
+	'today' => $today,
+	'nbals' => $nbals,
+	'bals' => $bals
+];
+
+view('Balances', $d, '', 'balances2');
 

@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 memory::merge($_POST);
 memory::set('amount', - $_POST['dr_amount']);
 
@@ -22,7 +22,6 @@ $data['from_acct_name'] = $names['from_acct_name'];
 $data['to_acct_name'] = $names['to_acct_name'];
 $data['payee_name'] = $names['payee_name'];
 
-$page_title = 'Confirm Check';
-$view_file = view_file('chkvrfy');
-include 'view.php';
+view('Confirm Check', ['data' => $data], 'txnsave.php', 'chkvrfy');
+
 

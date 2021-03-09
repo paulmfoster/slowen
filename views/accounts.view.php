@@ -1,5 +1,5 @@
 
-<form method="post" action="<?php echo $destination; ?>">
+<form method="post" action="<?php echo $return; ?>">
 <label>Account</label>&nbsp;
 <?php $form->select('acct_id'); ?>
 <br/>

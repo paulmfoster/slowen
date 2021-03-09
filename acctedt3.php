@@ -1,7 +1,9 @@
 <?php
 
+// user had done edits; now show the results
+
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 if (isset($_POST['s1'])) {
 	if ($accts->update_account($_POST)) {
@@ -15,7 +17,5 @@ if (isset($_POST['s1'])) {
 $acct = $accts->get_account($_POST['acct_id']);
 $acct['x_acct_type'] = $acct_types[$acct['acct_type']];
 
-$page_title = 'Show Account';
-$view_file = view_file('acctshow');
-include 'view.php';
+view('Show Account', ['acct' => $acct], '', 'acctshow');
 

@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$pay = load_model('payee');
+$pay = model('payee');
 
 $payees = $pay->get_payees();
 
@@ -24,9 +24,6 @@ $fields = array(
 );
 $form->set($fields);
 
-$focus_field = 'payee_id';
-$page_title = 'Edit Payee: Select Payee';
-$view_file = view_file('payees');
-$destination = 'payedt2.php';
-include 'view.php';
+view('Edit Payee: Select Payee', [], 'payedt2.php', 'payees', 'payee_id');
+
 

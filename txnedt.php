@@ -4,10 +4,10 @@ include 'init.php';
 
 $txnid = $_GET['txnid'] ?? NULL;
 if (is_null($txnid)) {
-	relocate('index.php');
+	redirect('index.php');
 }
 
-$trans = load_model('transaction');
+$trans = model('transaction');
 $txns = $trans->get_transaction($txnid);
 
 $max_txns = count($txns);
@@ -163,22 +163,15 @@ if ($max_txns == 1) {
 	);
 
 	$form->set($fields);
-	$view_file = view_file('txnedt');
+
+	view('Edit Transaction', ['txns' => $txns], 'txnupd.php', 'txnedt');
 
 }
 else {
 
 	// inter-account transfer
 
-	$iaxfields = array(
-		'from_acct' => array(
-			'name' => 'from_acct',
-			'type' => 'hidden'
-		),
-		'id' => array(
-			'name' => 'id[]',
-			'type' => 'hidden'
-		),
+	$fields = array(
 		'txntype' => array(
 			'name' => 'txntype',
 			'type' => 'hidden',
@@ -190,22 +183,22 @@ else {
 			'value' => $txns[0]['txnid']
 		),
 		'txn_dt' => array(
-			'name' => 'txn_dt[]',
+			'name' => 'txn_dt',
 			'type' => 'date'
 		),
 		'checkno' => array(
-			'name' => 'checkno[]',
+			'name' => 'checkno',
 			'type' => 'text',
 			'size' => 12,
 			'maxlength' => 12
 		),
 		'payee_id' => array(
-			'name' => 'payee_id[]',
+			'name' => 'payee_id',
 			'type' => 'select',
 			'options' => $payee_options
 		),
 		'memo' => array(
-			'name' => 'memo[]',
+			'name' => 'memo',
 			'type' => 'text',
 			'size' => 35,
 			'maxlength' => 35
@@ -217,11 +210,9 @@ else {
 		)
 	);
 
-	$form->set($iaxfields);
-	$view_file = view_file('xferedt');
+	$form->set($fields);
+
+	view('Edit Inter-Account Transfer', ['txns' => $txns], 'txnupd.php', 'xferedt');
 }
 
-$focus_field = '';
-$page_title = 'Edit Transaction';
-include 'view.php';
 

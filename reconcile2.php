@@ -3,7 +3,7 @@
 // user entered preliminary data
 
 include 'init.php';
-$rcn = load_model('recon');
+$rcn = model('recon');
 
 $acct = $rcn->get_account($_POST['from_acct']);
 $errors = 0;
@@ -27,15 +27,15 @@ if ($acct['rec_bal'] != dec2int($_POST['stmt_start_bal'])) {
 }
 
 if ($errors) {
-	relocate('reconcile.php');
+	redirect('reconcile.php');
 }
 
 $acct = $rcn->get_account($_POST['from_acct']);
 $from_acct = $acct['acct_id'];
 $from_acct_name = $acct['name'];
-// $open_bal = $acct['open_bal'];
-$stmt_start_bal = dec2int($_POST['stmt_start_bal']);
-$stmt_end_bal = dec2int($_POST['stmt_end_bal']);
+
+$stmt_start_bal = $_POST['stmt_start_bal'];
+$stmt_end_bal = $_POST['stmt_end_bal'];
 $stmt_close_date = $_POST['stmt_close_date'];
 $txns = $rcn->get_uncleared_transactions($_POST['from_acct']);
 
@@ -74,7 +74,5 @@ $fields = array(
 
 $form->set($fields);
 
-$page_title = 'Reconcile: Clear Transactions';
-$view_file = view_file('reconlist');
-include 'view.php';
+view('Reconcile: Clear Transactions', ['txns' => $txns, 'from_acct_name' => $from_acct_name], 'reconcile3.php', 'reconlist');
 

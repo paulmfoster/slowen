@@ -1,4 +1,4 @@
-<form method="post" action="balances2.php">
+<form method="post" action="<?php echo $return; ?>">
 Select a date; balances shown will be as of the end of that date<br/>
 Date&nbsp;
 <?php $form->date('last_dt', $today); ?>

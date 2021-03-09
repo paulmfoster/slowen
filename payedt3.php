@@ -1,17 +1,17 @@
 <?php
 
+// payee has been edited; now show the payee with edits
+
 include 'init.php';
-$pay = load_model('payee');
+$pay = model('payee');
 
 if (isset($_POST['s1'])) {
 	$pay->update_payee($_POST['payee_id'], $_POST['name']);
 }
 else {
-	relocate('index.php');
+	redirect('index.php');
 }
 
 $payee = $pay->get_payee($_POST['payee_id']);
 
-$page_title = 'Show Payee';
-$view_file = view_file('payshow');
-include 'view.php';
+view('Show Payee', ['payee' => $payee], '', 'payshow');

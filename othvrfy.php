@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 memory::merge($_POST);
 
 $fields = array(
@@ -28,8 +28,5 @@ if (isset($data['split']) && $data['max_splits'] > 0) {
 	}
 }
 
-$page_title = 'Confirm Transaction';
-$view_file = view_file('othvrfy');
-
-include 'view.php';
+view('Confirm Transaction', ['data' => $data], 'txnsave.php', 'othvrfy');
 

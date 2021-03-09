@@ -1,5 +1,5 @@
 
-<form action="<?php echo 'txnupd.php'; ?>" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <?php $txn = $txns[0]; ?>
 

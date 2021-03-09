@@ -1,14 +1,17 @@
 <?php
 
+// user has entered a transaction; here we save it and then show the
+// user the results
+
 include 'init.php';
 
 $continue = $_POST ?? FALSE;
 if (!$continue) {
-	relocate('txnadd.php');
+	redirect('txnadd.php');
 }
 
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 $txnid = $trans->add_transaction(memory::get_all());
 memory::clear();
 
-relocate('txnshow.php?txnid=' . $txnid);
+redirect('txnshow.php?txnid=' . $txnid);

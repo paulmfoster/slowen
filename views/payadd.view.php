@@ -1,4 +1,4 @@
-<form method="post" action="payadd2.php">
+<form method="post" action="<?php echo $return; ?>">
 <strong>Payee Name</strong>&nbsp;
 <?php $form->text('name'); ?>
 <br/>

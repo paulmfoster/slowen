@@ -1,9 +1,9 @@
 <?php
 
 include 'init.php';
-$rcn = load_model('recon');
+$rcn = model('recon');
 
-// the first entry screen
+// enter preliminary reconciliation data
 
 $accts = $rcn->get_recon_accts();
 
@@ -42,9 +42,7 @@ $fields = array(
 	)
 );
 
-$form = new form($fields);
+$form->set($fields);
 
-$page_title = 'Reconcile: Enter Preliminary Data';
-$view_file = view_file('prerecon');
-include 'view.php';
+view('Reconcile: Enter Preliminary Data', [], 'reconcile2.php', 'prerecon');
 

@@ -1,11 +1,11 @@
 <?php
 
 include 'init.php';
-$pay = load_model('payee');
+$pay = model('payee');
 
 $payee_id = $_POST['payee_id'] ?? NULL;
 if (is_null($payee_id)) {
-	relocate('paydel.php');
+	redirect('paydel.php');
 }
 $payee = $pay->get_payee($payee_id);
 
@@ -24,7 +24,5 @@ $fields = array(
 
 $form->set($fields);
 
-$focus_field = 'name';
-$page_title = 'Delete Payee';
-$view_file = view_file('paydel2');
-include 'view.php';
+view('Delete Payee', ['payee' => $payee], 'paydel3.php', 'paydel2', 'name');
+

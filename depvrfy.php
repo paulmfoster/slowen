@@ -1,7 +1,7 @@
 <?php
 
 include 'init.php';
-$trans = load_model('addtxn');
+$trans = model('addtxn');
 memory::merge($_POST);
 memory::set('amount', $_POST['cr_amount']);
 
@@ -21,7 +21,5 @@ $data['from_acct_name'] = $names['from_acct_name'];
 $data['to_acct_name'] = $names['to_acct_name'];
 $data['payee_name'] = $names['payee_name'];
 
-$page_title = 'Confirm Deposit';
-$view_file = view_file('depvrfy');
-include 'view.php';
+view('Confirm Deposit', ['data' => $data], 'txnsave.php', 'depvrfy');
 

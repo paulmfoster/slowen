@@ -1,7 +1,7 @@
 
 <!-- Main transaction data entry screen -->
 
-<form action="xfervrfy.php" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <table>
 
@@ -67,7 +67,6 @@
 &nbsp;
 <?php form::abandon('index.php'); ?>
 </p>
-
 
 </form>
 

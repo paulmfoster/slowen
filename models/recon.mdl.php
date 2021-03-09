@@ -101,19 +101,25 @@ class recon
 	{
 		$acct = $this->get_account($from_acct);
 
+		// get the opening balance for this account
 		$comp_start_bal = $acct['open_bal'];
+		// add up all the transactions for this account
 		$sql = "select sum(amount) as total from journal where from_acct = $from_acct";
 		$all_txns = $this->db->query($sql)->fetch();
 		$comp_all_txns = $all_txns['total'];
+		// get the ending balance for this account
 		$comp_end_bal = $comp_start_bal + $comp_all_txns;
 
+		// get uncleared items not marked by user
 		$sql = "SELECT sum(amount) AS total FROM journal WHERE from_acct = $from_acct AND status != 'R' AND NOT id IN ($ids)";
 		$uncleared = $this->db->query($sql)->fetch();
 		$comp_uncleared_txns = $uncleared['total'];
 
-		$x_stmt_end_bal = $stmt_end_bal;
-		$check_bal = $x_stmt_end_bal + $comp_uncleared_txns;
-	
+		// take statement balance + uncleared items
+		$check_bal = dec2int($stmt_end_bal) + $comp_uncleared_txns;
+
+		// statement balance + uncleared items should equal computer
+		// ending balance
 		$difference = $comp_end_bal - $check_bal;
 
 		if ($difference == 0) {
@@ -140,7 +146,7 @@ class recon
 	 * Finish up a reconciliation
 	 *
 	 * @param int $from_acct Which account?
-	 * @param int $stmt_end_bal Statement ending balance
+	 * @param float $stmt_end_bal Statement ending balance
 	 * @param string $recon_dt Closing date from statement
 	 * @param string $ids List of transactions ("id, id, id, ...")
 	 *
@@ -148,9 +154,6 @@ class recon
 
 	function finish_reconciliation($from_acct, $stmt_end_bal, $recon_dt, $ids)
 	{
-		global $date_template;
-
-		// $recon_dt = pdate::reformat($date_template, $recon_dt, 'Y-m-d');
 		$balance = dec2int($stmt_end_bal);
 
 		$this->db->begin();

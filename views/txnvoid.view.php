@@ -1,5 +1,5 @@
 
-<form method="post" action="txnvoid2.php">
+<form method="post" action="<?php echo $return; ?>">
 
 <?php $form->hidden('txnid'); ?>
 

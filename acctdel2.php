@@ -1,17 +1,17 @@
 <?php
 
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 $acct_id = $_POST['acct_id'] ?? NULL;
 if (!is_null($acct_id)) {
 	$acct = $accts->get_account($acct_id);
 	if ($acct === FALSE) {
-		relocate('acctdel.php');
+		redirect('acctdel.php');
 	}
 }
 else {
-	relocate('acctdel.php');
+	redirect('acctdel.php');
 }
 
 $acct['x_acct_type'] = $acct_types[$acct['acct_type']];
@@ -31,6 +31,5 @@ $fields = array(
 
 $form->set($fields);
 
-$page_title = 'Delete Account';
-$view_file = view_file('acctdel2');
-include 'view.php';
+view('Delete Account', ['acct' => $acct], 'acctdel3.php', 'acctdel2');
+

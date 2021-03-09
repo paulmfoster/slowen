@@ -146,6 +146,14 @@ function int2dec($number = 0)
 		return $number;
 	}
 
+	if (strpos($number, '-') === 0) {
+		$sign = '-';
+		$number = substr($number, 1);
+	}
+	else {
+		$sign = '';
+	}
+
 	$len = strlen($number);
 	$short = $len - DECIMALS - 1;
 	if ($short < 0) {
@@ -156,7 +164,7 @@ function int2dec($number = 0)
 	$left = substr($number, 0, $len - DECIMALS);
 	$right = substr($number, $len - DECIMALS);
 
-	return $left . '.' . $right;
+	return $sign . $left . '.' . $right;
 }
 
 

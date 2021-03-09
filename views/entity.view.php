@@ -1,5 +1,5 @@
 
-<form method="post" action="index.php">
+<form method="post" action="<?php echo $return; ?>">
 
 <table>
 <?php $num = count($entities); ?>

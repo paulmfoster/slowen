@@ -24,31 +24,13 @@ function instrument($label, $var)
 	echo '</pre>' . PHP_EOL;
 }
 
-function get_or_post($parm)
-{
-	if (isset($_GET[$parm])) {
-		$method = 'G';
-		$retval = $_GET[$parm];
-	}
-	elseif (isset($_POST[$parm])) {
-		$method = 'P';
-		$retval = $_POST[$parm];
-	}
-	else {
-		$method = 'X';
-		$retval = NULL;
-	}
-
-	return [$method, $retval];
-}
-
-function relocate($url)
+function redirect($url)
 {
 	header("Location: $url");
 	exit();
 }
 
-function load_model($name)
+function model($name)
 {
 	global $cfg, $db;
 
@@ -61,10 +43,14 @@ function load_model($name)
 	return $obj;
 }
 
-function view_file($name)
+function view($page_title, $data, $return, $view_file, $focus_field = '')
 {
-	global $cfg;
-	return $cfg['viewdir'] . $name . '.view.php';
+	global $cfg, $nav, $form;
+
+	extract($data);
+	include $cfg['viewdir'] . 'head.view.php';
+	include $cfg['viewdir'] . $view_file . '.view.php';
+	include $cfg['viewdir'] . 'footer.view.php';
 }
 
 $cfg = parse_ini_file('config/config.ini');
@@ -102,14 +88,18 @@ session_set_cookie_params(2592000);
 session_name($cfg['session_name']);
 session_start();
 
-include $cfg['incdir'] . 'errors.inc.php';
-include $cfg['incdir'] . 'numbers.inc.php';
-include $cfg['incdir'] . 'messages.inc.php';
-include $cfg['libdir'] . 'memory.lib.php';
-include $cfg['libdir'] . 'form.lib.php';
+require_once $cfg['incdir'] . 'errors.inc.php';
+require_once $cfg['incdir'] . 'numbers.inc.php';
+require_once $cfg['incdir'] . 'messages.inc.php';
+require_once $cfg['libdir'] . 'memory.lib.php';
+require_once $cfg['libdir'] . 'form.lib.php';
 $form = new form();
-include $cfg['libdir'] . 'database.lib.php';
-include $cfg['libdir'] . 'pdate.lib.php';
+require_once $cfg['libdir'] . 'navigation.lib.php';
+$nav = new navigation;
+require_once 'links.php';
+$nav->init('A', $links);
+require_once $cfg['libdir'] . 'database.lib.php';
+require_once $cfg['libdir'] . 'pdate.lib.php';
 
 define('DECIMALS', 2);
 define('DECIMAL_SYMBOL', '.');

@@ -231,6 +231,9 @@ class transaction
 		return $splits;
 	}
 
+	/*
+	 * this code has been superceded by update_transaction()
+
 	function update_xfer($post)
 	{
 		$d = [
@@ -299,10 +302,11 @@ class transaction
 
 	}
 
+*/
+
 	/**
-	 * update_transaction()
-	 *
 	 * Saves edits from the transaction edit screen
+	 *
 	 * NOTE: This routine does not check user input; it simply stores
 	 * the input.
 	 *
@@ -314,19 +318,14 @@ class transaction
 	{
 		$this->db->begin();
 
-		if ($post['txntype'] == 'iaxfer') {
-			for ($i = 0; $i < 2; $i++) {
-				$txn_dt = $post['txn_dt'][$i];
-				$from_acct = $post['from_acct'][$i];
-				$rec = array(
-					'txn_dt' => $txn_dt,
-					'checkno' => $post['checkno'][$i],
-					'payee_id' => $post['payee_id'][$i],
-					'memo' => $post['memo'][$i]
-				);
-				$prec = $this->db->prepare('journal', $rec);
-				$this->db->update('journal', $prec, "id = {$post['iaxid'][$i]}");
-			}
+		if ($post['txntype'] == 'xfer') {
+			$rec = [
+				'txn_dt' => $post['txn_dt'],
+				'checkno' => $post['checkno'],
+				'payee_id' => $post['payee_id'],
+				'memo' => $post['memo']
+			];
+			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
 		}
 
 		if ($post['txntype'] == 'single' || $post['txntype'] == 'splits') {

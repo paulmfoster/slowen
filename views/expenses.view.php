@@ -1,8 +1,8 @@
 
-<form method="post" action="expenses2.php">
-<label>From: </label><?php $form->date('from_date', $ifrom_date); ?>
+<form method="post" action="<?php echo $return; ?>">
+<label>From: </label><?php $form->date('from_date'); ?>
 &nbsp;
-<label>To: </label><?php $form->date('to_date', $ito_date); ?>
+<label>To: </label><?php $form->date('to_date'); ?>
 <p>
 <?php $form->submit('s1'); ?>
 </form>

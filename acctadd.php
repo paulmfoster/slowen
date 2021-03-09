@@ -1,7 +1,9 @@
 <?php
 
+// add an account
+
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 $parents = $accts->get_parents();
 $parent_options = array();
@@ -65,11 +67,5 @@ $fields = array(
 );
 $form->set($fields);
 
-if (isset($_POST['s1'])) {
-	$sm->add_account($_POST);
-}
-
-$page_title = 'Add Account';
-$view_file = view_file('acctadd');
-include 'view.php';
+view('Add Account', [], 'acctadd2.php', 'acctadd');
 

@@ -4,13 +4,16 @@ include 'init.php';
 
 $txnid = $_GET['txnid'] ?? NULL;
 if (is_null($txnid)) {
-	relocate('index.php');
+	redirect('index.php');
 }
 
-$trans = load_model('transaction');
+$trans = model('transaction');
 $txns = $trans->get_transaction($txnid);
 if ($txns[0]['split'] == 1) {
-	$splits = $sm->get_splits($txns[0]['txnid']);
+	$splits = $trans->get_splits($txns[0]['txnid']);
+}
+else {
+	$splits = [];
 }
 
 $fields = array(
@@ -27,7 +30,5 @@ $fields = array(
 );
 $form->set($fields);
 
-$page_title = 'Void Transaction';
-$view_file = view_file('txnvoid');
-include 'view.php';
+view('Void Transaction', ['txns' => $txns, 'splits' => $splits], 'txnvoid2.php', 'txnvoid');
 

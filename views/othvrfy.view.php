@@ -258,7 +258,7 @@ Credit
 
 <?php endif; ?>
 
-<form action="txnsave.php" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <p>
 <?php $form->submit('s1'); ?>

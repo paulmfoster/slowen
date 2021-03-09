@@ -58,14 +58,9 @@ else {
 		mail($cfg['programmer_email'], 'Bug Report or Feature Request for ' . $cfg['app_name'] , $msg);
 		emsg('S', 'Thanks for your feedback. It is appreciated.');
 
-		header('Location: ' . $cfg['base_url'] . 'index.php');
-		exit();
+		redirect('index.php');
 	}
 }
 
-$focus_field = 'name';
-$page_title = 'Bug/Feature Report';
-$view_file = view_file('bugs');
-
-include 'view.php';
+view('Bug/Feature Report', ['app_title' => $cfg['app_name']], 'bugs.php', 'bugs', 'name');
 

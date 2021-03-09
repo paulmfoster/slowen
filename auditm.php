@@ -1,5 +1,7 @@
 <?php
 
+// allow the user to specify the criteria for a monhhtly audit
+
 include 'init.php';
 
 $month_options = array(
@@ -42,8 +44,5 @@ $fields = array(
 
 $form->set($fields);
 
-$focus_field = 'month';
-$page_title = 'Monthly Audit';
-$view_file = view_file('auditm');
-include 'view.php';
+view('Monthly Audit', [], 'audit2.php', 'auditm', 'month');
 

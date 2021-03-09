@@ -1,5 +1,5 @@
 
-<form method="post" action="acctadd2.php">
+<form method="post" action="<?php echo $return; ?>">
 <table>
 
 <tr>

@@ -18,8 +18,6 @@ $fields = array(
 
 $form->set($fields);
 
-$focus_field = 'name';
-$page_title = 'Add Payee';
-$view_file = view_file('payadd');
-include 'view.php';
+view('Add Payee', [], 'payadd2.php', 'payadd', 'name');
+
 

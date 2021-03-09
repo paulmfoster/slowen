@@ -1,11 +1,11 @@
 <?php
 
 include 'init.php';
-$pay = load_model('payee');
+$pay = model('payee');
 
 $payee_id = $_POST['payee_id'] ?? NULL;
 if (is_null($payee_id)) {
-	relocate('index.php');
+	redirect('index.php');
 }
 $payee = $pay->get_payee($payee_id);
 
@@ -30,8 +30,6 @@ $fields = array(
 
 $form->set($fields);
 
-$focus_field = 'name';
-$page_title = 'Edit Payee';
-$view_file = view_file('payedt2');
-include 'view.php';
+view('Edit Payee', [], 'payedt3.php', 'payedt2', 'name');
+
 

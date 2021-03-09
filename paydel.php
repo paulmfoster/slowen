@@ -1,7 +1,9 @@
 <?php
 
+// delete a payee; select which one first
+
 include 'init.php';
-$pay = load_model('payee');
+$pay = model('payee');
 
 $payees = $pay->get_payees();
 
@@ -24,8 +26,5 @@ $fields = array(
 );
 $form->set($fields);
 
-$focus_field = 'payee_id';
-$page_title = 'Delete Payee: Select Payee';
-$view_file = view_file('payees');
-$destination = 'paydel2.php';
-include 'view.php';
+view('Delete Payee: Select Payee', [], 'paydel2.php', 'payees', 'payee_id');
+

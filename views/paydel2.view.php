@@ -1,4 +1,4 @@
-<form method="post" action="paydel3.php">
+<form method="post" action="<?php echo $return; ?>">
 <?php $form->hidden('payee_id'); ?>
 <table>
 

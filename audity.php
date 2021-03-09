@@ -22,8 +22,5 @@ $fields = array(
 
 $form->set($fields);
 
-$focus_field = 'month';
-$page_title = 'Yearly Audit';
-$view_file = view_file('audity');
-include 'view.php';
+view('Yearly Audit', [], 'audit2.php', 'audity', 'year');
 

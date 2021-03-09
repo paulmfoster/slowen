@@ -1,11 +1,11 @@
 <?php
 
 include 'init.php';
-$accts = load_model('account');
+$accts = model('account');
 
 $acct_id = $_POST['acct_id'] ?? NULL;
 if (is_null($acct_id)) {
-	relocate('acctedt.php');
+	redirect('acctedt.php');
 }
 
 $acct = $accts->get_account($acct_id);
@@ -78,7 +78,5 @@ $fields = array(
 
 $form->set($fields);
 
-$page_title = 'Edit Account';
-$view_file = view_file('acctedt2');
-include 'view.php';
+view('Edit Account', ['acct' => $acct], 'acctedt3.php', 'acctedt2');
 

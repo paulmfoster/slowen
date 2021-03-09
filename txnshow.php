@@ -4,10 +4,10 @@ include 'init.php';
 
 $txnid = $_GET['txnid'] ?? NULL;
 if (is_null($txnid)) {
-	relocate('index.php');
+	redirect('index.php');
 }
 
-$trans = load_model('transaction');
+$trans = model('transaction');
 
 $txns = $trans->get_transaction($txnid);
 if ($txns[0]['split'] == 1) {
@@ -17,7 +17,5 @@ else {
 	$splits = NULL;
 }
 
-$page_title = 'Show Transaction';
-$view_file = view_file('txnshow');
-include 'view.php';
+view('Show Transaction', ['txns' => $txns, 'splits' => $splits], '', 'txnshow');
 

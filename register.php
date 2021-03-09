@@ -2,7 +2,7 @@
 
 include 'init.php';
 
-$acct = load_model('account');
+$acct = model('account');
 $accounts = $acct->get_from_accounts();
 $acct_options = [];
 foreach ($accounts as $acct) {
@@ -24,8 +24,5 @@ $fields = [
 
 $form->set($fields);
 
-$page_title = 'Register: Select Account';
-$view_file = view_file('accounts');
-$destination = 'register2.php';
-include 'view.php';
+view('Register: Select Account', [], 'register2.php', 'accounts');
 
