@@ -9,6 +9,7 @@
 		&nbsp;
 		Slowen checkbook software &copy; <?php echo date('Y'); ?> Paul M. Foster
     </div>
+</div> <!-- container class -->
 
   </body>
 </html>

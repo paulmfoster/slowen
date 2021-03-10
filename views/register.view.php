@@ -4,7 +4,7 @@
 
 <h2>Register for <?php echo $acct['name']; ?></h2>
 
-<table>
+<table class="border-rules">
 <tr>
 <th></th>
 <th>Date</th>

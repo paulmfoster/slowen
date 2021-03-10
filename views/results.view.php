@@ -9,7 +9,7 @@ Splits will generally be positive. If your transaction involves<br/>
 a check number, you may find that the splits share that check number.
 </h3>
 
-<table>
+<table class="border-rules">
 <tr>
 <th>From Acct</th>
 <th>Date</th>

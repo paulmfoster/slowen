@@ -20,7 +20,7 @@
 
 <!-- HEADER -->
 <a href="#top"></a>
-
+<div class="container">
 <div id="header">
 	<h1 class="header-title">
 	<span class="app-name"><?php echo $cfg['app_name']; ?></span>
