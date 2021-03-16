@@ -7,7 +7,7 @@
 
 		<link rel="shortcut icon" href="<?php echo $cfg['base_url']; ?>favicon.ico">
 		<!-- reload CSS each time -->
-		<link rel="stylesheet" type="text/css" href="<?php echo $cfg['base_url']; ?>slowen.css?v=<?php echo date('His'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo $cfg['base_url']; ?>style.css?v=<?php echo date('His'); ?>">
 
 		<title><?php echo $page_title; ?></title>
 	</head>

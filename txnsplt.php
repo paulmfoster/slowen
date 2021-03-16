@@ -7,7 +7,7 @@ if (!empty($_POST['cr_amount'])) {
 	memory::set('amount', $_POST['cr_amount']);
 }
 elseif (!empty($_POST['dr_amount'])) {
-	memory::set('amount', $_POST['dr_amount']);
+	memory::set('amount', - $_POST['dr_amount']);
 }
 else {
 	memory::set('amount', 0);

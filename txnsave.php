@@ -14,4 +14,8 @@ $trans = model('addtxn');
 $txnid = $trans->add_transaction(memory::get_all());
 memory::clear();
 
+if ($txnid === FALSE) {
+	redirect('othadd.php');
+}
+
 redirect('txnshow.php?txnid=' . $txnid);

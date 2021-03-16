@@ -118,8 +118,6 @@ class addtxn
 			$post['split'] = 0;
 		}
 
-		// integerize amount
-
 		if (!isset($post['status'])) {
 			$post['status'] = ' ';
 		}
@@ -134,25 +132,25 @@ class addtxn
 
 		if ($post['split'] == 0) {
 
-			if ($post['payee_id'] == '0') {
+			if (empty($post['payee_id'])) {
 				emsg('F', 'Normal transactions must have a valid payee');
 				return FALSE;
 			}
 		
-			if ($post['to_acct'] == '0') {
+			if (empty($post['to_acct'])) {
 				emsg('F','Normal transactions must have a valid to account');
 				return FALSE;
 			}
 		}
 
-		if ($post['xfer'] == 1 && $post['to_acct'] == 0) {
+		if ($post['xfer'] == 1 && empty($post['to_acct'])) {
 			emsg('F', 'Transfers must have a valid TO account');
 			return FALSE;
 		}
 
 		if (!isset($post['checkno'])) {
 			$post['checkno'] = '';
-		}
+		} 
 
 		if (!isset($post['recon_dt'])) {
 			$post['recon_dt'] = '';
@@ -176,12 +174,13 @@ class addtxn
 
 		// handle splits as needed
 
-		if ($post['split'] && $post['max_splits'] > 0) {
+		if ($post['split'] == 1 && $post['max_splits'] > 0) {
 
+			$splits_amount = 0;
 			$check_amount = $post['amount'];
 
 			for ($k = 0; $k < $post['max_splits']; $k++) {
-				if ($post['split_to_acct'][$k] == 0) {
+				if (empty($post['split_to_acct'][$k])) {
 					emsg('F', 'Splits must have a valid to account');
 					$this->db->rollback();
 					return FALSE;
@@ -201,18 +200,18 @@ class addtxn
 					'payee_id' => $post['split_payee_id'][$k],
 					'amount' => dec2int($amount)
 				);
-				$check_amount -= dec2int($amount);
+				$splits_amount += dec2int($amount);
 				$rec = $this->db->prepare('splits', $split);
 				$this->db->insert('splits', $rec);
-			}
+			} // for
 
-			if ($check_amount != 0) {
+			if ($check_amount != $splits_amount) {
 				emsg('F', "Split amounts don't add up to transaction amount");
 				$this->db->rollback();
 				return FALSE;
 			}
 
-		}
+		} // if split
 
 		$this->db->end();
 		emsg('S', 'Transaction(s) stored.');

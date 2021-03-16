@@ -491,6 +491,10 @@ class form
 		if (!is_null($content)) {
 			$str .= $content;
 		}
+		elseif (isset($parms['value'])) {
+			$str .= $content;
+		}
+
 		$str .= '</textarea>' . PHP_EOL;
 
 		echo $str;
