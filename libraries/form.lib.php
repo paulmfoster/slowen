@@ -492,7 +492,7 @@ class form
 			$str .= $content;
 		}
 		elseif (isset($parms['value'])) {
-			$str .= $content;
+			$str .= $parms['value'];
 		}
 
 		$str .= '</textarea>' . PHP_EOL;

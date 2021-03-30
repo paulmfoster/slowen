@@ -5,6 +5,12 @@ $trans = model('addtxn');
 memory::merge($_POST);
 memory::set('amount', $_POST['cr_amount']);
 
+if ($cfg['confirm_transactions'] == 0) {
+	$txnid = $trans->add_transaction(memory::get_all());
+	memory::clear();
+	redirect('depadd.php');
+}
+
 $fields = array(
 	's1' => array(
 		'name' => 's1',

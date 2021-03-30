@@ -4,6 +4,14 @@
 
 include 'init.php';
 $trans = model('addtxn');
+memory::merge($_POST);
+memory::set('amount', - $_POST['dr_amount']);
+
+if ($cfg['confirm_transactions'] == 0) {
+	$txnid = $trans->add_transaction(memory::get_all());
+	memory::clear();
+	redirect('xferadd.php');
+}
 
 $fields = array(
 	's1' => array(
@@ -15,8 +23,6 @@ $fields = array(
 $form->set($fields);
 
 $data = $_POST;
-memory::merge($_POST);
-memory::set('amount', - $_POST['dr_amount']);
 $names = $trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
 $data['from_acct_name'] = $names['from_acct_name'];
 $data['to_acct_name'] = $names['to_acct_name'];

@@ -19,6 +19,8 @@ input, select, textarea, button {
 	font-size: 100%;
 }
 
+
+
 /* header */
 
 #header {
@@ -110,6 +112,11 @@ button {
 button:hover {
 	color: var(--button-hover-fg);
 	font-weight: bold;
+}
+
+input[type="checkbox"] {
+	height: 1em;
+	width: 1em;
 }
 
 input[type="submit"] {

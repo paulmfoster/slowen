@@ -70,6 +70,11 @@ function dec2int($number)
 		}
 		// may be leading zeroes, so remove them
 		$unsigned = ltrim($left . $right, '0');
+		// if the number was all zeroes, the above will make it blank, so
+		// compensate for that
+		if (strlen($unsigned) == 0) {
+			$unsigned = '0';
+		}
 	}
 
 	$new = $neg . $unsigned;

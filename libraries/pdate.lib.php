@@ -151,7 +151,7 @@ class pdate
 	 * @return integer Days in the month
 	 */
 
-	static private function days_in_month($month, $year)
+	static function days_in_month($month, $year)
 	{
 		$mdays = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 		if ($month == 2) {

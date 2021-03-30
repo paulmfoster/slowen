@@ -7,6 +7,12 @@ memory::merge($_POST);
 memory::set('amount', - $_POST['dr_amount']);
 $trans = model('addtxn');
 
+if ($cfg['confirm_transactions'] == 0) {
+	$txnid = $trans->add_transaction(memory::get_all());
+	memory::clear();
+	redirect('ccardadd.php');
+}
+
 $fields = array(
 	's1' => array(
 		'name' => 's1',

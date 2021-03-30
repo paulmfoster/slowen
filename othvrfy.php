@@ -4,6 +4,12 @@ include 'init.php';
 $trans = model('addtxn');
 memory::merge($_POST);
 
+if ($cfg['confirm_transactions'] == 0) {
+	$txnid = $trans->add_transaction(memory::get_all());
+	memory::clear();
+	redirect('othadd.php');
+}
+
 $fields = array(
 	's1' => array(
 		'name' => 's1',
@@ -11,6 +17,7 @@ $fields = array(
 		'value' => 'Confirm'
 	)
 );
+
 $form->set($fields);
 
 $data = memory::get_all();
