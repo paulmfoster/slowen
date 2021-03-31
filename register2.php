@@ -1,12 +1,7 @@
 <?php
 
 include 'init.php';
-
-$acct_id = $_POST['acct_id'] ?? NULL;
-
-if (is_null($acct_id)) {
-	redirect('register.php');
-}
+$acct_id = fork('acct_id', 'P', 'register.php');
 
 $txns = model('transaction');
 

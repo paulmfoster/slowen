@@ -1,7 +1,9 @@
 
 <h2><?php echo $data['from_acct_name']; ?></h2>
 
-<h3>Reconciliation failed. Final balances were off by <?php echo int2dec($data['difference']); ?>.
+<h3>Reconciliation failed. Your work has been saved.
+<br/>
+Final balances were off by <?php echo int2dec($data['difference']); ?>.
 <br/>
 Here are figures to assist in determining why.<h3>
    

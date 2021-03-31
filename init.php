@@ -53,6 +53,21 @@ function view($page_title, $data, $return, $view_file, $focus_field = '')
 	include $cfg['viewdir'] . 'footer.view.php';
 }
 
+function fork($varname, $method, $failurl)
+{
+	if ($method == 'P') {
+		$var = $_POST[$varname] ?? NULL;
+	}
+	elseif ($method == 'G') {
+		$var = $_GET[$varname] ?? NULL;
+	}
+	if (is_null($var)) {
+		header('Location: ' . $failurl);
+		exit;
+	}
+	return $var;
+}
+
 $cfg = parse_ini_file('config/config.ini');
 
 $entities = array();

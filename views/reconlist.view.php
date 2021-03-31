@@ -44,11 +44,7 @@
 </td>
 
 <!-- status field -->
-<?php if ($txn['status'] == ' '): ?>
-<td><input type="checkbox" name="status[]" value="<?php echo $txn['id']; ?>"/>
-<?php else: ?>
-<td><?php echo $txn['status']; ?></td>
-<?php endif; ?>
+<td><input type="checkbox" name="status[]" value="<?php echo $txn['id']; ?>" <?php echo ($txn['status'] == 'C') ? 'checked' : ''; ?>/>
 
 <td class="align-right"><?php echo $txn['debit']; ?></td>
 <td class="align-right"><?php echo $txn['credit']; ?></td>

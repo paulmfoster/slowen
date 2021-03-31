@@ -1,6 +1,7 @@
 <?php
 
 // user entered preliminary data
+// show list of transactions to clear
 
 include 'init.php';
 $rcn = model('recon');
@@ -39,6 +40,7 @@ $stmt_end_bal = $_POST['stmt_end_bal'];
 $stmt_close_date = $_POST['stmt_close_date'];
 $txns = $rcn->get_uncleared_transactions($_POST['from_acct']);
 
+// hidden fields...
 $fields = array(
 	'from_acct' => array(
 		'name' => 'from_acct',

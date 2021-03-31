@@ -31,19 +31,14 @@ class recon
 
 	/**
 	 * Get transactions for display
-	 * P parameter gets transactions by payee
-	 * C parameter gets transactions by category
-	 * (blank) parameter gets transactions by from_acct
 	 *
-	 * @param int payee_id, to_acct, or nothing
-	 * @type char 'P' for payees, 'C' for categories, ' ' for neither
-	 *
+	 * @param int from_acct
 	 * @return array Full data needed for the register screen display
 	 */
 
 	function get_uncleared_transactions($param)
 	{
-		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE journal.from_acct = $param AND journal.status = ' ' ORDER BY txn_dt, checkno, txnid";
+		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE journal.from_acct = $param AND journal.status NOT IN ('R', 'V') ORDER BY txn_dt, checkno, txnid";
 
 		$txns = $this->db->query($sql)->fetch_all();	
 
@@ -140,6 +135,62 @@ class recon
 			'difference' => $comp_end_bal - $check_bal
 		);
 		return $data;
+	}
+
+	/**
+	 * Mark transactions as cleared even though reconcilation failed.
+	 *
+	 * This is made complicated because the user may revisit a
+	 * reconciliation multiple times, and undo work they've done before. If
+	 * a user marks a transaction as cleared, then goes back and unmarks
+	 * it, the second time through, it doesn't show that they unmarked it.
+	 * So we unmark everything first, and just mark all they *have* marked.
+	 *
+	 * @param string Comma separated list of record IDs to clear
+	 * @param integer From account
+	 */
+
+	function save_work($ids, $from_acct)
+	{
+		$this->unclear_all($from_acct);
+		$this->db->update('journal', ['status' => 'C'], "id in ($ids)");
+	}
+
+	/**
+	 * "Unclear" all transactions for an account.
+	 *
+	 * This is used where a user starts a reconciliation, leaves it, and
+	 * then on the next go, unclears transactions previously cleared. In
+	 * other words, they uncleared all transactions.
+	 *
+	 * @param integer From account
+	 */
+
+	function unclear_all($from_acct)
+	{
+		$this->db->update('journal', ['status' => ' '], "status = 'C'");
+	}
+
+	/**
+	 * Get IDs of uncleared transactions.
+	 * 
+	 * Used for saving in-progress cleared transactions. This includes
+	 * transactions which have been marked as cleared, but where a full
+	 * reconciliation hasn't been completed yet.
+	 *
+	 * @param integer From account for transactions
+	 * @return array IDs of cleared transactions
+	 */
+
+	function get_uncleareds($from_acct)
+	{
+		$sql = "SELECT id FROM journal WHERE from_acct = $from_acct AND status IN (' ', 'C')";
+		$recs = $this->db->query($sql)->fetch_all();
+		$uc = [];
+		foreach ($recs as $rec) {
+			$uc[] = $rec['id'];
+		}
+		return $uc;
 	}
 
 	/**
