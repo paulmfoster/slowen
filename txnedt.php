@@ -1,7 +1,6 @@
 <?php
 
 include 'init.php';
-
 $txnid = $_GET['txnid'] ?? NULL;
 if (is_null($txnid)) {
 	redirect('index.php');
@@ -164,7 +163,7 @@ if ($max_txns == 1) {
 
 	$form->set($fields);
 
-	view('Edit Transaction', ['txns' => $txns], 'txnupd.php', 'txnedt');
+	view('Edit Transaction', ['txns' => $txns, 'statuses' => $statuses, 'max_txns' => $max_txns], 'txnupd.php', 'txnedt');
 
 }
 else {
@@ -212,7 +211,7 @@ else {
 
 	$form->set($fields);
 
-	view('Edit Inter-Account Transfer', ['txns' => $txns], 'txnupd.php', 'xferedt');
+	view('Edit Inter-Account Transfer', ['txns' => $txns, 'statuses' => $statuses], 'txnupd.php', 'xferedt');
 }
 
 
