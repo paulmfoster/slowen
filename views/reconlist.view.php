@@ -52,9 +52,10 @@
 <?php endforeach; /* transaction loop */ ?>
 
 </table>
+<p>
 <?php $form->submit('s3'); ?>
 &nbsp;
 <?php form::abandon('reconcile.php'); ?>
-
+</p>
 </form>
 

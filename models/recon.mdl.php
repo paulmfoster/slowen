@@ -157,6 +157,56 @@ class recon
 	}
 
 	/**
+	 * Get the next serialization number for transactions.
+	 * This is NOT the same as the ID.
+	 *
+	 * @return int next transaction ID
+	 */
+
+	function get_next_txnid()
+	{
+		$sql = "SELECT max(txnid) as txnid FROM journal";
+		$nt = $this->db->query($sql)->fetch();
+		$ret = $nt['txnid'] + 1;
+
+		return $ret;
+	}
+
+	function get_payees()
+	{
+		$sql = "SELECT * FROM payees ORDER BY name";
+		$payees = $this->db->query($sql)->fetch_all();
+		return $payees;
+	}
+
+	function get_to_accounts()
+	{
+		$sql = "SELECT * FROM accounts WHERE parent != 0 ORDER BY lower(name)";
+		$to_accts = $this->db->query($sql)->fetch_all();
+		return $to_accts;
+	}
+
+	function add_statement_fee($from_acct, $payee_id, $to_acct, $fee, $stmt_dt)
+	{
+		$rec = [
+			'from_acct' => $from_acct,
+			'txnid' => $this->get_next_txnid(),
+			'txn_dt' => $stmt_dt,
+			'checkno' => '',
+			'split' => 0,
+			'payee_id' => $payee_id,
+			'to_acct' => $to_acct,
+			'memo' => '',
+			'status' => ' ',
+			'recon_dt' => '',
+			'amount' => dec2int($fee)
+		];
+
+		$this->db->insert('journal', $rec);
+
+	}
+
+	/**
 	 * "Unclear" all transactions for an account.
 	 *
 	 * This is used where a user starts a reconciliation, leaves it, and

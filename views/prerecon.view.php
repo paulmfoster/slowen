@@ -15,7 +15,8 @@
 
 <tr>
 <td colspan="2" class="red">NOTE: Adjust signs of balances to the type of account and circumstances.<br/>
-Example: credit card balances are normally negative. Bank acct balances are normally positive.</td>
+Example: credit card balances are normally negative. Bank acct balances<br/>
+are normally positive.</td>
 </tr>
 
 <tr>
@@ -46,7 +47,29 @@ Example: credit card balances are normally negative. Bank acct balances are norm
 </tr>
 
 <tr>
-<td colspan="2">Enter any fees as a separate transaction before proceeding.</td>
+<td></td>
+<td><h3>Statement Fee</h3></td>
+</tr>
+
+<tr>
+<td>
+<label for="Payee">Payee</label>
+</td>
+<td><?php $form->select('payee_id'); ?></td>
+</tr>
+
+<tr>
+<td>
+<label for="Payee">To Account</label>
+</td>
+<td><?php $form->select('to_acct'); ?></td>
+</tr>
+<tr>
+
+<td>
+<label for="fee">Fee Amount</label>
+</td>
+<td><?php $form->text('fee'); ?></td>
 </tr>
 
 </table>

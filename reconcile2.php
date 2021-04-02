@@ -31,6 +31,10 @@ if ($errors) {
 	redirect('reconcile.php');
 }
 
+if (!empty($_POST['fee'])) {
+	$rcn->add_statement_fee($_POST['from_acct'], $_POST['payee_id'], $_POST['to_acct'], $_POST['fee'], $_POST['stmt_close_date']);
+}
+
 $acct = $rcn->get_account($_POST['from_acct']);
 $from_acct = $acct['acct_id'];
 $from_acct_name = $acct['name'];
