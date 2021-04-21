@@ -77,6 +77,52 @@ class report
 	}
 
 	/**
+	 * Get income and expense accounts for budget query.
+	 *
+	 * @return array Income/Expense accounts
+	 */
+
+	function get_budget_accounts()
+	{
+		$sql = "SELECT * FROM accounts WHERE acct_type in ('I', 'E') ORDER BY acct_type, name";
+		$accts = $this->db->query($sql)->fetch_all();
+		return $accts;
+	}
+
+	/**
+	 * Get income/expenses for a given category and from/to dates
+	 *
+	 * @param date $from The FROM date
+	 * @param date $to The TO date
+	 * @param integer $category The category in question
+	 *
+	 * @return array Transactions and total
+	 */
+
+	function budget($from, $to, $category)
+	{
+		$where = "txn_dt >= '$from' AND txn_dt <= '$to' AND to_acct = $category AND status != 'V'";
+		$sql = $this->transactions_sql($where);
+		$txns = $this->db->query($sql)->fetch_all();
+		$max = count($txns);
+		$balance = 0;
+		for ($i = 0; $i < $max; $i++) {
+			/*
+			if ($txns[$i]['amount'] < 0) {
+				$txns[$i]['debit'] = - $txns[$i]['amount'];
+				$txns[$i]['credit'] = '';
+			}
+			elseif ($txns[$i]['amount'] > 0) {
+				$txns[$i]['credit'] = $txns[$i]['amount'];
+				$txns[$i]['debit'] = '';
+			}
+			 */
+			$balance += $txns[$i]['amount'];
+		}
+		return [$txns, $balance];
+	}
+
+	/**
 	 *
 	 * Get all the info on payees for a payees SELECT HTML component
 	 * Note: an added illegal payee is added to the top for NONE.

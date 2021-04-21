@@ -34,6 +34,7 @@ $links = [
 	'Reports' => [
 		'Balances' => 'balances.php',
 		'Register' => 'register.php',
+		'Budget' => 'budget.php',
 		'Weekly Expenses' => 'expenses.php',
 		'Monthly Audit' => 'auditm.php',
 		'Yearly Audit' => 'audity.php'
