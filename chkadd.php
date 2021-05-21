@@ -76,5 +76,5 @@ $fields = array(
 
 $form->set($fields);
 
-view('Enter Check', [], 'chkvrfy.php', 'chkadd');
+view('Enter Check', [], 'chkvrfy.php', 'chkadd', 'from_acct');
 

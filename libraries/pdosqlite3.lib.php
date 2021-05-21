@@ -1,6 +1,6 @@
 <?php
 
-require_once $common_dir . 'db.ifc.php';
+require_once $cfg['libdir'] . 'db.ifc.php';
 
 /**
  * pdosqlite3 class

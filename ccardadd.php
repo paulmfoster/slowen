@@ -78,5 +78,5 @@ $fields = array(
 );
 $form->set($fields);
 
-view('Enter Payment By Credit Card', [], 'ccardvrfy.php', 'ccardadd');
+view('Enter Payment By Credit Card', [], 'ccardvrfy.php', 'ccardadd', 'from_acct');
 

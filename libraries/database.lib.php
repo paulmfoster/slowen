@@ -6,22 +6,21 @@ class database
 
 	function __construct($cfg)
 	{
-		global $common_dir;
 
 		$dvr = strtolower($cfg['dbdriv']);
 		switch ($dvr) {
 		case 'sqlite':
 		case 'sqlite3':
-			require_once($common_dir . 'pdosqlite3.lib.php');
+			require_once($cfg['libdir'] . 'pdosqlite3.lib.php');
 			$this->dbh = new pdosqlite3($cfg['dbdata']);
 			break;
 		case 'pg':
 		case 'postgresql':
-			require_once($common_dir . 'dbpostgresql.lib.php');
+			require_once($cfg['libdir'] . 'dbpostgresql.lib.php');
 			$this->dbh = new dbpostgresql($cfg);
 			break;
 		case 'mysql':
-			require_once($common_dir . 'dbmysql.lib.php');
+			require_once($cfg['libdir'] . 'dbmysql.lib.php');
 			$this->dbh = new dbmysql($cfg);
 			break;
 		}
