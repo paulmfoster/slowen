@@ -603,10 +603,7 @@ class form
 
 	static function button($legend, $link)
 	{
-		$str = '<button ';
-		// this 1em font size is to handle problems with some browsers
-		// (Chromium)
-		$str .= "style=\"font-size:1em\" onclick=\"window.location.href='$link';\">$legend</button>";
+		$str = '<a href="' . $link . '"><button type="button">' . $legend . '</button></a>' . PHP_EOL;
 		echo $str;
 	}
 
