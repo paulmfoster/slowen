@@ -10,6 +10,11 @@ $payees = $trans->get_payees();
 $from_accts = $trans->get_bank_accounts();
 $to_accts = $trans->get_to_accounts();
 
+if ($payees == FALSE || $from_accts == FALSE || $to_accts == FALSE) {
+	emsg('F', 'Payees and/or accounts missing.');
+	redirect('index.php');
+}
+
 $from_options = array();
 foreach($from_accts as $from_acct) {
 	$from_options[] = array('lbl' => 

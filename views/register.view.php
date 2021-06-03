@@ -20,6 +20,7 @@
 <td colspan="8"></td>
 <td class="row<?php echo $row++ & 1;?> align-right"><?php echo int2dec($acct['open_bal']); ?></td>
 </tr>
+<?php if (!empty($r)): ?>
 <?php foreach ($r as $txn): ?>
 <tr class="row<?php echo $row++ & 1;?>">
 <td>
@@ -41,6 +42,7 @@
 <td class="align-right"><?php echo int2dec($txn['balance']); ?></td>
 </tr>
 <?php endforeach; ?>
+<?php endif; ?>
 </table>
 <p>
 <a href="#">Top</a>

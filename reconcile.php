@@ -9,21 +9,27 @@ $accts = $rcn->get_recon_accts();
 
 $payees = $rcn->get_payees();
 $payee_options = [];
-foreach ($payees as $payee) {
-	$payee_options[] = ['lbl' => $payee['name'], 'val' => $payee['payee_id']];
+if ($payees !== FALSE) {
+	foreach ($payees as $payee) {
+		$payee_options[] = ['lbl' => $payee['name'], 'val' => $payee['payee_id']];
+	}
 }
 
 $to_accts = $rcn->get_to_accounts();
 $to_options = [];
-foreach ($to_accts as $to_acct)
-{
-	$to_options[] = ['lbl' => $to_acct['name'], 'val' => $to_acct['acct_id']];
+if ($to_accts !== FALSE) {
+	foreach ($to_accts as $to_acct)
+	{
+		$to_options[] = ['lbl' => $to_acct['name'], 'val' => $to_acct['acct_id']];
+	}
 }
 
 $from_options = array();
-foreach ($accts as $acct) {
-	$from_options[] = array('lbl' => $acct['acct_type'] . '/' . $acct['name'],
-		'val' => $acct['acct_id']);
+if ($accts !== FALSE) {
+	foreach ($accts as $acct) {
+		$from_options[] = array('lbl' => $acct['acct_type'] . '/' . $acct['name'],
+			'val' => $acct['acct_id']);
+	}
 }
 
 $fields = array(

@@ -4,6 +4,10 @@ include 'init.php';
 $pay = model('payee');
 
 $payees = $pay->get_payees();
+if ($payees == FALSE) {
+	emsg('F', 'No payees on file.');
+	redirect('index.php');
+}
 
 $id_options = array();
 foreach ($payees as $payee) {

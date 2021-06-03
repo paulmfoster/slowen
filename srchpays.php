@@ -4,10 +4,16 @@ include 'init.php';
 $rpt = model('report');
 
 $payees = $rpt->get_payees();
+if ($payees == FALSE) {
+	emsg('F', 'No payees on file.');
+	redirect('index.php');
+}
 
 $payee_options = array();
-foreach ($payees as $payee) {
-	$payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+if ($payees !== FALSE) {
+	foreach ($payees as $payee) {
+		$payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+	}
 }
 
 $fields = array(
