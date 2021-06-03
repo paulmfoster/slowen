@@ -1,7 +1,6 @@
 *.sw*
 error.log
 Session.vim
-DEVNOTES.md
-MANIFEST
 *.sq3
 *.sql
+printq/*
