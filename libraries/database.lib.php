@@ -6,7 +6,6 @@ class database
 
 	function __construct($cfg)
 	{
-
 		$dvr = strtolower($cfg['dbdriv']);
 		switch ($dvr) {
 		case 'sqlite':

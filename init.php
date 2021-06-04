@@ -168,30 +168,11 @@ else {
 	emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
 }
 
-/*
-$sess_entity = $_SESSION['entity_num'] ?? NULL;
-$post_entity = $_POST['entity_num'] ?? NULL;
-
-if (is_null($post_entity)) {
-	if (is_null($sess_entity)) {
-		$page_title = 'Set Entity';
-		$view_file = view_file('entity');
-		include 'view.php';
-		exit();
-	}
-}
-else {
-	$_SESSION['entity_num'] = $_POST['entity_num'];
-	$_SESSION['entity_name'] = $cfg['entity'][$_POST['entity_num']];
-	emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
-}
-
- */
-
 // entity must be establish before this point, so we can instantiate the
 // database
 
-$cfg['dbdata'] = $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
+$dbfile = $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
+$cfg['dbdata'] = $dbfile;
 $db = new database($cfg);
 
 

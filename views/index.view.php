@@ -10,8 +10,19 @@
 	<dd>
 Slowen can monitor more than one set of accounts. Each set is called an
 "entity". Entities can be things like your personal accounts and your
-business accounts.
-</dd>
+business accounts.</dd>
+	<dt>Add Entity</dt>
+	<dd>
+Here you can add a new entity to Slowen.
+	</dd>
+	<dt>Bug Report</dt>
+	<dd>
+Bug? Are you serious? Okay, fine, report it here. If you <em>have</em> to.
+	</dd>
+	<dt>Feature Request</dt>
+	<dd>
+You want even <em>more</em> features? Ask for them here.
+	</dd>
 </dl>
 
 <hr/>
@@ -36,20 +47,24 @@ bank or credit card company.
 
 </dd>
 
-<dt>Add</dt>
+<dt>Add Account</dt>
 <dd>
 
 Here you may add checking, savings, credit card, income or expense accounts.
 </dd>
 
-<dt>Delete</dt>
+<dt>Delete Account</dt>
 <dd>Here you can delete any account so long as it isn't connected with any transactions.
 </dd>
 
-<dt>Edit</dt>
+<dt>Edit Account</dt>
 <dd>Here you may edit the details of an account, such as its name.
 </dd>
 
+<dt>Search By Account</dt>
+<dd>
+Here you can search through all the transactions for a given expense category.
+</dd> 
 </dl>
 
 <hr/>
@@ -58,16 +73,21 @@ Here you may add checking, savings, credit card, income or expense accounts.
 
 <dl>
 
-<dt>Add</dt>
+<dt>Add Payee</dt>
 <dd>This function allows you to add payees.
 </dd>
 
-<dt>Delete</dt>
+<dt>Delete Payee</dt>
 <dd>This allows you to delete a payee, so long as it is not used in any transactions.
 </dd>
 
-<dt>Edit</dt>
+<dt>Edit Payee</dt>
 <dd>Here you may edit the details of a given payee.
+</dd>
+
+<dt>Search By Payee</dt>
+<dd>
+Search through transactions by payee here.
 </dd>
 
 </dl>
@@ -91,7 +111,7 @@ intended for recording thecks.
 <dt>Deposit</dt>
 <dd>
 
-This selection is for entering deposits. This is money coming *in* to a
+This selection is for entering deposits. This is money coming <em>in</em> to a
 bank account.
 </dd>
 
@@ -114,7 +134,14 @@ other shows the money coming into the credit card account.
 <dt>Other/Split</dt>
 <dd>
 
-This is for anything not covered above, though any of the above transactions can be entered here. In particular, this covers **splits**. Splits are transaction where there is one or more payee or account involved. For example, this could be a business deposit where you have multiple checks from multiple customers for multiple purposes. Or any other transaction of this type. You will enter the number of "splits", and be shown a screen for entering the details for each one.
+This is for anything not covered above, though any of the above
+transactions can be entered here. In particular, this covers <strong>splits</strong>.
+Splits are transaction where there is one or more payee or account
+involved. For example, this could be a business deposit where you have
+multiple checks from multiple customers for multiple purposes. Or any other
+transaction of this type. You will enter the number of "splits", and be
+shown a screen for entering the details for each one.
+
 </dd>
 
 </dl>
@@ -151,7 +178,17 @@ This choice allows you to search transactions by payee.
 This will give you the balances of all the accounts as of the date you enter.
 </dd>
 
-<dt>Expenses</dt>
+<dt>Register</dt>
+<dd>
+This is another way of getting a register for an account.
+</dd>
+
+<dt>Budget</dt>
+<dd>
+This allows you to see what you've spent on a certain category over a specified span of time.
+</dd>
+
+<dt>Weekly Expenses</dt>
 <dd>
 
 This will give you the totals for each expense category for a given span

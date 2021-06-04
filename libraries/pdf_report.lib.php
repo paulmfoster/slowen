@@ -45,17 +45,46 @@ class pdf_report
 	function print_line($text)
 	{
 		$this->pdf->Text($this->x, $this->y, $text);
-		$this->skip_line();
 	}
 
 	function skip_line($num = 1)
 	{
 		$this->y += $num * $this->font_size;
 		
+		/*
 		if ($this->y >= $this->bottom_margin) {
 			$this->add_page();
 			$this->y = $this->top_margin;
 		}
+		 */
+	}
+
+	function setx($x)
+	{
+		$this->x = $x;
+		$this->pdf->SetX($x);
+	}
+
+	function getx()
+	{
+		return $this->pdf->GetX();
+	}
+
+	function sety($y)
+	{
+		$this->y = $y;
+		$this->pdf->SetY($y);
+	}
+
+	function gety()
+	{
+		return $this->pdf->GetY();
+	}
+
+	function setxy($x, $y)
+	{
+		$this->setx($x);
+		$this->sety($y);
 	}
 
 	function add_page()

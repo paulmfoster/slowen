@@ -3,6 +3,7 @@
 $links = [
 	'Slowen' => [
 		'Change Entity' => 'entity.php',
+		'Add Entity' => 'entadd.php',
 		'Bug Report' => 'bugs.php',
 		'Feature Request' => 'bugs.php'
 	],
