@@ -78,7 +78,7 @@ class form
 	 * @param string $function The form member function called
 	 */
 
-	function mismatch($field_name, $function)
+	private function mismatch($field_name, $function)
 	{
 		if ($this->fields[$field_name]['type'] != $function) {
 			die('<h1>Fatal field error: ' . $this->fields[$field_name]['name'] . ' called with ' . $function . ', but should be ' . $this->fields[$field_name]['type'] . '.</h1>');
@@ -294,13 +294,28 @@ class form
 		echo $str;
 	}
 
-	function radio_option($str, $option, $checked_value = NULL)
+	function bare_radio($fld, $option, $checked_value = NULL)
 	{
+		$str .= '<input ';
+		$str .= $this->key_value('type', 'radio');
+		$str .= $this->key_value('name', $fld['name']);
 		$str .= $this->key_value('value', $option['val']);
 
-		if ($option['val'] == $checked_value) {
-			$str .= 'checked';
+		if (isset($fld['class'])) {
+			$str .= $this->key_value('class', $fld['class']);
 		}
+
+		if (!is_null($checked_value)) {
+			if ($option['val'] == $checked_value) {
+				$str .= 'checked="checked" ';
+			}
+		}
+		elseif (isset($fld['checked'])) {
+			if ($option['val'] == $fld['checked']) {
+				$str .= 'checked="checked" ';
+			}
+		}
+
 		$str .= '/>' . PHP_EOL;
 
 		return $str;
@@ -312,76 +327,31 @@ class form
 
 		$fld = $this->fields[$field_name];
 		$opts = $fld['options'];
-		$direction = $fld['direction'];
 
 		$str = '';
 		foreach ($opts as $option) {
 
+			$radio_string = $this->bare_radio($fld, $option, $checked_value);
+
 			// o Label
-			if ($direction === 'L') {
+			if ($fld['direction'] === 'L') {
 				$str .= $option['lbl'] . '&nbsp;';
-
-				$str .= '<input ';
-				$str .= $this->key_value('type', 'radio');
-				$str .= $this->key_value('name', $fld['name']);
-				$str .= $this->key_value('value', $option['val']);
-				
-				if (isset($fld['class'])) {
-					$str .= $this->key_value('class', $fld['class']);
-				}
-
-				if ($option['val'] == $checked_value) {
-					$str .= 'checked="checked" ';
-				}
-				
-				$str .= '/>' . PHP_EOL;
+				$str .= $radio_string;
 			}
 			// Label o
-			elseif ($direction === 'R') {
-
-				$str .= '<input ';
-				$str .= $this->key_value('type', 'radio');
-				$str .= $this->key_value('name', $fld['name']);
-				$str .= $this->key_value('value', $option['val']);
-				
-				if (isset($fld['class'])) {
-					$str .= $this->key_value('class', $fld['class']);
-				}
-
-				if ($option['val'] == $checked_value) {
-					$str .= 'checked';
-				}
-				
-				$str .= '/>' . PHP_EOL;
+			elseif ($fld['direction'] === 'R') {
+				$str .= $radio_string;
 				$str .= '&nbsp;' . $option['lbl'];
 			}
-			elseif ($direction == 'LV') {
+			// label o<br/>
+			elseif ($fld['direction'] == 'LV') {
 				$str .= $option['lbl'] . '&nbsp;';
-
-				$str .= '<input ';
-				$str .= $this->key_value('type', 'radio');
-				$str .= $this->key_value('name', $fld['name']);
-				$str .= $this->key_value('value', $option['val']);
-
-				if (isset($fld['class'])) {
-					$str .= $this->key_value('class', $fld['class']);
-				}
-
-				$str = $this->radio_option($str, $option, $checked_value);
+				$str .= $radio_string;
 				$str .= '<br/>' . PHP_EOL;
 			}
-			elseif ($direction == 'RV') {
-				
-				$str .= '<input ';
-				$str .= $this->key_value('type', 'radio');
-				$str .= $this->key_value('name', $fld['name']);
-				$str .= $this->key_value('value', $option['val']);
-
-				if (isset($fld['class'])) {
-					$str .= $this->key_value('class', $fld['class']);
-				}
-
-				$str = $this->radio_option($str, $option, $checked_value);
+			// o label<br/>
+			elseif ($fld['direction'] == 'RV') {
+				$str .= $radio_string;
 				$str .= '&nbsp;' . $option['lbl'];
 				$str .= '<br/>' . PHP_EOL;
 			}
@@ -405,8 +375,14 @@ class form
 			$str .= $this->key_value('class', $fld['class']);
 		}
 
+		// passed value takes precedence over the "baked in" value
 		if (!is_null($checked_value)) {
 			if ($fld['value'] == $checked_value) {
+				$str .= 'checked';
+			}
+		}
+		elseif (isset($fld['checked'])) {
+			if ($fld['value'] == $fld['checked']) {
 				$str .= 'checked';
 			}
 		}
@@ -681,7 +657,7 @@ class form
 
 	function version()
 	{
-		return 2.5;
+		return 3.0;
 	}
 }
 
