@@ -29,8 +29,9 @@ class pdosqlite3 implements dbiface
 {
 	var $handle, $dd = array();
 
-	function __construct($filename)
+	function __construct($cfg)
 	{
+		$filename = $cfg['datadir'] . $cfg['dbdata'];
 		$connect_string = 'sqlite:' . $filename;
 		try {
 			$this->handle = new PDO($connect_string);

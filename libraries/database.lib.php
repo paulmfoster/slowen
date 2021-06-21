@@ -6,12 +6,13 @@ class database
 
 	function __construct($cfg)
 	{
+
 		$dvr = strtolower($cfg['dbdriv']);
 		switch ($dvr) {
 		case 'sqlite':
 		case 'sqlite3':
 			require_once($cfg['libdir'] . 'pdosqlite3.lib.php');
-			$this->dbh = new pdosqlite3($cfg['dbdata']);
+			$this->dbh = new pdosqlite3($cfg);
 			break;
 		case 'pg':
 		case 'postgresql':

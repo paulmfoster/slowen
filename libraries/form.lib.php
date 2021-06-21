@@ -296,7 +296,7 @@ class form
 
 	function bare_radio($fld, $option, $checked_value = NULL)
 	{
-		$str .= '<input ';
+		$str = '<input ';
 		$str .= $this->key_value('type', 'radio');
 		$str .= $this->key_value('name', $fld['name']);
 		$str .= $this->key_value('value', $option['val']);
