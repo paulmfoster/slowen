@@ -6,6 +6,12 @@
 include 'init.php';
 $rcn = model('recon');
 
+// check for a reconciliation in progress
+$saved = $rcn->get_saved_work($_POST['from_acct']);
+if ($saved !== FALSE) {
+	redirect('reconcont.php?from_acct=' . $_POST['from_acct']);
+}
+
 $acct = $rcn->get_account($_POST['from_acct']);
 $errors = 0;
 

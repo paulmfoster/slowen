@@ -30,7 +30,7 @@ elseif ($data === FALSE) {
 }
 else {
 	// reconciliation failed
-	$rcn->save_work($cleared_list, $_POST['from_acct']);
+	$rcn->save_work($cleared_list, $_POST['from_acct'], $_POST['stmt_start_bal'], $_POST['stmt_end_bal'], $_POST['stmt_close_date']);
 	emsg('F', "Statement and computer final balances don't match.");
 	view('Reconciliation Failed', ['data' => $data], '', 'reconfailed');
 }

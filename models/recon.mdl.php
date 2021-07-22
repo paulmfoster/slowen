@@ -150,10 +150,45 @@ class recon
 	 * @param integer From account
 	 */
 
-	function save_work($ids, $from_acct)
+	function save_work($ids, $from_acct, $stmt_start_bal, $stmt_end_bal, $stmt_close_date)
 	{
+		// clear all transactions marked as 'C' before
 		$this->unclear_all($from_acct);
+		// set marked transactions as temporarily cleared ('C')
 		$this->db->update('journal', ['status' => 'C'], "id in ($ids)");
+		$this->db->delete('recon');
+		$d = [
+			'from_acct' => $from_acct,
+			'stmt_start_bal' => dec2int($stmt_start_bal),
+			'stmt_end_bal' => dec2int($stmt_end_bal),
+			'stmt_close_date' => $stmt_close_date
+		];
+		$this->db->insert('recon', $d);
+	}
+
+	/**
+	 * Get data from saved but interrupted reconciliation.
+	 *
+	 * @param integer $from_acct The from account
+	 * @return array The saved data
+	 */
+
+	function get_saved_work($from_acct)
+	{
+		$sql = "SELECT * FROM recon WHERE from_acct = $from_acct";
+		$data = $this->db->query($sql)->fetch();
+		return $data;
+	}
+
+	/**
+	 * Clear record of aborted reconciliation for a given account
+	 *
+	 * @param integer From account
+	 */
+
+	function clear_saved_work($from_acct)
+	{
+		$this->db->delete('recon', "from_acct = $from_acct");
 	}
 
 	/**

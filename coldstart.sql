@@ -1,35 +1,36 @@
-BEGIN TRANSACTION
-CREATE TABLE accounts (id integer primary key autoincrement, acct_id integer, parent integer, lft integer, rgt integer, open_dt date, recon_dt date, acct_type char(1), name varchar(35), descrip varchar(50), open_bal integer default 0, rec_bal integer default 0)
-INSERT INTO accounts VALUES(1,2,0,NULL,NULL,'',NULL,'E','Expense','',0,0)
-INSERT INTO accounts VALUES(2,3,0,NULL,NULL,'',NULL,'L','Liability','',0,0)
-INSERT INTO accounts VALUES(3,4,0,NULL,NULL,'',NULL,'A','Asset','',0,0)
-INSERT INTO accounts VALUES(4,5,0,NULL,NULL,'',NULL,'I','Income','',0,0)
-INSERT INTO accounts VALUES(5,6,0,NULL,NULL,'',NULL,'Q','Equity','',0,0)
-INSERT INTO accounts VALUES(6,7,2,NULL,NULL,'2006-02-26',NULL,'E','Bank Chgs','',0,0)
-INSERT INTO accounts VALUES(7,8,2,NULL,NULL,'2006-02-26',NULL,'E','Cash','',0,0)
-INSERT INTO accounts VALUES(8,9,2,NULL,NULL,'2006-02-26',NULL,'E','Clothing','',0,0)
-INSERT INTO accounts VALUES(9,10,2,NULL,NULL,'2006-02-26',NULL,'E','Dining','',0,0)
-INSERT INTO accounts VALUES(10,11,2,NULL,NULL,'2006-02-26',NULL,'E','Donations','',0,0)
-INSERT INTO accounts VALUES(11,12,2,NULL,NULL,'2006-02-26',NULL,'E','Gifts','',0,0)
-INSERT INTO accounts VALUES(12,13,2,NULL,NULL,'2006-02-26',NULL,'E','Groceries','',0,0)
-INSERT INTO accounts VALUES(13,14,2,NULL,NULL,'2006-02-26',NULL,'E','Income Tax','',0,0)
-INSERT INTO accounts VALUES(14,15,2,NULL,NULL,'2006-02-26',NULL,'E','Medical','',0,0)
-INSERT INTO accounts VALUES(15,16,2,NULL,NULL,'2006-02-26',NULL,'E','Mortgage','',0,0)
-INSERT INTO accounts VALUES(16,17,2,NULL,NULL,'2006-02-26',NULL,'E','Rent','',0,0)
-INSERT INTO accounts VALUES(17,18,2,NULL,NULL,'2006-02-26',NULL,'E','Subscriptions','',0,0)
-INSERT INTO accounts VALUES(18,19,2,NULL,NULL,'2006-02-26',NULL,'E','Travel','',0,0)
-INSERT INTO accounts VALUES(19,20,2,NULL,NULL,'2006-02-26',NULL,'E','Utilities','',0,0)
-INSERT INTO accounts VALUES(20,21,6,NULL,NULL,'2006-01-01',NULL,'Q','Opening Balances','',0,0)
-INSERT INTO accounts VALUES(21,22,2,NULL,NULL,'2016-01-05',NULL,'E','Gas/Petrol','',0,0)
-INSERT INTO accounts VALUES(22,23,5,NULL,NULL,'2015-01-01',NULL,'I','Salary','',0,0)
-INSERT INTO accounts VALUES(23,24,2,NULL,NULL,'2006-02-26',NULL,'E','Books, Publications','',0,0)
-CREATE TABLE payees (id integer primary key autoincrement, payee_id integer, name varchar(35) not null)
-CREATE TABLE journal (id integer primary key autoincrement, txnid integer not null, from_acct integer not null, txn_dt date not null, checkno varchar(12), split boolean default 0, payee_id integer, to_acct integer, memo varchar(35), status char(1) not null default ' ', recon_dt date, amount integer not null)
-CREATE TABLE splits (id integer primary key autoincrement, txnid integer not null references journal(txnid), to_acct integer not null references accounts(acct_id), memo varchar(35), payee_id integer references payees(payee_id), amount integer not null)
-DELETE FROM sqlite_sequence
-INSERT INTO sqlite_sequence VALUES('accounts',24)
-INSERT INTO sqlite_sequence VALUES('payees',1)
-INSERT INTO sqlite_sequence VALUES('journal',1)
-INSERT INTO sqlite_sequence VALUES('splits',1)
-CREATE INDEX journal_ndx on journal (from_acct, txn_dt, checkno, txnid)
+BEGIN TRANSACTION;
+CREATE TABLE accounts (id integer primary key autoincrement, acct_id integer, parent integer, lft integer, rgt integer, open_dt date, recon_dt date, acct_type char(1), name varchar(35), descrip varchar(50), open_bal integer default 0, rec_bal integer default 0);
+INSERT INTO accounts VALUES(1,2,0,NULL,NULL,'',NULL,'E','Expense','',0,0);
+INSERT INTO accounts VALUES(2,3,0,NULL,NULL,'',NULL,'L','Liability','',0,0);
+INSERT INTO accounts VALUES(3,4,0,NULL,NULL,'',NULL,'A','Asset','',0,0);
+INSERT INTO accounts VALUES(4,5,0,NULL,NULL,'',NULL,'I','Income','',0,0);
+INSERT INTO accounts VALUES(5,6,0,NULL,NULL,'',NULL,'Q','Equity','',0,0);
+INSERT INTO accounts VALUES(6,7,2,NULL,NULL,'2006-02-26',NULL,'E','Bank Chgs','',0,0);
+INSERT INTO accounts VALUES(7,8,2,NULL,NULL,'2006-02-26',NULL,'E','Cash','',0,0);
+INSERT INTO accounts VALUES(8,9,2,NULL,NULL,'2006-02-26',NULL,'E','Clothing','',0,0);
+INSERT INTO accounts VALUES(9,10,2,NULL,NULL,'2006-02-26',NULL,'E','Dining','',0,0);
+INSERT INTO accounts VALUES(10,11,2,NULL,NULL,'2006-02-26',NULL,'E','Donations','',0,0);
+INSERT INTO accounts VALUES(11,12,2,NULL,NULL,'2006-02-26',NULL,'E','Gifts','',0,0);
+INSERT INTO accounts VALUES(12,13,2,NULL,NULL,'2006-02-26',NULL,'E','Groceries','',0,0);
+INSERT INTO accounts VALUES(13,14,2,NULL,NULL,'2006-02-26',NULL,'E','Income Tax','',0,0);
+INSERT INTO accounts VALUES(14,15,2,NULL,NULL,'2006-02-26',NULL,'E','Medical','',0,0);
+INSERT INTO accounts VALUES(15,16,2,NULL,NULL,'2006-02-26',NULL,'E','Mortgage','',0,0);
+INSERT INTO accounts VALUES(16,17,2,NULL,NULL,'2006-02-26',NULL,'E','Rent','',0,0);
+INSERT INTO accounts VALUES(17,18,2,NULL,NULL,'2006-02-26',NULL,'E','Subscriptions','',0,0);
+INSERT INTO accounts VALUES(18,19,2,NULL,NULL,'2006-02-26',NULL,'E','Travel','',0,0);
+INSERT INTO accounts VALUES(19,20,2,NULL,NULL,'2006-02-26',NULL,'E','Utilities','',0,0);
+INSERT INTO accounts VALUES(20,21,6,NULL,NULL,'2006-01-01',NULL,'Q','Opening Balances','',0,0);
+INSERT INTO accounts VALUES(21,22,2,NULL,NULL,'2016-01-05',NULL,'E','Gas/Petrol','',0,0);
+INSERT INTO accounts VALUES(22,23,5,NULL,NULL,'2015-01-01',NULL,'I','Salary','',0,0);
+INSERT INTO accounts VALUES(23,24,2,NULL,NULL,'2006-02-26',NULL,'E','Books, Publications','',0,0);
+CREATE TABLE payees (id integer primary key autoincrement, payee_id integer, name varchar(35) not null);
+CREATE TABLE journal (id integer primary key autoincrement, txnid integer not null, from_acct integer not null, txn_dt date not null, checkno varchar(12), split boolean default 0, payee_id integer, to_acct integer, memo varchar(35), status char(1) not null default ' ', recon_dt date, amount integer not null);
+CREATE TABLE splits (id integer primary key autoincrement, txnid integer not null references journal(txnid), to_acct integer not null references accounts(acct_id), memo varchar(35), payee_id integer references payees(payee_id), amount integer not null);
+DELETE FROM sqlite_sequence;
+INSERT INTO sqlite_sequence VALUES('accounts',24);
+INSERT INTO sqlite_sequence VALUES('payees',1);
+INSERT INTO sqlite_sequence VALUES('journal',1);
+INSERT INTO sqlite_sequence VALUES('splits',1);
+CREATE TABLE recon (id integer primary key autoincrement, from_acct integer, stmt_start_bal integer, stmt_end_bal integer, stmt_close_date date);
+CREATE INDEX journal_ndx on journal (from_acct, txn_dt, checkno, txnid);
 COMMIT
