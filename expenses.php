@@ -32,5 +32,5 @@ $fields = array(
 
 $form->set($fields);
 
-view('Weekly Expenses', [], 'expenses2.php', 'expenses');
+view('Weekly Expenses', [], 'expenses2.php', 'expenses', 'from_date');
 

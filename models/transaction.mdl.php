@@ -402,29 +402,29 @@ class transaction
 			$post['split'] = 0;
 		}
 
-		// massage dates
-
-		// $post['txn_dt'] = pdate::reformat($date_template, $post['txn_dt'], 'Y-m-d');
-
-		// if (!empty($post['recon_dt'])) {
-		//	$post['recon_dt'] = pdate::reformat($date_template, $post['recon_dt'], 'Y-m-d');
-		// }
-
-		// integerize amount
-
 		if (!isset($post['status'])) {
 			$post['status'] = ' ';
 		}
+
+		// integerize amount
 
 		if ($post['status'] == 'V') {
 			$post['amount'] = 0;
 		}
 		else {
 			if (!empty($post['dr_amount'])) {
+				if (!is_numeric($post['dr_amount'])) {
+					emsg('Amount must be a numeric. You entered ' . $post['dr_amount']);
+					return FALSE;
+				}
 				$post['amount'] = - dec2int($post['dr_amount']);
 			}
 
 			if (!empty($post['cr_amount'])) {
+				if (!is_numeric($post['cr_amount'])) {
+					emsg('Amount must be a numeric. You entered ' . $post['cr_amount']);
+					return FALSE;
+				}
 				$post['amount'] = dec2int($post['cr_amount']);
 			}
 		}
@@ -437,7 +437,7 @@ class transaction
 			}
 		
 			if ($post['to_acct'] == '0') {
-				emsg('F','Normal transactions  must have a valid to account');
+				emsg('F','Normal transactions must have a valid to account');
 				return FALSE;
 			}
 		}
