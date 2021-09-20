@@ -387,6 +387,7 @@ class transaction
 
 	function add_transaction($post)
 	{
+		die('Entering add_transaction');
 		$this->db->begin();
 
 		// get next transaction ID
@@ -504,6 +505,9 @@ class transaction
 			}
 
 			if ($check_amount != 0) {
+				instrument('check_amount', $check_amount);
+				instrument('POST', $post);
+				die("Amounts didn't add up.");
 				emsg('F', "Split amounts don't add up to transaction amount");
 				$this->db->rollback();
 				return FALSE;

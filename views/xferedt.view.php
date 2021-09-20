@@ -1,17 +1,12 @@
 
 <form action="<?php echo $return; ?>" method="post">
 
-<?php $form->hidden('txnid', $txn['txnid']); ?>
+<?php $form->hidden('txnid', $txns[0]['txnid']); ?>
 <?php $form->hidden('txntype', 'xfer'); ?>
 
-<h3>Transaction ID: <?php echo $txn['txnid']; ?></h3>
+<h3>Transaction ID: <?php echo $txns[0]['txnid']; ?></h3>
 
 <table>
-
-<tr>
-<td><label>Transaction ID</label></td>
-<td colspan="2"><?php echo $txns[0]['txnid']; ?></td>
-</tr>
 
 <tr>
 <td><label>From Acct</label></td>
