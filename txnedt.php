@@ -163,7 +163,7 @@ if ($max_txns == 1) {
 
 	$form->set($fields);
 
-	view('Edit Transaction', ['txns' => $txns, 'statuses' => $statuses, 'max_txns' => $max_txns], 'txnupd.php', 'txnedt');
+	view('Edit Transaction', ['txns' => $txns, 'statuses' => $statuses, 'max_txns' => $max_txns, 'max_splits' => $max_splits, 'splits' => $splits], 'txnupd.php', 'txnedt');
 
 }
 else {
