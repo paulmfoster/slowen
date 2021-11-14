@@ -1,11 +1,9 @@
 <?php
 
 $links = [
-	'Slowen' => [
+	'Entity' => [
 		'Change Entity' => 'entity.php',
-		'Add Entity' => 'entadd.php',
-		'Bug Report' => 'bugs.php',
-		'Feature Request' => 'bugs.php'
+		'Add Entity' => 'entadd.php'
 	],
 	'Accounts' => [
 		'Register' => 'register.php',
@@ -42,7 +40,9 @@ $links = [
 	],
 	'Help' => [
 		'Introduction' => 'index.php',
-		'History' => 'history.php'
+		'History' => 'history.php',
+		'Bug Report' => 'bugs.php',
+		'Feature Request' => 'bugs.php'
 	]
 ];
 
