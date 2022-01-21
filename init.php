@@ -68,6 +68,52 @@ function fork($varname, $method, $failurl)
 	return $var;
 }
 
+function coldstart($db)
+{
+	if (!file_exists('coldstart.sql')) {
+		die("Selected entity needs the file 'coldstart.sql' to start, and it's missing.");
+	}
+	$lines = file('coldstart.sql', FILE_IGNORE_NEW_LINES);
+	foreach ($lines as $line) {
+		$db->query($line);
+	}
+}
+
+function make_config()
+{
+	$str = <<<END
+programmer_email = paulf@quillandmouse.com
+charset = us-ascii
+language = en_us
+to = paulf@quillandmouse.com
+session_name = slowen4
+dbdriv = SQLite3
+date_template = "mdy|m/d/y|m-d-y"
+app_nick = slowen
+app_name = Slowen
+incdir = "includes/"
+modeldir = "models/"
+libdir = "libraries/"
+ctldir = ""
+viewdir = "views/"
+printdir = "printq/"
+imgdir = "images/"
+confirm_transactions = 0
+datadir = ""
+entity[1] = Default
+END;
+
+	file_put_contents('config/config.ini', $str);
+}
+
+///// END FUNCTIONS
+
+$cfgfile = 'config/config.ini';
+
+if (!file_exists($cfgfile)) {
+	make_config();
+} 
+
 $cfg = parse_ini_file('config/config.ini');
 
 $entities = array();
@@ -153,6 +199,10 @@ $atnames = array(
 
 // establish the entity
 
+// for testing...
+// unset($_SESSION['entity_num']);
+// unset($_SESSION['entity_name']);
+
 $sess_entity = $_SESSION['entity_num'] ?? NULL;
 $post_entity = $_POST['entity_num'] ?? NULL;
 
@@ -171,8 +221,13 @@ else {
 // entity must be establish before this point, so we can instantiate the
 // database
 
-$dbfile = $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
-$cfg['dbdata'] = $dbfile;
+$cfg['dbdata'] = $cfg['datadir'] . $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
+$coldstart = file_exists($cfg['dbdata']) ? FALSE : TRUE;
+
 $db = new database($cfg);
+
+if ($coldstart) {
+	coldstart($db);
+}
 
 

@@ -92,3 +92,8 @@ That means you can change this software if you want to, but if you
 distribute it, you must provide the source code for it. That's an
 oversimplification, but if it's really important to you, read the license.
 
+## Example Screens
+
+![Transaction Entry Screen](images/slowen-txn-entry.png)
+![Register Screen](images/slowen-register.png)
+
