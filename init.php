@@ -111,6 +111,13 @@ END;
 $cfgfile = 'config/config.ini';
 
 if (!file_exists($cfgfile)) {
+	if (!is_dir('config')) {
+		mkdir('config', 0755, TRUE);
+		if (!is_dir('config')) {
+			die('Unable to create config directory. Aborting.');
+		}
+		// TODO: change ownership...
+	}
 	make_config();
 } 
 
