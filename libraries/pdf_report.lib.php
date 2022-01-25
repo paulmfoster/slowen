@@ -45,6 +45,7 @@ class pdf_report
 	function print_line($text)
 	{
 		$this->pdf->Text($this->x, $this->y, $text);
+		$this->skip_line();
 	}
 
 	function skip_line($num = 1)

@@ -170,6 +170,7 @@ class audit
 		$cash = 0;
 		$ltdebt = 0;
 		$stdebt = 0;
+		$equity = 0; //
 
 		$nbals = count($from_bals); // $to_bals should have same count
 		for ($i = 0; $i < $nbals; $i++) {
@@ -193,8 +194,12 @@ class audit
 				$stdebt += $diff;
 				break;
 			case 'L': 
-				// liability
+				// liability (loans)
 				$ltdebt += $diff;
+				break;
+			case 'Q': //
+				// equity
+				$equity += $diff;
 				break;
 			}
 		}
@@ -233,7 +238,7 @@ class audit
 		// now we have cash, ltdebt, stdebt, total_exp, total_inc, inc_exp
 		// also arrays: $totals, $incs, $exps
 
-		$final = $cash - $inc_exp + $ltdebt + $stdebt;
+		$final = $cash - $inc_exp + $ltdebt + $stdebt + $equity; //
 
 		$analysis = array(
 			array('name' => 'Cash', 'total' => $cash),
@@ -242,13 +247,15 @@ class audit
 			array('name' => 'Inc/Exp', 'total' => $inc_exp),
 			array('name' => 'S/T Debt', 'total' => $stdebt),
 			array('name' => 'L/T Debt', 'total' => $ltdebt),
-			array('name' => 'Difference', 'total' => $final),
+			array('name' => "Owner's Equity", 'total' => $equity), //
+			array('name' => 'Difference', 'total' => $final)
 		);
 
 		// Now we polish up the return array
 		$data['balances'] = $balances;
 		$data['incomes'] = $incomes;
 		$data['expenses'] = $expenses;
+		$data['equity'] =  $equity; //
 		$data['analysis'] = $analysis;
 
 		return $data;	
