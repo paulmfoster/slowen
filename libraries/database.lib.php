@@ -6,7 +6,6 @@ class database
 
 	function __construct($cfg)
 	{
-
 		$dvr = strtolower($cfg['dbdriv']);
 		switch ($dvr) {
 		case 'sqlite':
@@ -26,6 +25,11 @@ class database
 		}
 
 		$this->driver = $dvr;
+	}
+
+	function status()
+	{
+		return $this->dbh->status();
 	}
 
 	function fatal($pgmr_message)

@@ -31,14 +31,33 @@ class pdosqlite3 implements dbiface
 
 	function __construct($cfg)
 	{
+		if (empty($cfg['dbdata'])) {
+			die('Configuration error: No database file specified.');
+		}
 		$filename = $cfg['datadir'] . $cfg['dbdata'];
+		$this->db_status = file_exists($filename) ? TRUE : FALSE;
 		$connect_string = 'sqlite:' . $filename;
 		try {
 			$this->handle = new PDO($connect_string);
 		}
 		catch (PDOException $e) {
-			die('Cannot connect to database!');
+			$this->db_status = FALSE;
+			// die('Cannot connect to database!');
 		}
+	}
+
+	/**
+	 * Report status of database.
+	 *
+	 * Returns FALSE if database is missing or there was some problem in
+	 * opening it.
+	 *
+	 * @return bool
+	 */
+
+	function status()
+	{
+		return $this->db_status;
 	}
 
 	function fatal($function, $sql)
@@ -387,7 +406,7 @@ class pdosqlite3 implements dbiface
 
 	function version()
 	{
-		return 1.5;
+		return 1.6;
 	}
 
 }

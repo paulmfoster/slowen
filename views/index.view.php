@@ -3,7 +3,7 @@
 
 <div class="box">
 
-<h3>Slowen Menu</h3>
+<h3>Entity Menu</h3>
 
 <dl>
 	<dt>Change Entity</dt>
@@ -14,14 +14,6 @@ business accounts.</dd>
 	<dt>Add Entity</dt>
 	<dd>
 Here you can add a new entity to Slowen.
-	</dd>
-	<dt>Bug Report</dt>
-	<dd>
-Bug? Are you serious? Okay, fine, report it here. If you <em>have</em> to.
-	</dd>
-	<dt>Feature Request</dt>
-	<dd>
-You want even <em>more</em> features? Ask for them here.
 	</dd>
 </dl>
 
@@ -77,12 +69,12 @@ Here you can search through all the transactions for a given expense category.
 <dd>This function allows you to add payees.
 </dd>
 
-<dt>Delete Payee</dt>
-<dd>This allows you to delete a payee, so long as it is not used in any transactions.
-</dd>
-
 <dt>Edit Payee</dt>
 <dd>Here you may edit the details of a given payee.
+</dd>
+
+<dt>Delete Payee</dt>
+<dd>This allows you to delete a payee, so long as it is not used in any transactions.
 </dd>
 
 <dt>Search By Payee</dt>
@@ -112,7 +104,8 @@ intended for recording thecks.
 <dd>
 
 This selection is for entering deposits. This is money coming <em>in</em> to a
-bank account.
+bank account. This can be used to enter credits to other accounts. But payments
+from a bank account to a credit card should be entered as transfers.
 </dd>
 
 <dt>Credit Card</dt>
@@ -126,7 +119,7 @@ Here you enter credit card charges.
 
 This choice is for inter-account transfers. An example of this would be
 where you write a check to pay a credit card bill. For inter-account
-transfers, two transactions are generated from the user's data entry.
+transfers, two entries are generated from the user's data entry.
 One entry shows the money going out of the checking account, and the
 other shows the money coming into the credit card account.
 </dd>
@@ -154,14 +147,16 @@ shown a screen for entering the details for each one.
 <dt>Categories</dt>
 <dd>
 
-This choice allows you to search transactions by account or category.
+This choice allows you to search transactions by account or category. These
+are really the same thing; the word "category" applies mostly to income or
+expense transactions.
 </dd>
 
 <dt>
 <dt>Payees</dt>
 <dd>
 
-This choice allows you to search transactions by payee.
+This choice allows you to search transactions by payee, or recipient.
 </dd>
 
 </dl>
@@ -186,6 +181,7 @@ This is another way of getting a register for an account.
 <dt>Budget</dt>
 <dd>
 This allows you to see what you've spent on a certain category over a specified span of time.
+You specify the time period and the account/category or payee.
 </dd>
 
 <dt>Weekly Expenses</dt>
@@ -201,7 +197,7 @@ week, but any span of dates will work.
 
 This would typically be used at the end of a month to determine what has
 been spent, and what has been earned, broken down and checked to
-determine of everything balances.
+determine if everything balances.
 </dd>
 
 <dt>Yearly Audit</dt>
@@ -225,6 +221,16 @@ returns, as above, but for a whole year.
 <dd>
 
 This shows the history and some technical details for this software.
+</dd>
+
+<dt>Bug Report</dt>
+<dd>
+Bug? Are you serious? Okay, fine, report it here. If you <em>have</em> to.
+</dd>
+
+<dt>Feature Request</dt>
+<dd>
+You want even <em>more</em> features? Ask for them here.
 </dd>
 
 </dl>

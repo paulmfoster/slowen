@@ -328,17 +328,23 @@ class form
 		$fld = $this->fields[$field_name];
 		$opts = $fld['options'];
 
+		if (is_null($checked_value)) {
+			if (array_key_exists('checked', $fld)) {
+				$checked_value = $fld['checked'];
+			}
+		}
+
 		$str = '';
 		foreach ($opts as $option) {
 
 			$radio_string = $this->bare_radio($fld, $option, $checked_value);
 
-			// o Label
+			// Label o
 			if ($fld['direction'] === 'L') {
 				$str .= $option['lbl'] . '&nbsp;';
 				$str .= $radio_string;
 			}
-			// Label o
+			// o Label
 			elseif ($fld['direction'] === 'R') {
 				$str .= $radio_string;
 				$str .= '&nbsp;' . $option['lbl'];
@@ -657,7 +663,7 @@ class form
 
 	function version()
 	{
-		return 3.0;
+		return 3.1;
 	}
 }
 

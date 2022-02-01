@@ -2,6 +2,7 @@
 
 interface dbiface
 {
+	function status();
 	function begin_transaction();
 	function begin();
 	function query($sql);

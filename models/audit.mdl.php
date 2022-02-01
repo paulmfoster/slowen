@@ -275,7 +275,7 @@ class audit
 
 		$data = $this->do_audit($from_str, $to_str);
 		$data['time_frame'] = $year;
-		$data['filename'] = 'audit-' . strtolower($_SESSION['entity_name']) . '-' . $year . '-' . 'all' . '.pdf';
+		$data['filename'] = 'audit-' . strtolower($_SESSION['entity_data']) . '-' . $year . '-' . 'all' . '.pdf';
 
 		return $data;
 	}

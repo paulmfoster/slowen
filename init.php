@@ -1,177 +1,50 @@
 <?php
 
-/**
- * @copyright 2021 Paul M. Foster <paulf@quillandmouse.com>
- * @author Paul M. Foster <paulf@quillandmouse.com>
- * @license GPL2
- */
-
-/**
- * instrument()
- *
- * Used in debugging. It shows the type and value of any variable.
- *
- * @param string $label What do you want to label this?
- * @param mixed $var What do you want to see?
- *
- */
-
-function instrument($label, $var)
-{
-	echo $label . PHP_EOL;
-	echo '<pre>' . PHP_EOL;
-	print_r($var);
-	echo '</pre>' . PHP_EOL;
-}
-
-function redirect($url)
-{
-	header("Location: $url");
-	exit();
-}
-
-function model($name)
-{
-	global $cfg, $db;
-
-	$filename = $cfg['modeldir'] . $name . '.mdl.php';
-	if (!file_exists($filename)) {
-		die("Model $name doesn't exist!");
-	}
-	require_once($filename);
-	$obj = new $name($db);
-	return $obj;
-}
-
-function view($page_title, $data, $return, $view_file, $focus_field = '')
-{
-	global $cfg, $nav, $form;
-
-	extract($data);
-	include $cfg['viewdir'] . 'head.view.php';
-	include $cfg['viewdir'] . $view_file . '.view.php';
-	include $cfg['viewdir'] . 'footer.view.php';
-}
-
-function fork($varname, $method, $failurl)
-{
-	if ($method == 'P') {
-		$var = $_POST[$varname] ?? NULL;
-	}
-	elseif ($method == 'G') {
-		$var = $_GET[$varname] ?? NULL;
-	}
-	if (is_null($var)) {
-		header('Location: ' . $failurl);
-		exit;
-	}
-	return $var;
-}
-
-function coldstart($db)
-{
-	if (!file_exists('coldstart.sql')) {
-		die("Selected entity needs the file 'coldstart.sql' to start, and it's missing.");
-	}
-	$lines = file('coldstart.sql', FILE_IGNORE_NEW_LINES);
-	foreach ($lines as $line) {
-		$db->query($line);
-	}
-}
-
-function make_config()
-{
-	$str = <<<END
-programmer_email = paulf@quillandmouse.com
-charset = us-ascii
-language = en_us
-to = paulf@quillandmouse.com
-session_name = slowen4
-dbdriv = SQLite3
-date_template = "mdy|m/d/y|m-d-y"
-app_nick = slowen
-app_name = Slowen
-incdir = "includes/"
-modeldir = "models/"
-libdir = "libraries/"
-ctldir = ""
-viewdir = "views/"
-printdir = "printq/"
-imgdir = "images/"
-confirm_transactions = 0
-datadir = ""
-entity[1] = Default
-END;
-
-	file_put_contents('config/config.ini', $str);
-}
-
-///// END FUNCTIONS
+include 'functions.php';
 
 $cfgfile = 'config/config.ini';
-
 if (!file_exists($cfgfile)) {
-	if (!is_dir('config')) {
-		mkdir('config', 0755, TRUE);
-		if (!is_dir('config')) {
-			die('Unable to create config directory. Aborting.');
-		}
-		// TODO: change ownership...
-	}
-	make_config();
-} 
-
-$cfg = parse_ini_file('config/config.ini');
-
-$entities = array();
-foreach ($cfg['entity'] as $index => $value) {
-	$entities[] = array('entity_num' => $index, 'entity_name' => $value);
+	copy('config/config.sample', 'config/config.ini');
 }
 
-// This code is called at the beginning of the application.
-// It allows us to relocate our site anywhere without configuration.
-// It defines $base_dir and $base_url.
+$cfg = parse_ini_file($cfgfile);
 
-$protocol = 'http://';
-$http_host = $_SERVER['HTTP_HOST'];
-$base_dir = dirname(realpath(__FILE__)) . DIRECTORY_SEPARATOR;
-$base_dir_len = strlen($base_dir);
-$doc_root = $_SERVER['DOCUMENT_ROOT'];
-$doc_root_len = strlen($doc_root);
-if ($base_dir_len == $doc_root_len) {
-	$app_subdir = '';
-}                                                                                                                                               
-else {
-	$app_subdir = substr($base_dir, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
-}
-$base_url = sprintf("%s%s/%s", $protocol, $http_host, $app_subdir);
-
-$cfg['base_url'] = $base_url;
-$cfg['base_dir'] = $base_dir;
-
-// one month
-ini_set('session.gc_maxlifetime', 2592000);
-ini_set('session.cookie_lifetime', 2592000);
-session_set_cookie_params(2592000);
-session_name($cfg['session_name']);
+session_name($cfg['app_nick']);
+session_set_cookie_params(2592000); // one month
 session_start();
 
-require_once $cfg['incdir'] . 'errors.inc.php';
-require_once $cfg['incdir'] . 'numbers.inc.php';
-require_once $cfg['incdir'] . 'messages.inc.php';
-require_once $cfg['libdir'] . 'memory.lib.php';
-require_once $cfg['libdir'] . 'form.lib.php';
-$form = new form();
-require_once $cfg['libdir'] . 'navigation.lib.php';
-$nav = new navigation;
-require_once 'links.php';
-$nav->init('A', $links);
-require_once $cfg['libdir'] . 'database.lib.php';
-require_once $cfg['libdir'] . 'pdate.lib.php';
+// handle entity
+$post_entity = $_POST['entity_num'] ?? NULL;
+$sess_entity = $_SESSION['entity_num'] ?? NULL;
+$cfg_entity = array_key_exists('entity_name', $cfg);
 
+if (!$cfg_entity) {
+	redirect('entadd.php');
+}
+elseif (!is_null($post_entity)) {
+	$_SESSION['entity_num'] = $_POST['entity_num'];
+	$_SESSION['entity_name'] = $cfg['entity_name'][$_POST['entity_num']];
+	$_SESSION['entity_data'] = $cfg['entity_data'][$_POST['entity_num']];
+}
+elseif (is_null($sess_entity)) {
+	$_SESSION['entity_num'] = 1;
+	$_SESSION['entity_name'] = $cfg['entity_name'][1];
+	$_SESSION['entity_data'] = $cfg['entity_data'][1];
+}
+
+$cfg['dbdata'] = $_SESSION['entity_data'];
+
+require_once $cfg['libdir'] . 'database.lib.php';
+$db = new database($cfg);
+if (!$db->status()) {
+	make_tables($db);
+}
+
+// definitions
 define('DECIMALS', 2);
 define('DECIMAL_SYMBOL', '.');
 
+// account types
 $acct_types = array(
 	'I' => 'Income',
 	'E' => 'Expense',
@@ -184,14 +57,7 @@ $acct_types = array(
 );
 $max_acct_types = count($acct_types);
 
-$statuses = array(
-	'C' => 'Cleared',
-	'R' => 'Reconciled',
-	'V' => 'Void',
-	' ' => 'Uncleared'
-);
-$max_statuses = count($statuses);
-
+// account type abbreviations
 $atnames = array(
 	' ' => '',
 	'I' => '(inc)',
@@ -204,37 +70,22 @@ $atnames = array(
 	'S' => '(svgs)'
 );
 
-// establish the entity
+// transaction statuses
+$statuses = array(
+	'C' => 'Cleared',
+	'R' => 'Reconciled',
+	'V' => 'Void',
+	' ' => 'Uncleared'
+);
+$max_statuses = count($statuses);
 
-// for testing...
-// unset($_SESSION['entity_num']);
-// unset($_SESSION['entity_name']);
-
-$sess_entity = $_SESSION['entity_num'] ?? NULL;
-$post_entity = $_POST['entity_num'] ?? NULL;
-
-if (is_null($post_entity)) {
-	if (is_null($sess_entity)) {
-		$_SESSION['entity_num'] = 1;
-		$_SESSION['entity_name'] = $cfg['entity'][1];
-	}
-}
-else {
-	$_SESSION['entity_num'] = $_POST['entity_num'];
-	$_SESSION['entity_name'] = $cfg['entity'][$_POST['entity_num']];
-	emsg('S', "Entity has been set to {$_SESSION['entity_name']}.");
-}
-
-// entity must be establish before this point, so we can instantiate the
-// database
-
-$cfg['dbdata'] = $cfg['datadir'] . $cfg['app_nick'] . $_SESSION['entity_num'] . '.sq3';
-$coldstart = file_exists($cfg['dbdata']) ? FALSE : TRUE;
-
-$db = new database($cfg);
-
-if ($coldstart) {
-	coldstart($db);
-}
-
+// other libraries
+require_once $cfg['incdir'] . 'errors.inc.php';
+require_once $cfg['incdir'] . 'messages.inc.php';
+require_once $cfg['incdir'] . 'numbers.inc.php';
+require_once $cfg['libdir'] . 'pdate.lib.php';
+$nav = library('navigation');
+include 'navlinks.php';
+$nav->init('A', $nav_links);
+$form = library('form');
 

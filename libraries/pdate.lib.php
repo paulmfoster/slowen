@@ -94,12 +94,6 @@ class pdate
 	 * CONSTRUCTORS
 	 ***********************************************************/
 
-	/**
-	 * Don't call this from an application. You'll get an invalid date.
-	 * It's meant to be called internally, to produce an array of the
-	 * proper configuration.
-	 */
-
 	private static function blank_date()
 	{
 		$dt = array(

@@ -1,6 +1,6 @@
 <?php
 
-$links = [
+$nav_links = [
 	'Entity' => [
 		'Change Entity' => 'entity.php',
 		'Add Entity' => 'entadd.php'

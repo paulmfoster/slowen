@@ -4,14 +4,14 @@ class pdf_report
 {
 	function __construct()
 	{
-		global $cfg, $base_dir;
+		global $cfg;
 
 		define('FPDF_FONTPATH', 'fpdf/font/');
 		require_once('fpdf/fpdf.php');
 		$this->pdf = new FPDF('P','pt','Letter');
 		$this->font_size = 12;
 		$this->pdf->SetFont('Courier','',$this->font_size);
-		$this->dir = $base_dir . $cfg['printdir'];
+		$this->dir = $cfg['printdir'];
 		$this->x = 0;
 		$this->y = 0;
 		$this->top_margin = 0;

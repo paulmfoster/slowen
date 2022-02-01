@@ -5,9 +5,9 @@
 		<meta name="author" content="Paul M. Foster" />
 		<meta name="generator" content="vim, php" />
 
-		<link rel="shortcut icon" href="<?php echo $cfg['base_url']; ?>favicon.ico">
+		<link rel="shortcut icon" href="favicon.ico">
 		<!-- reload CSS each time -->
-		<link rel="stylesheet" type="text/css" href="<?php echo $cfg['base_url']; ?>style.css?v=<?php echo date('His'); ?>">
+		<link rel="stylesheet" type="text/css" href="style.css?v=<?php echo date('His'); ?>">
 
 		<title><?php echo $page_title; ?></title>
 	</head>
@@ -23,9 +23,11 @@
 <div class="container">
 <div id="header">
 	<h1 class="header-title">
+	<?php if (!isset($_SESSION) || !array_key_exists('entity_name', $_SESSION)): ?>
 	<span class="app-name"><?php echo $cfg['app_name']; ?></span>
-	&nbsp;
-	(<?php echo $_SESSION['entity_name'] ?? 'NONE'; ?>)
+	<?php else: ?>
+	<span class="app-name"><?php echo $_SESSION['entity_name']; ?></span>
+	<?php endif; ?>
 	&nbsp;
 	<span><?php echo '&nbsp;' . $page_title; ?></span>
 	</h1>
