@@ -25,7 +25,7 @@
 <td><input type="checkbox" name="id_<?php echo $txn['id']; ?>" value="1"/></td>
 
 <td><?php echo $txn['from_acct_name']; ?></td>
-<td class="align_right"><?php echo $txn['txn_dom']; ?></td>
+<td class="align-right"><?php echo $txn['txn_dom']; ?></td>
 
 <td>
 <?php echo $txn['payee_name']; ?>
