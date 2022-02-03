@@ -79,10 +79,20 @@ not use it with Slowen. This is a single-entry, cash-based system.
 </p>
 <h2>Signs</h2>
 <p>
-Double entry tends to be counter-intuitive regarding the "signs" of various
-transactions, regardless of what accountants will tell you. In my world, a 
-"credit" is positive and a "debit" is negative, even though this is not always
-true in double entry. For example, your checking and savings account should
+Double entry accounting tends to be counter-intuitive regarding the "signs" of various
+transactions, regardless of what accountants will tell you. According to the
+original Latin definition of "debit", it is an amount owed. "Credit" is
+the reverse-- an amount you have received. By these definitions, a debit
+would be a negative and a credit would be positive. All this is in relation to
+your cash or your net worth. This is not the way accountants see it, but
+it is the way Slowen treats it. If you get paid, your checking account shows
+a positive or credit transaction. If you pay a bill, your checking account
+shows a negative, since you paid money out. If you pay your credit card bill
+your checking account will show a reduction in cash or a debit. Your credit
+card account will show a credit, because you reduced the amount you owed.
+</p>
+<p>
+For example, your checking and savings account should
 always run with a positive balance unless you overdraw them. Conversely, your
 credit card should always run at a negative balance, because the figures on
 your statements are amounts you <em>owe</em>. When entering transactions into
@@ -93,7 +103,7 @@ or decrease in your cash or increase in how much you owe. A credit is always a
 positive, or an increase in cash or a decrease in how much you owe.
 </p>
 <p>
-The importance of "signs" becomes very important in reconciling accounts. Your
+"Signs" become very important in reconciling accounts. Your
 credit card statements will show you a positive balance, but the balance I show
 in Slowen will be the same amount, but negative, because your credit card
 balance is how much money you <em>owe</em>, not how much cash you have. If it

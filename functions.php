@@ -74,6 +74,21 @@ function fork($varname, $method, $failurl)
 	return $var;
 }
 
+function filled_out($post, $indexes)
+{
+	$errors = 0;
+	foreach ($indexes as $key => $value) {
+		if (! array_key_exists($value, $post)) {
+			$errors++;
+		}
+		elseif (is_null($post[$value])) {
+			$errors++;	
+		}
+	}
+
+	return ($errors == 0) ? TRUE : FALSE;
+}
+
 function redirect($url)
 {
 	header("Location: $url");

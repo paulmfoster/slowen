@@ -20,6 +20,11 @@ Here you can add a new entity to Slowen.
 <hr/>
 
 <h3>Accounts Menu</h3>
+
+"Accounts" are your checking, savings and credit card or loan accounts.
+They are also your "expense" and "income" categories. For our purposes,
+they are all called "accounts".
+
 <dl>
 <dt>Register</dt>
 
@@ -42,7 +47,7 @@ bank or credit card company.
 <dt>Add Account</dt>
 <dd>
 
-Here you may add checking, savings, credit card, income or expense accounts.
+Here you may add checking, savings, credit card, loan, income or expense accounts.
 </dd>
 
 <dt>Delete Account</dt>
@@ -88,7 +93,9 @@ Search through transactions by payee here.
 
 <h3>Transactions Menu</h3>
 
-Here you may enter the various types of transactions.
+Here you may enter the various types of transactions. Every deposit, check, charge
+or inter-account transfer is a "transaction". Some transactions you enter will
+create more than one actual "transaction" in the system. See "Transfers" below.
 
 <dl>
 
@@ -121,7 +128,7 @@ This choice is for inter-account transfers. An example of this would be
 where you write a check to pay a credit card bill. For inter-account
 transfers, two entries are generated from the user's data entry.
 One entry shows the money going out of the checking account, and the
-other shows the money coming into the credit card account.
+other shows the money coming into the credit card account (in the example above).
 </dd>
 
 <dt>Other/Split</dt>
@@ -139,6 +146,39 @@ shown a screen for entering the details for each one.
 
 </dl>
 
+<hr/>
+
+<h3>Scheduled Manu</h3>
+
+Scheduled transactions are those which you create, but which don't actually become
+real transactions until you tell the system to "activate" them. For example, if Netflix
+charges your credit card once a month on the 5th of the month, you can set up a scheduled
+or "recurring" transaction which will only become a real transaction when you tell it
+to "activate".
+
+<dl>
+<dt>Add Transaction</dt>
+<dd>
+
+This creates a transaction which can be activated at some future time.
+</dd>
+
+<dt>Delete Transaction</dt>
+<dd>
+This allows you to delete a scheduled transaction which is no longer needed.
+</dd>
+
+<dt>Activate Transaction</dt>
+<dd>
+This allows you to convert a "scheduled" transaction into a real one. This screen shows
+you all the scheduled transactions, and allows you to check off each one you want to
+turn into a real transaction for this month. Normally, you would run this option at the
+beginning of every month. <strong>Caution:</strong> Nothing prevents you from running
+this option repeatedly in a month, possibly giving you duplicate transactions.
+Pay attention.
+</dd>
+
+</dl>
 <hr/>
 
 <h3>Search Menu</h3>

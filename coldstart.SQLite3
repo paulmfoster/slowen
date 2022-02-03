@@ -23,6 +23,7 @@ INSERT INTO accounts VALUES(20,21,6,NULL,NULL,'2006-01-01',NULL,'Q','Opening Bal
 INSERT INTO accounts VALUES(21,22,2,NULL,NULL,'2016-01-05',NULL,'E','Gas/Petrol','',0,0);
 INSERT INTO accounts VALUES(22,23,5,NULL,NULL,'2015-01-01',NULL,'I','Salary','',0,0);
 INSERT INTO accounts VALUES(23,24,2,NULL,NULL,'2006-02-26',NULL,'E','Books, Publications','',0,0);
+CREATE TABLE scheduled (id integer primary key autoincrement, from_acct integer not null references accounts(acct_id), txn_dom integer not null, payee_id integer references payees(payee_id), to_acct integer references accounts(acct_id), memo varchar(35), amount integer not null);
 CREATE TABLE payees (id integer primary key autoincrement, payee_id integer, name varchar(35) not null);
 CREATE TABLE journal (id integer primary key autoincrement, txnid integer not null, from_acct integer not null, txn_dt date not null, checkno varchar(12), split boolean default 0, payee_id integer, to_acct integer, memo varchar(35), status char(1) not null default ' ', recon_dt date, amount integer not null);
 CREATE TABLE splits (id integer primary key autoincrement, txnid integer not null references journal(txnid), to_acct integer not null references accounts(acct_id), memo varchar(35), payee_id integer references payees(payee_id), amount integer not null);

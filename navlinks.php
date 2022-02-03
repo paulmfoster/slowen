@@ -26,6 +26,11 @@ $nav_links = [
 		'Transfer' => 'xferadd.php',
 		'Other/Split' => 'othadd.php'
 	],
+	'Scheduled' => [
+		'Add Transaction' => 'schadd.php',
+		'Delete Transaction' => 'schdel.php',
+		'Activate Transaction' => 'schact.php'
+	],
 	'Search' => [
 		'Accounts/Categories' => 'srchaccts.php',
 		'Payees' => 'srchpays.php'

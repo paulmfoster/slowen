@@ -165,12 +165,14 @@ libraries/navigation.lib.php
 libraries/pdate.lib.php
 libraries/pdf_report.lib.php
 libraries/pdosqlite3.lib.php
+migrate47to50.php
 models/account.mdl.php
 models/addtxn.mdl.php
 models/audit.mdl.php
 models/payee.mdl.php
 models/recon.mdl.php
 models/report.mdl.php
+models/scheduled.mdl.php
 models/transaction.mdl.php
 navlinks.php
 othadd.php
@@ -192,6 +194,12 @@ reconcont2.php
 register.php
 register2.php
 results.php
+schact.php
+schact2.php
+schadd.php
+schadd2.php
+schdel.php
+schdel2.php
 slowen.html
 srchaccts.php
 srchpays.php
@@ -244,6 +252,9 @@ views/reconfailed.view.php
 views/reconlist.view.php
 views/register.view.php
 views/results.view.php
+views/schact.view.php
+views/schadd.view.php
+views/schdel.view.php
 views/splitedt.view.php
 views/srchaccts.view.php
 views/srchpays.view.php
