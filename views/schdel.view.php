@@ -36,7 +36,7 @@
 <td><?php echo $txn['to_acct_name']; ?></td>
 
 <?php if ($txn['amount'] < 0): ?>
-<td class="align-right"><?php echo abs(int2dec($txn['amount'])); ?></td><td></td>
+<td class="align-right"><?php echo int2dec(- $txn['amount']); ?></td><td></td>
 <?php else: ?>
 <td></td><td class="align-right"><?php echo int2dec($txn['amount']); ?></td>
 <?php endif; ?>
