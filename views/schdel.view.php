@@ -25,7 +25,7 @@
 <td><input type="checkbox" name="id_<?php echo $txn['id']; ?>" value="1"/></td>
 
 <td><?php echo $txn['from_acct_name']; ?></td>
-<td><?php echo $txn['txn_dom']; ?></td>
+<td class="align_right"><?php echo $txn['txn_dom']; ?></td>
 
 <td>
 <?php echo $txn['payee_name']; ?>
@@ -36,9 +36,9 @@
 <td><?php echo $txn['to_acct_name']; ?></td>
 
 <?php if ($txn['amount'] < 0): ?>
-<td><?php echo abs(int2dec($txn['amount'])); ?></td><td></td>
+<td class="align-right"><?php echo abs(int2dec($txn['amount'])); ?></td><td></td>
 <?php else: ?>
-<td></td><td><?php echo int2dec($txn['amount']); ?></td>
+<td></td><td class="align-right"><?php echo int2dec($txn['amount']); ?></td>
 <?php endif; ?>
 
 </tr>
