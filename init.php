@@ -82,6 +82,7 @@ $max_statuses = count($statuses);
 // other libraries
 require_once $cfg['incdir'] . 'errors.inc.php';
 require_once $cfg['incdir'] . 'messages.inc.php';
+library('memory');
 require_once $cfg['incdir'] . 'numbers.inc.php';
 require_once $cfg['libdir'] . 'pdate.lib.php';
 $nav = library('navigation');
