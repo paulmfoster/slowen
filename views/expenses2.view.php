@@ -4,7 +4,7 @@
 <?php else: ?>
 
 <table>
-<tr><th>Date</th><th>Payee</th><th>Memo</th><th>Category</th><th>Amount</th></tr>
+<tr><th>Date</th><th>Account</th><th>Payee</th><th>Memo</th><th>Category</th><th>Amount</th></tr>
 
 <?php foreach ($expenses as $expense): ?>
 
@@ -12,6 +12,10 @@
 
 <td>
 <?php echo pdate::iso2am($expense['txn_dt']); ?>
+</td>
+
+<td>
+<?php echo $expense['fromname']; ?>
 </td>
 
 <td>

@@ -207,8 +207,23 @@ class report
 	
 	function get_expenses($from_date, $to_date)
 	{
-		$sql = "select j.*, a.name, a.name as acctname, p.name as payeename from journal as j, accounts as a, payees as p where j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' and a.acct_id = j.to_acct and a.acct_type = 'E' and p.payee_id = j.payee_id order by j.to_acct";
+		$sql = "select j.*, a.name as acctname, p.name as payeename from journal as j, accounts as a, payees as p where j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' and a.acct_id = j.to_acct and a.acct_type = 'E' and p.payee_id = j.payee_id order by j.to_acct";
 		$result = $this->db->query($sql)->fetch_all();
+
+		// add from_acct name
+		$sql = "SELECT acct_id, name FROM accounts WHERE acct_type in ('C', 'R', 'S')";
+		$accts = $this->db->query($sql)->fetch_all();
+
+		$nres = count($result);
+		for ($i = 0; $i < $nres; $i++) {
+			foreach ($accts as $acct) {
+				if ($result[$i]['from_acct'] == $acct['acct_id']) {
+					$result[$i]['fromname'] = $acct['name'];
+					break;
+				}
+			}
+		}
+
 		return $result;
 	}
 }
