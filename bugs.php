@@ -2,46 +2,46 @@
 
 include 'init.php';
 
-$action = $_POST['s1'] ?? 'virgin';
+$fields = [
+	'app_title' => [
+		'name' => 'app_title',
+		'type' => 'hidden',
+		'value' => $cfg['app_name']
+	],
+	'name' => [
+		'name' => 'name',
+		'type' => 'text',
+		'size' => 50,
+		'maxlength' => 50
+	],
+	'email' => [
+		'name' => 'email',
+		'type' => 'text',
+		'size' => 50,
+		'maxlength' => 50,
+		'required' => 1
+	],
+	'remark' => [
+		'name' => 'remark',
+		'type' => 'textarea',
+		'rows' => 20,
+		'cols' => 50,
+		'size' => 1024,
+		'required' => 1
+	],
+	's1' => [
+		'name' => 's1',
+		'type' => 'submit',
+		'value' => 'Submit'
+	]
+];
 
-if ($action == 'virgin') {
-	$fields = [
-		'app_title' => [
-			'name' => 'app_title',
-			'type' => 'hidden',
-			'value' => $cfg['app_name']
-		],
-		'name' => [
-			'name' => 'name',
-			'type' => 'text',
-			'size' => 50,
-			'maxlength' => 50
-		],
-		'email' => [
-			'name' => 'email',
-			'type' => 'text',
-			'size' => 50,
-			'maxlength' => 50,
-			'required' => 1
-		],
-		'remark' => [
-			'name' => 'remark',
-			'type' => 'textarea',
-			'rows' => 20,
-			'cols' => 50,
-			'size' => 1024,
-			'required' => 1
-		],
-		's1' => [
-			'name' => 's1',
-			'type' => 'submit',
-			'value' => 'Submit'
-		]
-	];
+$form->set($fields);
 
-	$form->set($fields);
-}
-else {
+$action = $_POST['s1'] ?? NULL;
+
+if (!is_null($action)) {
+
 	if (empty($_POST['email'])) {
 		emsg('F', 'You must include a name and email');
 	}
