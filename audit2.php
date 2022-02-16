@@ -20,8 +20,8 @@ else {
 	$data = $audit->monthly_audit($_POST['year'], $_POST['month']);
 }
 
-$print_filename = $cfg['base_dir'] . $cfg['printdir'] . $data['filename'];
-$web_filename = $cfg['base_url'] . $cfg['printdir'] . $data['filename'];
+$print_filename = $cfg['printdir'] . $data['filename'];
+$web_filename = $cfg['printdir'] . $data['filename'];
 
 $audit->print_audit($data, $print_filename);
 
