@@ -1,5 +1,5 @@
 
-<h2>Print report here: <a href="<?php echo $web_filename; ?>" target="_blank"><img src="<?php echo $cfg['base_url'] . $cfg['imgdir'] . 'pdf-48x48.png'; ?>"></a>
+<h2>Print report here: <a href="<?php echo $web_filename; ?>" target="_blank"><img src="<?php echo $cfg['imgdir'] . 'pdf-48x48.png'; ?>"></a>
 
 <!-- balances -->
 
