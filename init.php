@@ -1,14 +1,41 @@
 <?php
 
-include 'functions.php';
-
 $cfgfile = 'config/config.ini';
 if (!file_exists($cfgfile)) {
 	copy('config/config.sample', 'config/config.ini');
 }
+$cfg = parse_ini_file('config/config.ini');
 
-$cfg = parse_ini_file($cfgfile);
+/* =========== GROTTO CODE CHECK ============= */
 
+if (!file_exists($cfg['incdir']) || !file_exists($cfg['libdir'])) {
+	$message = <<< EOT
+
+This software relies on another package called "grotto", and I can't find
+it on your system. It should be available from where you got this software.
+Download it from there and install it, ideally located outside the tree for
+this software. Optionally, you may locate it within the tree for this
+software. In your main software, you should have a file called
+<code>config/config.ini</code>.  Look for the following two lines in it:
+
+incdir = "../grotto/"
+libdir = "../grotto/"
+
+Edit those lines to point to the the location where you downloaded the
+"grotto" package.
+
+EOT;
+	
+	die(nl2br($message));
+}
+
+/* ========== END GROTTO CODE CHECK =========== */
+
+include $cfg['incdir'] . 'misc.inc.php';
+
+// 2592000 = 30 days
+ini_set('session.gc_maxlifetime', 2592000);
+ini_set('session.cookie_lifetime', 2592000);
 session_name($cfg['app_nick']);
 session_set_cookie_params(2592000); // one month
 session_start();
@@ -33,12 +60,6 @@ elseif (is_null($sess_entity)) {
 }
 
 $cfg['dbdata'] = $_SESSION['entity_data'];
-
-require_once $cfg['libdir'] . 'database.lib.php';
-$db = new database($cfg);
-if (!$db->status()) {
-	make_tables($db);
-}
 
 // definitions
 define('DECIMALS', 2);
@@ -79,14 +100,19 @@ $statuses = array(
 );
 $max_statuses = count($statuses);
 
-// other libraries
-require_once $cfg['incdir'] . 'errors.inc.php';
-require_once $cfg['incdir'] . 'messages.inc.php';
+$db = library('database', $cfg);
+if (!$db->status()) {
+	make_tables($db);
+}
+
+include $cfg['incdir'] . 'errors.inc.php';
+include $cfg['incdir'] . 'messages.inc.php';
 library('memory');
-require_once $cfg['incdir'] . 'numbers.inc.php';
-require_once $cfg['libdir'] . 'pdate.lib.php';
+include $cfg['incdir'] . 'numbers.inc.php';
+library('pdate');
 $nav = library('navigation');
 include 'navlinks.php';
 $nav->init('A', $nav_links);
+
 $form = library('form');
 
