@@ -1,15 +1,13 @@
 <?php
 
 $cfg = parse_ini_file('config/config.ini');
-
-require_once 'functions.php';
-require_once $cfg['incdir'] . 'errors.inc.php';
-require_once $cfg['incdir'] . 'messages.inc.php';
-require_once $cfg['incdir'] . 'numbers.inc.php';
-
-library('pdate');
-$form = library('form');
-$nav = library('navigation');
+include $cfg['grottodir'] . 'misc.inc.php';
+grotto('errors');
+grotto('messages');
+grotto('numbers');
+grotto('pdate');
+$form = grotto('form');
+$nav = grotto('navigation');
 $nav->init('L', []);
 
 $fields = [

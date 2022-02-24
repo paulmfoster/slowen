@@ -1,13 +1,14 @@
 <?php
 
-include 'functions.php';
+$cfg = parse_ini_file('config/config.ini');
+include $cfg['grottodir'] . 'misc.inc.php';
 fork('s1', 'P', 'index.php');
 
-$cfg = parse_ini_file('config/config.ini');
-include $cfg['incdir'] . 'messages.inc.php';
-include $cfg['incdir'] . 'errors.inc.php';
+grotto('messages');
+grotto('errors');
+
 $cfg['dbdata'] = $_POST['database_name'];
-$db = library('database', $cfg);
+$db = grotto('database', $cfg);
 
 make_tables($db);
 
