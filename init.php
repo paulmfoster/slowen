@@ -6,32 +6,8 @@ if (!file_exists($cfgfile)) {
 }
 $cfg = parse_ini_file('config/config.ini');
 
-/* =========== GROTTO CODE CHECK ============= */
-
-if (!file_exists($cfg['incdir']) || !file_exists($cfg['libdir'])) {
-	$message = <<< EOT
-
-This software relies on another package called "grotto", and I can't find
-it on your system. It should be available from where you got this software.
-Download it from there and install it, ideally located outside the tree for
-this software. Optionally, you may locate it within the tree for this
-software. In your main software, you should have a file called
-<code>config/config.ini</code>.  Look for the following two lines in it:
-
-incdir = "../grotto/"
-libdir = "../grotto/"
-
-Edit those lines to point to the the location where you downloaded the
-"grotto" package.
-
-EOT;
-	
-	die(nl2br($message));
-}
-
-/* ========== END GROTTO CODE CHECK =========== */
-
-include $cfg['incdir'] . 'misc.inc.php';
+include 'grotto_check.php';
+include $cfg['grottodir'] . 'misc.inc.php';
 
 // 2592000 = 30 days
 ini_set('session.gc_maxlifetime', 2592000);
@@ -100,19 +76,19 @@ $statuses = array(
 );
 $max_statuses = count($statuses);
 
-$db = library('database', $cfg);
+$db = grotto('database', $cfg);
 if (!$db->status()) {
 	make_tables($db);
 }
 
-include $cfg['incdir'] . 'errors.inc.php';
-include $cfg['incdir'] . 'messages.inc.php';
-library('memory');
-include $cfg['incdir'] . 'numbers.inc.php';
-library('pdate');
-$nav = library('navigation');
+grotto('errors');
+grotto('messages');
+grotto('memory');
+grotto('numbers');
+grotto('pdate');
+$nav = grotto('navigation');
 include 'navlinks.php';
 $nav->init('A', $nav_links);
 
-$form = library('form');
+$form = grotto('form');
 
