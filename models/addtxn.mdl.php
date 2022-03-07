@@ -130,7 +130,7 @@ class addtxn
 			$post['amount'] = dec2int($post['amount']);
 		}
 
-		if ($post['split'] == 0) {
+		if ($post['split'] == 0 && $post['status'] != 'V') {
 
 			if (empty($post['payee_id'])) {
 				emsg('F', 'Normal transactions must have a valid payee');

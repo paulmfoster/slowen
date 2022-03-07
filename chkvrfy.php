@@ -3,6 +3,9 @@
 include 'init.php';
 $trans = model('addtxn');
 memory::merge($_POST);
+if (strlen(trim($_POST['dr_amount'])) == 0) {
+	$_POST['dr_amount'] = 0;
+}
 memory::set('amount', - $_POST['dr_amount']);
 
 if ($cfg['confirm_transactions'] == 0) {

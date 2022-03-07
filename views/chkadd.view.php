@@ -29,6 +29,15 @@
 </tr>
 
 <tr>
+<td>
+<label for="status">Void</label>
+</td>
+<td>
+<?php $form->checkbox('status'); ?>
+</td>
+</tr>
+
+<tr>
 <td><label for="payee_id">Payee Name</label></td>
 <td>
 <?php $form->select('payee_id'); ?>

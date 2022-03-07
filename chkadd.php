@@ -50,6 +50,11 @@ $fields = array(
 		'size' => 12,
 		'maxlength' => 12
 	),
+	'status' => array(
+		'name' => 'status',
+		'type' => 'checkbox',
+		'value' => 'V'
+	),
 	'payee_id' => array(
 		'name' => 'payee_id',
 		'type' => 'select',
