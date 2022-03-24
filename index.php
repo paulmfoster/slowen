@@ -21,10 +21,6 @@ define('CTLDIR', APPDIR . 'controllers/');
 // provide common utilities
 include INCDIR . 'utils.inc.php';
 
-// load basic error/messaging code
-load('errors');
-load('messages');
-
 // load the front controller
 load('controller');
 

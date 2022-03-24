@@ -92,6 +92,8 @@ if (!file_exists($dsn[1])) {
 else {
     $db = load('database', $cfg['dsn']);
 }
+load('errors');
+load('messages');
 $form = load('form');
 $nav = load('navigation');
 $nav->init('A', $nav_links);
