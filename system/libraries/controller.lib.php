@@ -23,6 +23,7 @@ class controller
         else {
             die('View file ' . VIEWDIR . $view_file . ' does not exist');
         }
+		exit();
     }
 
 }
