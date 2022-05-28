@@ -182,7 +182,6 @@ class pdate
 	 * Original calculations from http://www.astro.uu.nl/~strous/AA/en/reken/juliaansedag.html
 	 *
 	 * @param array $dt date arrayr
-	 *
 	 * @return integer Julian day
 	 */
 
@@ -196,7 +195,7 @@ class pdate
 	 * Internal function, returns array of y, m, d
 	 * Calculations from http://www.astro.uu.nl/~strous/AA/en/reken/juliaansedag.html
 	 *
-	 * @param array Date array 
+	 * @param array pdate 
 	 * @return array Array of integers as year, month and day of month
 	 */
 
@@ -210,12 +209,9 @@ class pdate
 		return $dt;
 	}
 
-
 	/*============================================================
 	 * END OF INTERNAL FUNCTIONS
 	 *===========================================================*/
-
-
 
 	/**
 	 * Normalize function
@@ -227,7 +223,7 @@ class pdate
 	 * Virtually all the functions this member would normally call have
 	 * been moved internally, to be internal functions.
 	 *
-	 * @param array $dt A partially built date
+	 * @param array $dt A partially built pdate
 	 * @param char $starting_point 'd' if the day/month/year are already
 	 * in place, or 'j' if the jday is already in place.
 	 *
@@ -258,7 +254,9 @@ class pdate
 
 
 	/**
-	 * Set $this to current date
+	 * Return today's date as pdate object/array.
+     *
+     * @return array pdate
 	 */
 
 	static function now()
@@ -275,13 +273,13 @@ class pdate
 	}
 
 	/**
-	 * Sets internal date of date object from integers
+	 * Return pdate object from year, month and day
 	 *
 	 * @param integer $yr Year
 	 * @param integer $mo Month
 	 * @param integer $da Day of month
 	 *
-	 * @return array Date array
+	 * @return array pdate
 	 */
 
 	static function fromints($yr, $mo, $da) 
@@ -305,9 +303,10 @@ class pdate
 	}
 
 	/**
-	 * Sets internal date of date object from julian day number
+	 * Return pdate based on julian day number
 	 *
 	 * @param integer $julian Julian day number
+     * @return array pdate
 	 */
 
 	static function fromjul($julian)
@@ -321,26 +320,26 @@ class pdate
 	}
 
 	/**
-	 * Set internal date from ISO 8601 date (ccyy-mm-dd)
+	 * Return pdate based on ISO 8601 date (ccyy-mm-dd)
 	 *
 	 * @param string $iso The ISO 8601 date
+     * @return array pdate
 	 */
 
 	static function fromiso($iso)
 	{
 		$dt = self::blank_date();
-		$dt['y'] = (int) substr($iso, 0, 4);
-		$dt['m'] = (int) substr($iso, 5, 2);
-		$dt['d'] = (int) substr($iso, 8, 2);
+        list($dt['y'], $dt['m'], $dt['d']) = explode('-', $iso);
 		$dt = self::normalize($dt, 'd');
 
 		return $dt;
 	}
 
 	/**
-	 * Set internal date of date object from Quicken(R) date
+	 * Return pdate based on Quicken(R) date
 	 *
 	 * @param string $date Quicken date string
+     * @return array pdate
 	 */
 
 	static function fromqif($date)
@@ -379,16 +378,31 @@ class pdate
 		return $dt;
 	}
 
+    /**
+     * Return pdate object from Unix epoch seconds.
+     *
+     * @param integer Unix epoch seconds
+     * @return pdate object
+     */
+
+    static function fromepoch($secs)
+    {
+        $d1 = date('Y-m-d', $secs);
+        $d2 = explode('-', $dt);
+        $d3 = self::fromints($d2[0], $d2[1], $d2[2]);
+        return $d3; 
+    }
+
 	/**
 	 * Called from set() with no params
 	 * Routine returns pdate::now()
 	 *
-	 * @return array Date of today
+	 * @return array pdate array of today
 	 */
 
 	static private function set0()
 	{
-		return pdate::now();
+		return self::now();
 	}
 
 	/**
@@ -397,7 +411,7 @@ class pdate
 	 * @param string $fmt Format date string is expected to be in
 	 * @param string $date_str Date string
 	 *
-	 * @return array Date array (associative)
+	 * @return array pdate
 	 *
 	 */
 
@@ -480,7 +494,7 @@ class pdate
 	 * @param int $mo Month
 	 * @param int $dy Day (of month)
 	 *
-	 * @return array Date array (associative)
+	 * @return array pdate
 	 *
 	 */
 
@@ -507,7 +521,7 @@ class pdate
 	 * @param string|integer (optional) If string, presumed to be date string, else month
 	 * @param string|integer (optional) Day of month
 	 *
-	 * @return array The date, as derived
+	 * @return array pdate
 	 */
 
 	static function set()
@@ -548,10 +562,11 @@ class pdate
 
 	/**
 	 * Adds days (or subtracts) days to date object
-	 *
+     *
+     * @param array pdate
 	 * @param integer $numdays Number of days to add (or subtract, if negative)
 	 *
-	 * @return date Changed date object
+	 * @return array pdate
 	 */
 
 	static function adddays($dt, $numdays)
@@ -564,10 +579,11 @@ class pdate
 
 	/**
 	 * Add months to date object
-	 *
+     *
+     * @param array pdate
 	 * @param integer $nummonths Number of months to add (or subtract, if negative)
 	 *
-	 * @return Changed date object
+	 * @return array pdate
 	 */
 
 	static function addmonths($dt, $nummonths)
@@ -629,9 +645,10 @@ class pdate
 	/**
 	 * Add years to date object
 	 *
+     * @param array pdate
 	 * @param integer $numyears Number of years to add (or subtract, if negative)
 	 *
-	 * @return date Changed date object
+	 * @return array pdate
 	 */
 
 	static function addyears($dt, $numyears)
@@ -675,9 +692,10 @@ class pdate
 	 * Given the date of the date object, return date object revised
 	 * so that it is now the date of the beginning of the week (Friday, day 5)
 	 *
+     * @param array pdate
 	 * @param integer $eow (Optional) integer representing the day number (0 = Sunday) for end of week (sic)
 	 *
-	 * @return date Revised date object
+	 * @return array pdate
 	 */
 
 	static function begwk($dtobj, $eow = self::weday)
@@ -698,9 +716,10 @@ class pdate
 	 * Given the date of the date object, return date object revised
 	 * so that it is now the date of the end of the week (Friday, day 5)
 	 *
+     * @param array pdate
 	 * @param integer $eow (Optional) integer representing the day number (0 = Sunday) for end of week
 	 *
-	 * @return date Revised date object
+	 * @return array pdate
 	 */
 
 	static function endwk($dtobj, $eow = self::weday)
@@ -723,10 +742,8 @@ class pdate
 	 * Derive an ISO8601 date string from a date string and return
 	 * it.
 	 *
-	 * @param date $dtobj The date you want the ISO date string from
-	 *
+	 * @param array $dtobj The pdate you want the ISO date string from
 	 * @return string The ISO8601 string from the date object.
-	 *
 	 */
 
 	static function toiso($dtobj)
@@ -735,14 +752,41 @@ class pdate
 		return $dt_str;
 	}
 
+    /**
+     * Return Unix epoch seconds from date.
+     *
+     * @param array pdate object
+     * @return integer Unix epoch seconds
+     */
+
+    static function toepoch($dtobj)
+    {
+        $ret = mktime(12, 0, 0, $dtobj['m'], $dtobj['d'], $dtobj['y']);
+        return $ret;
+    }
+
+    /**
+     * Return the ISO 8601 week number.
+     *
+     * @param array Date object/array
+     * @return integer The ISO week number
+     */
+
+    static function isoweek($dtobj)
+    {
+        $ret = mktime(12, 0, 0, $dtobj['m'], $dtobj['d'], $dtobj['y']);
+        $wkno = date('W', $ret);
+        return $wkno;
+    }
+
 	// The following routines are primarly used for payroll tax form calculations
 
 	/**
 	 * Return a date object representing the date of the day before the date's quarter
 	 *
-	 * @param date $dt Today
+	 * @param array $dt pdate
 	 *
-	 * @return date Revised date object
+	 * @return array pdate
 	 */
 
 	static function day_before_quarter($dt)
@@ -784,9 +828,8 @@ class pdate
 	/**
 	 * Return a date object representing the date of the day after the date's quarter
 	 *
-	 * @param date $dt Today
-	 *
-	 * @return date Revised date object
+	 * @param array $dt pdate
+	 * @return array pdate
 	 */
 
 	static function day_after_quarter($dt)
@@ -826,8 +869,9 @@ class pdate
 
 	/**
 	 * Return the date before $this month
-	 *
-	 * @return date Date object which represents the date before $this month
+     *
+     * @param array pdate
+	 * @return array pdate
 	 */
 
 	static function day_before_month($dt)
@@ -840,8 +884,9 @@ class pdate
 
 	/**
 	 * Return the date before $this month
-	 *
-	 * @return date Date object which represents the date before $this month
+     *
+     * @param array pdate
+	 * @return array pdate
 	 */
 
 	static function day_after_month($dt)
@@ -855,7 +900,8 @@ class pdate
 	/**
 	 * Return date object representing the day before $this year
 	 *
-	 * @return date Date representing the date before $this year
+     * @param array pdate
+	 * @return array pdate
 	 */
 
 	static function day_before_year($dt)
@@ -870,7 +916,8 @@ class pdate
 	/**
 	 * Return date object representing the day after $this year
 	 *
-	 * @return date Date representing the date after $this year
+     * @param array pdate
+	 * @return array pdate
 	 */
 
 	static function day_after_year($dt)
@@ -889,10 +936,10 @@ class pdate
 	/**
 	 * Output string representing $this date in the given format
 	 *
+     * @param array pdate
 	 * @param string $fmt
 	 *
-	 * @return string Formatted string derived from $this date, or
-	 * FALSE on failure.
+	 * @return string Formatted string derived from $this date, or FALSE on failure.
 	 */
 
 	static function get($dt, $fmt)
@@ -975,8 +1022,7 @@ class pdate
 	 * @param string $date Date string
 	 * @param string $out_format The format of the output date
 	 *
-	 * @return string The resulting date, according to the output
-	 * format, or FALSE on failure
+	 * @return string The resulting date, according to the output format, or FALSE on failure
 	 */
 
 	static function reformat($in_format, $date, $out_format)
@@ -993,7 +1039,7 @@ class pdate
 	}
 
 	/**
-	 * am2iso()
+	 * Convert American date to ISO8601
 	 *
 	 * American format date (m/d/y, m-d-y, mdy) to ISO date (Y-m-d)
 	 * This is a shortcut for 
@@ -1025,15 +1071,14 @@ class pdate
 	}
 
 	/**
-	 * iso2am()
-	 *
 	 * ISO 8601 format date (Y-m-d) to American date (m/d/y)
+     *
 	 * This is a shortcut for
 	 * date::reformat('Y-m-d', $iso_date, 'm/d/y'),
 	 * which I have to do a lot. This converts from the format in
 	 * the database to an American date format.
 	 *
-	 * @param string $iso_date Date in ISO 8601 (Y-m-d) format
+	 * @param string $iso_date Date in ISO 8601 (CCYYY-MM-DD) format
 	 *
 	 * @return string American format date
 	 *
@@ -1054,11 +1099,23 @@ class pdate
 		return $outdt;
 	}
 
+    /**
+     * Output today's date in ISO8601 format
+     *
+     * @return string ISO formatted date
+     */
+
 	static function now2iso()
 	{
 		$dt = self::now();
 		return sprintf('%d-%02d-%02d', $dt['y'], $dt['m'], $dt['d']);
 	}
+
+    /**
+     * Output today's date in American (m/d/y) format
+     *
+     * @return string American formatted date
+     */
 
 	static function now2am()
 	{
@@ -1076,7 +1133,8 @@ class pdate
 	 * If passed date is the same as this date, return 0
 	 * If passed date is earlier than this date, return positive difference
 	 *
-	 * @param date Date to compare to this one
+	 * @param array pdate
+     * @param array pdate
 	 *
 	 * @return integer < 0 if $dt > $this, 0 if $dt == $this, > 0 if $dt < $this
 	 */
@@ -1097,8 +1155,9 @@ class pdate
 
 	/**
 	 * If this date is later than the passed date, return true, else false
-	 *
-	 * @param date $dt Date object to compare to
+     *
+     * @param array pdate
+	 * @param array pdate
 	 *
 	 * @return boolean True if $this > $dt, else false
 	 */
@@ -1109,7 +1168,7 @@ class pdate
 	}
 
 	/**
-	 * Synonym for above.
+	 * Synonym for later_than().
 	 */
 
 	static function after($dt1, $dt2)
@@ -1119,8 +1178,9 @@ class pdate
 
 	/**
 	 * If this date is earlier than the passed date, return true, else false
-	 *
-	 * @param date $dt Date object to compare to
+     *
+     * @param array pdate
+	 * @param array pdate
 	 *
 	 * @return boolean True if $this < $dt, else false
 	 */
@@ -1131,7 +1191,7 @@ class pdate
 	}
 
 	/**
-	 * Synonym for the above
+	 * Synonym for the earlier_than()
 	 */
 
 	static function before($dt1, $dt2)
@@ -1142,7 +1202,8 @@ class pdate
 	/**
 	 * If this date is the same as the passed date, return true, else false
 	 *
-	 * @param date $dt Date object to compare to
+     * @param array pdate
+	 * @param array pdate
 	 *
 	 * @return boolean True if $this == $dt, else false
 	 */
@@ -1157,7 +1218,8 @@ class pdate
 	 * If today is before the supplied date, the number is negative.
 	 * If today is after the supplied date, the number is positive.
 	 *
-	 * @param date $dt The supplied date.
+     * @param array pdate
+	 * @param array pdate
 	 *
 	 * @return integer The number of days between the two dates.
 	 */
@@ -1168,7 +1230,11 @@ class pdate
 	}
 
 	/**
+     * Dump the contents of a pdate array
+     *
 	 * Just for debugging purposes...
+     *
+     * @param array pdate
 	 */
 
 	static function dump($dt)
@@ -1190,7 +1256,7 @@ class pdate
 
 	static public function version()
 	{
-		return 8.6;
+		return 9.0;
 	}
 
 };

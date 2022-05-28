@@ -4,11 +4,11 @@ class pdf_report
 {
 	function __construct()
 	{
-		define('FPDF_FONTPATH', 'fpdf/font/');
-        if (!file_exists('fpdf/fpdf.php')) {
-            die("I can't find 'fpdf/fpdf.php'!");
+		define('FPDF_FONTPATH', LIBDIR . 'fpdf/font/');
+        if (!file_exists(LIBDIR . 'fpdf/fpdf.php')) {
+            die("I can't find 'fpdf.php'!");
         }
-		include 'fpdf/fpdf.php';
+		include LIBDIR . 'fpdf/fpdf.php';
 		$this->pdf = new FPDF('P','pt','Letter');
 		$this->font_size = 12;
 		$this->pdf->SetFont('Courier','',$this->font_size);
@@ -43,11 +43,23 @@ class pdf_report
 
 	}
 
+    /**
+     * Print line to PDF
+     *
+     * @param string The text to print
+     */
+
 	function print_line($text)
 	{
 		$this->pdf->Text($this->x, $this->y, $text);
 		$this->skip_line();
 	}
+
+    /**
+     * Increment internal variables to add one line.
+     *
+     * @param integer Number of lines to skip
+     */
 
 	function skip_line($num = 1)
 	{
@@ -61,16 +73,34 @@ class pdf_report
 		 */
 	}
 
+    /**
+     * Set the internal x-axis value
+     *
+     * @param integer The x value
+     */
+
 	function setx($x)
 	{
 		$this->x = $x;
 		$this->pdf->SetX($x);
 	}
 
+    /**
+     * Get the internal x-axis value
+     *
+     * @return integer The internal x-axis value
+     */
+
 	function getx()
 	{
 		return $this->pdf->GetX();
 	}
+
+    /**
+     * Set the internal y (vertical) value
+     *
+     * @param integer The value to set
+     */
 
 	function sety($y)
 	{
@@ -78,10 +108,23 @@ class pdf_report
 		$this->pdf->SetY($y);
 	}
 
+    /**
+     * Get the internal y axis value
+     *
+     * @return integer The y value
+     */
+
 	function gety()
 	{
 		return $this->pdf->GetY();
 	}
+
+    /**
+     * Set both x and y internal values
+     *
+     * @param integer x value
+     * @param integer y value
+     */
 
 	function setxy($x, $y)
 	{
@@ -89,10 +132,20 @@ class pdf_report
 		$this->sety($y);
 	}
 
+    /**
+     * Add a page in PDF
+     */
+
 	function add_page()
 	{
 		$this->pdf->AddPage();
 	}
+
+    /**
+     * Generate an output PDF
+     *
+     * @param string The filename to write to
+     */
 
 	function output($filename)
 	{

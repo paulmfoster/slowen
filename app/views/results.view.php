@@ -29,7 +29,7 @@ a check number, you may find that the splits share that check number.
 <?php $max_txns = count($transactions); ?>
 <?php for ($j = 0; $j < $max_txns; $j++): ?>
 <tr class="row<?php echo $k++ & 1;?>">
-<td><a href="<?php echo 'index.php?url=txn/show/' . $transactions[$j]['txnid']; ?>">Show</a></td>
+<td><a href="<?php echo url('txn', 'show', $transactions[$j]['txnid']); ?>">Show</a></td>
 <td><?php echo $transactions[$j]['from_acct_name']; ?></td>
 <td><?php echo pdate::iso2am($transactions[$j]['txn_dt']); ?></td>
 <td><?php echo $transactions[$j]['checkno']; ?></td>
@@ -45,8 +45,8 @@ else {
 </td>
 <td><?php echo $transactions[$j]['payee_name'] . '<br/>' . $transactions[$j]['memo'] . '<br/>' . $transactions[$j]['to_acct_name']; ?></td>
 <td><?php echo $transactions[$j]['status']; ?></td>
-<td class="align-right"><?php echo $transactions[$j]['debit']; ?></td>
-<td class="align-right"><?php echo $transactions[$j]['credit']; ?></td>
+<td class="align-right"><?php echo int2dec($transactions[$j]['debit']); ?></td>
+<td class="align-right"><?php echo int2dec($transactions[$j]['credit']); ?></td>
 </tr>
 <?php endfor; ?>
 </table>

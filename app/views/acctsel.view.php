@@ -2,7 +2,7 @@
 
 <form method="post" action="<?php echo $this->return; ?>">
 <label>Account</label>&nbsp;
-<?php $this->form->select('acct_id'); ?>
+<?php $this->form->select('id'); ?>
 <br/>
 <?php form::abandon('index.php'); ?>
 &nbsp;

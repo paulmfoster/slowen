@@ -35,13 +35,19 @@
 <td><?php $this->form->text('split_cr_amount'); ?></td>
 </tr>
 
+<?php if ($j < $max_splits - 1): ?>
+<!-- spacer -->
+<tr><td colspan="2"></td></tr>
+<!-- spacer -->
+<?php endif; ?>
+
 <?php endfor; ?>
 
 <tr>
 <td>
 <?php $this->form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon('index.php?url=atxn/other'); ?>
+<?php form::abandon(url('txn', 'other')); ?>
 </td>
 <td></td>
 </tr>

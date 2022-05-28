@@ -64,7 +64,7 @@
 <p>
 <?php $this->form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon("index.php?url=txn/show/{$txns[0]['txnid']}"); ?>
+<?php form::abandon(url('txn', 'show', $txns[0]['txnid'])); ?>
 </p>
 
 </form>

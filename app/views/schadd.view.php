@@ -47,7 +47,7 @@
 </tr>
 
 <tr>
-<td><?php $this->form->submit('s1'); ?>&nbsp;<?php form::abandon('index.php?url=sched/add'); ?></td>
+<td><?php $this->form->submit('s1'); ?>&nbsp;<?php form::abandon(url('sched', 'add')); ?></td>
 <td></td>
 </tr>
 

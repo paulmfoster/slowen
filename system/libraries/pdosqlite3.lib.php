@@ -25,12 +25,13 @@ class pdosqlite3
 		}
 		$filename = $parms[1];
 		$this->db_status = file_exists($filename) ? TRUE : FALSE;
-
 		try {
-			$this->handle = new PDO($dsn);
+            $this->handle = new PDO($dsn);
+            // otherwise referential integrity is off
+            $this->handle->query('PRAGMA foreign_keys = 1');
 		}
 		catch (PDOException $e) {
-            die($e->getMessage());
+            die('DATABASE ERROR: ' . $e->getMessage());
 		}
 	}
 
@@ -290,9 +291,8 @@ class pdosqlite3
 	 * SQLite3 will generate an exception.
 	 *
 	 * @param string $table The table to be inserted into
-	 * @param array $records The indexed/associated table of
-	 * fieldnames/values.
-	 *
+	 * @param array $records The indexed/associated table of fieldnames/values.
+	 * @return boolean TRUE on success, FALSE on failure (e.g. ref integrity fault)
 	 */
 
 	function insert($table, $record)
@@ -319,11 +319,11 @@ class pdosqlite3
 
 		$this->result = $this->handle->prepare($sql);
 
-		if ($this->result === FALSE) {
+		if ($this->result == FALSE) {
 			$this->fatal('PDO::prepare()', $sql);
 		}
 
-		$this->result->execute($values);
+		return $this->result->execute($values);
 	}
 
 	/**
@@ -336,6 +336,7 @@ class pdosqlite3
 	 * @param string $table Table name
 	 * @param array Associative array of fields and values
 	 * @param string Where clause
+	 * @return boolean TRUE on success, FALSE on failure (e.g. ref integrity fault)
 	 */
 
 	function update($table, $record, $where_clause)
@@ -360,11 +361,11 @@ class pdosqlite3
 		$sql = "UPDATE $table SET $fields_clause WHERE $where_clause";
 		$this->result = $this->handle->prepare($sql);
 
-		if ($this->result === FALSE) {
+		if ($this->result == FALSE) {
 			$this->fatal('PDO::prepare()', $sql);
 		}
 
-		$this->result->execute($values);
+		return $this->result->execute($values);
 	}
 
 	/**

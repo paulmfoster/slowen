@@ -1,9 +1,21 @@
 <?php
 
-// This class is designed to be extended.
+/**
+ * Master controller class.
+ */
 
 class controller
 {
+    /**
+     * Model
+     *
+     * Instantiate the model and return the object.
+     *
+     * @param string The model
+     * @param mixed Parameters
+     * @return object The constructed class object
+     */
+
     function model($model, $params = NULL)
     {
         include MODELDIR . $model . '.php';
@@ -14,6 +26,15 @@ class controller
             return new $model($params);
         }
     }
+
+    /**
+     * View
+     *
+     * Include the view file with any parameters
+     *
+     * @param string View file
+     * @param array Any data to pass
+     */
 
     function view($view_file, $data = NULL)
     {

@@ -56,7 +56,7 @@
 <p>
 <?php $this->form->submit('s3'); ?>
 &nbsp;
-<?php form::abandon('index.php?url=recon/prelim'); ?>
+<?php form::abandon(url('recon', 'prelim')); ?>
 </p>
 </form>
 

@@ -2,20 +2,22 @@
 
 <?php extract($data); ?>
 
+<form method="post" action="<?php echo $this->return; ?>">
+<?php $this->form->hidden('id'); ?>
 <table>
 
 <tr>
-<td>
-<strong>Account ID</strong>
+<td class="tdlabel">
+Account ID
 </td>
 <td>
-<?php echo $acct['acct_id']; ?>
+<?php echo $acct['id']; ?>
 </td>
 </tr>
 
 <tr>
-<td>
-<strong>Name</strong>
+<td class="tdlabel">
+Name
 </td>
 <td>
 <?php echo $acct['name']; ?>
@@ -23,8 +25,8 @@
 </tr>
 
 <tr>
-<td>
-<strong>Description</strong>
+<td class="tdlabel">
+Description
 </td>
 <td>
 <?php echo $acct['descrip']; ?>
@@ -32,8 +34,8 @@
 </tr>
 
 <tr>
-<td>
-<strong>Parent</strong>
+<td class="tdlabel">
+Parent
 </td>
 <td>
 <?php echo $acct['x_parent']; ?>
@@ -41,8 +43,8 @@
 </tr>
 
 <tr>
-<td>
-<strong>Open Date</strong>
+<td class="tdlabel">
+Open Date
 </td>
 <td>
 <?php echo pdate::iso2am($acct['open_dt']); ?>
@@ -50,17 +52,18 @@
 </tr>
 
 <tr>
-<td>
-<strong>Reconciliation Date</strong>
+<td class="tdlabel">
+Reconciliation Date
 </td>
 <td>
-<?php echo pdate::iso2am($acct['recon_dt']); ?>
+<?php $recon_dt = ($acct['recon_dt'] == 'NULL') ? NULL : $acct['recon_dt']; ?>
+<?php echo pdate::iso2am($recon_dt); ?>
 </td>
 </tr>
 
 <tr>
-<td>
-<strong>Account Type</strong>
+<td class="tdlabel">
+Account Type
 </td>
 <td>
 <?php echo $acct['x_acct_type']; ?>
@@ -68,8 +71,8 @@
 </tr>
 
 <tr>
-<td>
-<strong>Opening Balance</strong>
+<td class="tdlabel">
+Opening Balance
 </td>
 <td>
 <?php echo int2dec($acct['open_bal']); ?>
@@ -77,15 +80,27 @@
 </tr>
 
 <tr>
-<td>
-<strong>Reconciled Balance</strong>
+<td class="tdlabel">
+Reconciled Balance
 </td>
 <td>
 <?php echo int2dec($acct['rec_bal']); ?>
 </td>
 </tr>
 
+<tr>
+<td class="tdlabel">
+<?php $this->form->submit('edit'); ?>
+</td>
+<td>
+<?php $this->form->submit('delete'); ?>
+</td>
+</tr>
+
 </table>
+
+
+</form>
 
 <?php include VIEWDIR . 'footer.view.php'; ?>
 

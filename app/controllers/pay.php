@@ -4,9 +4,61 @@ class pay extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->payee = model('payee', $this->db);
+    }
+
+    function list()
+    {
+        $payees = $this->payee->get_payees();
+        $payee_options = [];
+        foreach ($payees as $payee) {
+            $payee_options[] = ['lbl' => $payee['name'], 'val' => $payee['id']];
+        }
+
+        $fields = [
+            'id' => [
+                'name' => 'id',
+                'type' => 'select',
+                'options' => $payee_options
+            ],
+            'edit' => [
+                'name' => 'edit',
+                'type' => 'submit',
+                'value' => 'Edit'
+            ],
+            'delete' => [
+                'name' => 'delete',
+                'type' => 'submit',
+                'value' => 'Delete'
+            ]
+        ];
+        $this->form->set($fields);
+
+        $this->page_title = 'List Payees';
+        $this->focus_field = 'id';
+        $this->return = url('pay', 'resolve');
+        $this->view('paylst.view.php');
+    }
+
+    function resolve()
+    {
+        $edit = $_POST['edit'] ?? NULL;
+        $delete = $_POST['delete'] ?? NULL;
+
+        if (!is_null($edit)) {
+            $this->edit($_POST['id']);
+        }
+        elseif (!is_null($delete)) {
+            $this->delete($_POST['id']);
+        }
+        else {
+            $this->list();
+        }
     }
 
     function add()
@@ -27,7 +79,7 @@ class pay extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Add Payee';
-        $this->return = 'index.php?url=pay/aconfirm';
+        $this->return = url('pay', 'aconfirm');
         $this->focus_field = 'name';
         $this->view('payadd.view.php');
     }
@@ -50,12 +102,12 @@ class pay extends controller
 
         $id_options = array();
         foreach ($payees as $payee) {
-            $id_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+            $id_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
         }
 
         $fields = array(
-            'payee_id' => array(
-                'name' => 'payee_id',
+            'id' => array(
+                'name' => 'id',
                 'type' => 'select',
                 'options' => $id_options
             ),
@@ -67,25 +119,24 @@ class pay extends controller
         );
         $this->form->set($fields);
         $this->page_title = 'Select Payee';
-        $this->return = 'index.php?url=pay/' . $rtn;
-        $this->focus_field = 'payee_id';
+        $this->return = url('pay', $rtn);
+        $this->focus_field = 'id';
         $this->view('paysel.view.php');
 
     }
 
-    function edit()
+    function edit($id)
     {
-        $payee_id = $_POST['payee_id'] ?? NULL;
-        if (is_null($payee_id)) {
-            redirect('index.php');
+        if (is_null($id)) {
+            $this->list();
         }
-        $payee = $this->payee->get_payee($payee_id);
+        $payee = $this->payee->get_payee($id);
 
         $fields = array(
-            'payee_id' => array(
-                'name' => 'payee_id',
+            'id' => array(
+                'name' => 'id',
                 'type' => 'hidden',
-                'value' => $payee_id
+                'value' => $id
             ),
             'name' => array(
                 'name' => 'name',
@@ -104,39 +155,38 @@ class pay extends controller
         $this->form->set($fields);
         $this->page_title = 'Edit Payee';
         $this->focus_field = 'name';
-        $this->return = 'index.php?url=pay/econfirm';
+        $this->return = url('pay', 'econfirm');
         $this->view('payedt.view.php', ['payee' => $payee]);
     }
 
     function econfirm()
     {
         if (isset($_POST['s1'])) {
-            $this->payee->update_payee($_POST['payee_id'], $_POST['name']); 
+            $this->payee->update_payee($_POST['id'], $_POST['name']); 
         }	
 
-        $this->show($_POST['payee_id']);
+        $this->show($_POST['id']);
     }
 
-    function show($payee_id)
+    function show($id)
     {
-        $p = $this->payee->get_payee($payee_id);
+        $p = $this->payee->get_payee($id);
         $this->page_title = 'Show Payee';
         $this->view('payshow.view.php', ['payee' => $p]);
     }
 
-    function delete()
+    function delete($id)
     {
-        $payee_id = $_POST['payee_id'] ?? NULL;
-        if (is_null($payee_id)) {
-            redirect('paydel.php');
+        if (is_null($id)) {
+            $this->list();
         }
-        $p = $this->payee->get_payee($payee_id);
+        $p = $this->payee->get_payee($id);
 
         $fields = array(
-            'payee_id' => array(
-                'name' => 'payee_id',
+            'id' => array(
+                'name' => 'id',
                 'type' => 'hidden',
-                'value' => $payee_id
+                'value' => $id
             ),
             's1' => array(
                 'name' => 's1',
@@ -148,19 +198,19 @@ class pay extends controller
         $this->form->set($fields);
         $this->page_title = 'Delete Payee';
         $this->focus_field = 'name';
-        $this->return = 'index.php?url=pay/dconfirm';
+        $this->return = url('pay', 'dconfirm');
         $this->view('paydel.view.php', ['payee' => $p]);
 
     }
 
     function dconfirm()
     {
-        $payee_id = $_POST['payee_id'] ?? NULL;
-        if (!is_null($payee_id)) {
-            $this->payee->delete_payee($_POST['payee_id']);
+        $id = $_POST['id'] ?? NULL;
+        if (!is_null($id)) {
+            $this->payee->delete_payee($_POST['id']);
         }
 
-        redirect('index.php');
+        $this->list();
     }
 
     function search()
@@ -174,7 +224,7 @@ class pay extends controller
         $payee_options = array();
         if ($payees !== FALSE) {
             foreach ($payees as $p) {
-                $payee_options[] = array('lbl' => $p['name'], 'val' => $p['payee_id']);
+                $payee_options[] = array('lbl' => $p['name'], 'val' => $p['id']);
             }
         }
 
@@ -193,7 +243,8 @@ class pay extends controller
         $this->form->set($fields);
         $this->page_title = 'Search Payees';
 
-        $this->return = 'index.php?url=pay/results';
+        $this->focus_field = 'payee';
+        $this->return = url('pay', 'results');
         $this->view('paysrch.view.php');
 
     }

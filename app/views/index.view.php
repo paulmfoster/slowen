@@ -31,17 +31,11 @@ bank or credit card company.
 
 <dt>Add Account</dt>
 <dd>
-
 Here you may add checking, savings, credit card, loan, income or expense accounts.
 </dd>
 
-<dt>Delete Account</dt>
-<dd>Here you can delete any account so long as it isn't connected with any transactions.
-</dd>
-
-<dt>Edit Account</dt>
-<dd>Here you may edit the details of an account, such as its name.
-</dd>
+<dt>List Accounts</dt>
+<dd>This allows you to show, edit or delete individual accounts.</dd>
 
 <dt>Search By Account</dt>
 <dd>
@@ -59,12 +53,9 @@ Here you can search through all the transactions for a given expense category.
 <dd>This function allows you to add payees.
 </dd>
 
-<dt>Edit Payee</dt>
-<dd>Here you may edit the details of a given payee.
-</dd>
-
-<dt>Delete Payee</dt>
-<dd>This allows you to delete a payee, so long as it is not used in any transactions.
+<dt>List Accounts</dt>
+<dd>
+This allows you to delete or edit any payee.
 </dd>
 
 <dt>Search By Payee</dt>
@@ -78,55 +69,13 @@ Search through transactions by payee here.
 
 <h3>Transactions Menu</h3>
 
-Here you may enter the various types of transactions. Every deposit, check, charge
-or inter-account transfer is a "transaction". Some transactions you enter will
-create more than one actual "transaction" in the system. See "Transfers" below.
-
 <dl>
 
-<dt>Check</dt>
+<dt>Enter Transaction</dt>
 <dd>
-
-Checks are entered only from a bank account. Other transaction similar
-to checks can be entered without a check number here, but it's primarily
-intended for recording thecks.
-</dd>
-
-<dt>Deposit</dt>
-<dd>
-
-This selection is for entering deposits. This is money coming <em>in</em> to a
-bank account. This can be used to enter credits to other accounts. But payments
-from a bank account to a credit card should be entered as transfers.
-</dd>
-
-<dt>Credit Card</dt>
-<dd>
-
-Here you enter credit card charges.
-</dd>
-
-<dt>Transfer</dt>
-<dd>
-
-This choice is for inter-account transfers. An example of this would be
-where you write a check to pay a credit card bill. For inter-account
-transfers, two entries are generated from the user's data entry.
-One entry shows the money going out of the checking account, and the
-other shows the money coming into the credit card account (in the example above).
-</dd>
-
-<dt>Other/Split</dt>
-<dd>
-
-This is for anything not covered above, though any of the above
-transactions can be entered here. In particular, this covers <strong>splits</strong>.
-Splits are transaction where there is one or more payee or account
-involved. For example, this could be a business deposit where you have
-multiple checks from multiple customers for multiple purposes. Or any other
-transaction of this type. You will enter the number of "splits", and be
-shown a screen for entering the details for each one.
-
+Here you enter new transactions. Whether it's a deposit, check, credit card charge,
+inter-account transfer, you enter it here. This includes "splits", where there are
+multiple payees, or depositors.
 </dd>
 
 </dl>
@@ -153,6 +102,11 @@ This creates a transaction which can be activated at some future time.
 This allows you to delete a scheduled transaction which is no longer needed.
 </dd>
 
+<dt>List Transactions</dt>
+<dd>
+This shows all the transactions which can be scheduled to happen later.
+</dd>
+
 <dt>Activate Transaction</dt>
 <dd>
 This allows you to convert a "scheduled" transaction into a real one. This screen shows
@@ -169,7 +123,7 @@ Pay attention.
 <h3>Search Menu</h3>
 
 <dl>
-<dt>Categories</dt>
+<dt>Accounts/Categories</dt>
 <dd>
 
 This choice allows you to search transactions by account or category. These
@@ -246,16 +200,6 @@ returns, as above, but for a whole year.
 <dd>
 
 This shows the history and some technical details for this software.
-</dd>
-
-<dt>Bug Report</dt>
-<dd>
-Bug? Are you serious? Okay, fine, report it here. If you <em>have</em> to.
-</dd>
-
-<dt>Feature Request</dt>
-<dd>
-You want even <em>more</em> features? Ask for them here.
 </dd>
 
 </dl>

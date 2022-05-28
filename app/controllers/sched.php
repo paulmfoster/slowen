@@ -4,8 +4,11 @@ class sched extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->sched = model('scheduled', $this->db);
     }
 
@@ -29,19 +32,19 @@ class sched extends controller
         foreach($from_accts as $from_acct) {
             $this->from_options[] = array('lbl' => 
                 $from_acct['name'] . ' ' . $atnames[$from_acct['acct_type']], 
-                'val' => $from_acct['acct_id']);
+                'val' => $from_acct['id']);
         }
 
         $this->payee_options = array();
         $this->payee_options[] = array('lbl' => 'NONE', 'val' => 0);
         foreach($payees as $payee) {
-            $this->payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+            $this->payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
         }
 
         $this->to_options = array();
         foreach($to_accts as $to_acct) {
             $this->to_options[] = array('lbl' => $to_acct['name'] . ' ' . $atnames[$to_acct['acct_type']], 
-                'val' => $to_acct['acct_id']);
+                'val' => $to_acct['id']);
         }
 
         $dom_options = [];
@@ -101,13 +104,13 @@ class sched extends controller
         );
         $this->form->set($fields);
         $this->page_title = 'Add Scheduled Transaction';
-        $this->return = 'index.php?url=sched/save';
+        $this->return = url('sched', 'save');
         $this->view('schadd.view.php');
     }
 
     function save()
     {
-        $s1 = fork('s1', 'P', 'index.php?url=sched/add');
+        $s1 = fork('s1', 'P', url('sched', 'add'));
         $status = $this->sched->add_scheduled($_POST);
         if ($status) {
             emsg('S', "Scheduled transaction added.");
@@ -127,13 +130,13 @@ class sched extends controller
     {
         $r = $this->sched->fetch_scheduled();
         $this->page_title = 'Delete Scheduled Transactions';
-        $this->return = 'index.php?url=sched/dconfirm';
+        $this->return = url('sched', 'dconfirm');
         $this->view('schdel.view.php', ['r' => $r]);
     }
 
     function dconfirm()
     {
-        fork('s1', 'P', 'index.php?url=sched/delete');
+        fork('s1', 'P', url('sched', 'delete'));
 
         $status = $this->sched->delete_scheduled($_POST);
         if ($status) {
@@ -147,13 +150,13 @@ class sched extends controller
     {
         $r = $this->sched->fetch_scheduled();
         $this->page_title = 'Activate Scheduled Transactions';
-        $this->return = 'index.php?url=sched/aconfirm';
+        $this->return = url('sched', 'aconfirm');
         $this->view('schact.view.php', ['r' => $r]);
     }
 
     function aconfirm()
     {
-        fork('s1', 'P', 'index.php?url=sched/activate');
+        fork('s1', 'P', url('sched', 'activate'));
 
         $status = $this->sched->activate_scheduled($_POST);
         if ($status) {

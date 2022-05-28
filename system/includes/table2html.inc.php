@@ -27,13 +27,14 @@ function table2html($records)
 
 	$str .= '<div class="sansserif">' . PHP_EOL;
 	$str .= '<table rules="all" border="1">' . PHP_EOL;
+    $row = 0;
 	for ($i = 0; $i < $max_records; $i++) {
 
 		// headers: field names
 		if ($i == 0) {
 			$keys = array_keys($records[$i]);
 			$max_fields = count($keys);
-			$str .= '<tr class="row' . ($i & 1) . '">';
+			$str .= '<tr class="row' . ($row++ & 1) . '">';
 			for ($j = 0; $j < $max_fields; $j++) {
 				$str .= '<th>';
 				$str .= $keys[$j];
@@ -44,7 +45,7 @@ function table2html($records)
 
 		// records
 		$values = array_values($records[$i]);
-		$str .= '<tr class="row' . ($i & 1) . '">';
+		$str .= '<tr class="row' . ($row++ & 1) . '">';
 		for ($j = 0; $j < $max_fields; $j++) {
 			$str .= '<td>';
 			$str .= $values[$j];

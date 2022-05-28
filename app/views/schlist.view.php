@@ -13,6 +13,7 @@
 <th>Payee/Memo/Category</th>
 <th>Debit</th>
 <th>Credit</th>
+<th>Last Date</th>
 </tr>
 
 <?php foreach ($list as $t): ?>
@@ -25,25 +26,35 @@
 <?php echo $t['memo']; ?><br/>
 <?php echo $t['to_acct_name']; ?>
 </td>
+
 <?php if ($t['amount'] > 0): ?>
+
 <td>
 </td>
 <td align="right">
 <?php echo int2dec($t['amount']); ?>
 </td>
+
 <?php elseif ($t['amount'] < 0): ?>
+
 <td align="right">
 <?php $amt = - $t['amount']; ?>
 <?php echo int2dec($amt); ?>
 </td>
 <td>
 </td>
+
 <?php else: ?>
 <td>
 </td>
 <td>
 </td>
 <?php endif; ?>
+
+<td>
+<?php echo pdate::iso2am($t['last']); ?>
+</td>
+
 </tr>
 
 <?php endforeach; ?>

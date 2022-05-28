@@ -31,14 +31,14 @@ class account
 
 	function get_parents()
 	{
-		$sql = "SELECT acct_id, name FROM accounts ORDER BY lower(name)";
+		$sql = "SELECT id, name FROM accounts ORDER BY lower(name)";
 		$results = $this->db->query($sql)->fetch_all();
 		return $results;
 	}
 
-	function get_account($acct_id)
+	function get_account($id)
 	{
-		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.acct_id = a1.parent WHERE a1.acct_id = $acct_id ORDER BY lower(a1.name)";
+		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.id = a1.parent WHERE a1.id = $id ORDER BY lower(a1.name)";
 		$acct = $this->db->query($sql)->fetch();
 
 		if ($acct === FALSE) {
@@ -50,7 +50,7 @@ class account
 
 	function update_account($post)
 	{
-		if ($this->get_account($post['acct_id']) === FALSE) {
+		if ($this->get_account($post['id']) === FALSE) {
 			emsg('F', "Cannot edit non-existent account");
 			return FALSE;
 		}
@@ -59,21 +59,21 @@ class account
 		$post['rec_bal'] = dec2int($post['rec_bal']);
 
 		$prec = $this->db->prepare('accounts', $post);
-		$this->db->update('accounts', $prec, "acct_id = {$post['acct_id']}");
+		$this->db->update('accounts', $prec, "id = {$post['id']}");
 
 		return TRUE;
 	}
 
-	function delete_account($acct_id)
+	function delete_account($id)
 	{
 		// is it a real account
-		if ($this->get_account($acct_id) === FALSE) {
+		if ($this->get_account($id) === FALSE) {
 			emsg('F', "Cannot delete non-existent account");
 			return FALSE;
 		}
 
 		// is this account in use?
-		$sql = "SELECT id FROM journal WHERE from_acct = $acct_id OR to_acct = $acct_id";
+		$sql = "SELECT id FROM journal WHERE from_acct = $id OR to_acct = $id";
 		if ($this->db->query($sql)->fetch()) {
 			emsg('F', "Account is linked to transaction(s). Aborted");
 			return FALSE;
@@ -81,7 +81,7 @@ class account
 
 		// don't allow things like "Expense", "Income", "Asset" to be
 		// deleted
-		$sql = "SELECT parent FROM accounts WHERE acct_id = $acct_id";
+		$sql = "SELECT parent FROM accounts WHERE id = $id";
 		$result = $this->db->query($sql)->fetch();
 		if ($result['parent'] == 0) {
 			emsg('F', "This account is foundational, and cannot be deleted.");
@@ -89,14 +89,14 @@ class account
 		}
 
 		// no accounts which have children
-		$sql = "SELECT acct_id FROM accounts WHERE parent = $acct_id";
+		$sql = "SELECT id FROM accounts WHERE parent = $id";
 		$result = $this->db->query($sql)->fetch_all();
 		if ($result !== FALSE) {
 			emsg('F', "This account has child accounts. Deletion aborted.");
 			return FALSE;
 		}
 
-		$this->db->delete('accounts', "acct_id = $acct_id");
+		$this->db->delete('accounts', "id = $id");
 		emsg('S', 'Account deleted');
 		return TRUE;
 	}
@@ -117,14 +117,14 @@ class account
 			$post['open_bal'] = 0;
 		}
 
-		// must have a new acct_id
-		$sql = "SELECT max(acct_id) as last_id FROM accounts";
+		// must have a new acct id
+		$sql = "SELECT max(id) as last_id FROM accounts";
 		$ai = $this->db->query($sql)->fetch();
-		$post['acct_id'] = $ai['last_id'] + 1;
+		$post['id'] = $ai['last_id'] + 1;
 
 		$rec = $this->db->prepare('accounts', $post);
 		$this->db->insert('accounts', $rec);
-        emsg('S', 'New account has been saved');
+		emsg('S', 'New account has been saved');
 		return TRUE;
 	}
 

@@ -12,10 +12,23 @@
 
 class memory
 {
+    /**
+     * Set a value in "memory"
+     *
+     * @param string index key
+     * @param mixed value to store
+     */
+
 	static function set($key, $value)
 	{
 		$_SESSION['saved'][$key] = $value;
 	}
+
+    /**
+     * Merge new values with existing ones.
+     *
+     * @param array Values to add
+     */
 
 	static function merge($data)
 	{
@@ -25,10 +38,23 @@ class memory
 		$_SESSION['saved'] = array_merge($_SESSION['saved'], $data);
 	}
 
+    /**
+     * Get a selected value from "memory".
+     *
+     * @param string Index key
+     * @return mixed Value to return
+     */
+
 	static function get($key)
 	{
 		return $_SESSION['saved'][$key] ?? NULL;
 	}
+
+    /**
+     * Get all values stored in "memory"
+     *
+     * @return array Stored values
+     */
 
 	static function get_all()
 	{
@@ -37,6 +63,10 @@ class memory
         }
 		return $_SESSION['saved'];
 	}
+
+    /**
+     * Clear "memory".
+     */
 
 	static function clear()
 	{

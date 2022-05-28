@@ -4,10 +4,74 @@ class acct extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
 
         $this->account = model('account', $this->db);
+    }
+
+    function list()
+    {
+        global $atnames;
+
+        $accts = $this->account->get_accounts();
+        $acct_options = [];
+        foreach ($accts as $acct) {
+            $acct_options[] = [
+                'lbl' => $acct['name'] . ' ' . $atnames[$acct['acct_type']], 
+                'val' => $acct['id']
+            ];
+        }
+
+        $fields = [
+            'id' => [
+                'name' => 'id',
+                'type' => 'select',
+                'options' => $acct_options
+            ],
+            'show' => [
+                'name' => 'show',
+                'type' => 'submit',
+                'value' => 'Show'
+            ],
+            'edit' => [
+                'name' => 'edit',
+                'type' => 'submit',
+                'value' => 'Edit',
+            ],
+            'delete' => [
+                'name' => 'delete',
+                'type' => 'submit',
+                'value' => 'Delete'
+            ]
+        ];
+        $this->form->set($fields);
+        $this->page_title = 'Accounts List';
+        $this->focus_fields = 'id';
+        $this->return = url('acct', 'resolve');
+        $this->view('acctlst.view.php');
+    }
+
+    function resolve()
+    {
+        $edit = $_POST['edit'] ?? NULL;
+        $delete = $_POST['delete'] ?? NULL;
+        $show = $_POST['show'] ?? NULL;
+        if (!is_null($show)) {
+            $this->show($_POST['id']);
+        }
+        elseif (!is_null($edit)) {
+            $this->edit($_POST['id']);
+        }
+        elseif (!is_null($delete)) {
+            $this->delete($_POST['id']);
+        }
+        else {
+            $this->list();
+        }
     }
 
     function add()
@@ -17,7 +81,7 @@ class acct extends controller
         $parents = $this->account->get_parents();
         $parent_options = array();
         foreach ($parents as $parent) {
-            $parent_options[] = array('lbl' => $parent['name'], 'val' => $parent['acct_id']);
+            $parent_options[] = array('lbl' => $parent['name'], 'val' => $parent['id']);
         }
 
         $acct_type_options = array();
@@ -83,7 +147,7 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Add Account';
-        $this->return = 'index.php?url=acct/aconfirm';
+        $this->return = url('acct', 'aconfirm');
         $this->view('acctadd.view.php');
 
     }
@@ -93,56 +157,23 @@ class acct extends controller
         if (isset($_POST['s1'])) {
             $this->account->add_account($_POST);
         }
-        redirect('index.php');
+        $this->list();
     }
 
-    function select($rtn)
-    {
-        global $atnames;
-
-        $accounts = $this->account->get_accounts();
-
-        $acct_options = array();
-        foreach ($accounts as $account) {
-            $acct_options[] = array('lbl' => $account['name'] . ' ' . $atnames[$account['acct_type']], 'val' => $account['acct_id']);
-        }
-
-        $fields = array(
-            'acct_id' => array(
-                'name' => 'acct_id',
-                'type' => 'select',
-                'options' => $acct_options
-            ),
-            's1' => array(
-                'name' => 's1',
-                'type' => 'submit',
-                'value' => 'Select'
-            )
-        );
-
-        $this->form->set($fields);
-
-        $this->page_title = 'Select Account';
-        $this->return = 'index.php?url=acct/' . $rtn;
-
-        $this->view('acctsel.view.php');
-    }
-
-    function edit()
+    function edit($id)
     {
         global $acct_types;
 
-        $acct_id = $_POST['acct_id'] ?? NULL;
-        if (is_null($acct_id)) {
-            redirect('index.php?url=acct/select');
+        if (is_null($id)) {
+            $this->list();
         }
 
-        $acct = $this->account->get_account($acct_id);
+        $acct = $this->account->get_account($id);
 
         $parents = $this->account->get_parents();
         $parent_options = array();
         foreach ($parents as $parent) {
-            $parent_options[] = array('lbl' => $parent['name'], 'val' => $parent['acct_id']);
+            $parent_options[] = array('lbl' => $parent['name'], 'val' => $parent['id']);
         }
 
         $acct_type_options = array();
@@ -151,10 +182,10 @@ class acct extends controller
         }
 
         $fields = array(
-            'acct_id' => array(
-                'name' => 'acct_id',
+            'id' => array(
+                'name' => 'id',
                 'type' => 'hidden',
-                'value' => $acct_id
+                'value' => $id
             ),
             'parent' => array(
                 'name' => 'parent',
@@ -207,7 +238,7 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Edit Account';
-        $this->return = 'index.php?url=acct/econfirm';
+        $this->return = url('acct', 'econfirm');
         $data = ['acct' => $acct];
         $this->view('acctedt.view.php', $data);
 
@@ -221,36 +252,55 @@ class acct extends controller
             }
         }	
 
-        $this->show($_POST['acct_id']);
+        $this->show($_POST['id']);
     }
 
-    function show($acct_id)
+    function show($id)
     {
         global $acct_types;
 
-        $acct = $this->account->get_account($acct_id);
+        $acct = $this->account->get_account($id);
         $acct['x_acct_type'] = $acct_types[$acct['acct_type']];
+        $fields = [
+            'id' => [
+                'name' => 'id',
+                'type' => 'hidden',
+                'value' => $acct['id']
+            ],
+            'edit' => [
+                'name' => 'edit',
+                'type' => 'submit',
+                'value' => 'Edit',
+            ],
+            'delete' => [
+                'name' => 'delete',
+                'type' => 'submit',
+                'value' => 'Delete'
+            ]
+        ];
+        $this->form->set($fields);
+        $this->return = url('acct', 'resolve');
+
         $this->page_title = 'Show Account';
         $this->view('acctshow.view.php', ['acct' => $acct]);
     }
 
-    function delete()
+    function delete($id)
     {
         global $acct_types;
 
-        $acct_id = $_POST['acct_id'] ?? NULL;
-        if (is_null($acct_id)) {
-            redirect('index.php');
+        if (is_null($id)) {
+            $this->list();
         }
 
-        $acct = $this->account->get_account($acct_id);
+        $acct = $this->account->get_account($id);
         $acct['x_acct_type'] = $acct_types[$acct['acct_type']];
 
         $fields = array(
-            'acct_id' => array(
-                'name' => 'acct_id',
+            'id' => array(
+                'name' => 'id',
                 'type' => 'hidden',
-                'value' => $acct_id
+                'value' => $id
             ),
             's1' => array(
                 'name' => 's1',
@@ -261,16 +311,16 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Delete Account';
-        $this->return = 'index.php?url=acct/dconfirm';
+        $this->return = url('acct', 'dconfirm');
         $this->view('acctdel.view.php', ['acct' => $acct]);
     }
 
     function dconfirm()
     {
         if (isset($_POST['s1'])) {
-            $this->account->delete_account($_POST['acct_id']); 
+            $this->account->delete_account($_POST['id']); 
         }
-        redirect('index.php');
+        $this->list();
     }
 
     function search()
@@ -282,7 +332,7 @@ class acct extends controller
         $cat_options = array();
         foreach ($categories as $cat) {
             $cat_options[] = array('lbl' => $cat['name'] . ' (' . $acct_types[$cat['acct_type']] . ')',
-                'val' => $cat['acct_id']);
+                'val' => $cat['id']);
         }
 
         $fields = array(
@@ -299,8 +349,9 @@ class acct extends controller
         );
         $this->form->set($fields);
 
+        $this->focus_field = 'category';
         $this->page_title = 'Search By Category/Account';
-        $this->return = 'index.php?url=acct/results';
+        $this->return = url('acct', 'results');
         $this->view('acctsrch.view.php');
 
     }
@@ -315,7 +366,7 @@ class acct extends controller
             $transactions = $txns->get_transactions($acct, 'C');
         }
         else {
-            redirect('index.php');
+            $this->list();
         }
 
         $this->page_title = 'Search Results';

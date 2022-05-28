@@ -4,8 +4,11 @@ class recon extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->reconcile = model('reconcile', $this->db);
     }
 
@@ -21,7 +24,7 @@ class recon extends controller
         $payee_options = [];
         if ($payees !== FALSE) {
             foreach ($payees as $payee) {
-                $payee_options[] = ['lbl' => $payee['name'], 'val' => $payee['payee_id']];
+                $payee_options[] = ['lbl' => $payee['name'], 'val' => $payee['id']];
             }
         }
 
@@ -30,7 +33,7 @@ class recon extends controller
         if ($to_accts !== FALSE) {
             foreach ($to_accts as $to_acct)
             {
-                $to_options[] = ['lbl' => $to_acct['name'], 'val' => $to_acct['acct_id']];
+                $to_options[] = ['lbl' => $to_acct['name'], 'val' => $to_acct['id']];
             }
         }
 
@@ -38,7 +41,7 @@ class recon extends controller
         if ($accts !== FALSE) {
             foreach ($accts as $acct) {
                 $from_options[] = array('lbl' => $acct['acct_type'] . '/' . $acct['name'],
-                    'val' => $acct['acct_id']);
+                    'val' => $acct['id']);
             }
         }
 
@@ -90,7 +93,7 @@ class recon extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Reconcile: Enter Preliminary Data';
-        $this->return = 'index.php?url=recon/clear';
+        $this->return = url('recon', 'clear');
         $this->view('prerecon.view.php');
     }
 
@@ -138,7 +141,7 @@ class recon extends controller
         }
 
         $acct = $this->reconcile->get_account($_POST['from_acct']);
-        $from_acct = $acct['acct_id'];
+        $from_acct = $acct['id'];
         $from_acct_name = $acct['name'];
 
         $stmt_start_bal = $_POST['stmt_start_bal'];
@@ -183,7 +186,7 @@ class recon extends controller
         $this->form->set($fields);
         $this->page_title = 'Reconcile: Clear Transactions';
         $d = ['txns' => $txns, 'from_acct_name' => $from_acct_name];
-        $this->return = 'index.php?url=recon/finish';
+        $this->return = url('recon', 'finish');
         $this->view('reconlist.view.php', $d);
     }
 
@@ -219,7 +222,7 @@ class recon extends controller
         ];
         $this->form->set($fields);
         $this->page_title = 'Continue Reconciliation';
-        $this->return = 'index.php?url=recon/reclear';
+        $this->return = url('recon', 'reclear');
         $this->view('reconcont.view.php', ['name' => $acct['name']]);
 
     }
@@ -247,7 +250,7 @@ class recon extends controller
         $saved['stmt_start_bal'] = int2dec($saved['stmt_start_bal']);
         $saved['stmt_end_bal'] = int2dec($saved['stmt_end_bal']);
 
-        $from_acct = $acct['acct_id'];
+        $from_acct = $acct['id'];
         $from_acct_name = $acct['name'];
 
         $stmt_start_bal = $saved['stmt_start_bal'];
@@ -292,7 +295,7 @@ class recon extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Continue Reconciliation';
-        $this->return = 'index.php?url=recon/finish';
+        $this->return = url('recon', 'finish');
         $this->view('reconlist.view.php', ['txns' => $txns, 'from_acct_name' => $from_acct_name]);
     }
 

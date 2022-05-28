@@ -21,11 +21,21 @@ class vimoutline
 {
 	var $str, $lines;
 
+    /**
+     * Constructor
+     *
+     * @param string Filename to process
+     */
+
 	function __construct($filename)
 	{
 		$this->lines = file($filename, FILE_IGNORE_NEW_LINES);
 		$this->stylesheet();
 	}
+
+    /**
+     * Stylesheet.
+     */
 
 	function stylesheet()
 	{
@@ -80,6 +90,10 @@ $this->str = <<<EOS
 
 EOS;
 	}
+
+    /**
+     * Parse the file
+     */
 
 	function parse()
 	{
@@ -163,8 +177,6 @@ EOS;
 		}
 
 		$this->str .= '</div> <!-- whatever tab level -->' . PHP_EOL;
-		// $this->str .= '<div class="tab' . $indent . '">' . PHP_EOL;
-
 		return $this->str;
 	}
 

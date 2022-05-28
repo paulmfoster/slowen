@@ -1,18 +1,52 @@
 <?php
 
-if (!class_exists('sanitize')) {
-	include 'sanitize.lib.php';
-}
-
 class user
 {
-	var $db, $everyone;
+    private const EVERYONE = 255;
 
 	function __construct($db)
 	{
-		$this->db = $db;
-		$this->everyone = 255;
+        $this->db = $db;
+        $this->make_tables();
+        if (!$this->has_users()) {
+            $this->sample_admin();
+        }
 	}
+
+    function has_users()
+    {
+        $sql = "SELECT * FROM user";
+        $u = $this->db->query($sql)->fetch();
+        return ($u === FALSE) ? FALSE : TRUE;
+    }
+
+    function make_tables()
+    {
+        $sql = "CREATE TABLE IF NOT EXISTS user (id integer primary key autoincrement, login varchar(30), password varchar(255), name varchar(50) not null, email varchar(255) not null, nonce varchar(255) not null, level integer default 255)";
+        $this->db->query($sql);
+        $sql = "CREATE TABLE IF NOT EXISTS confirm (id integer primary key autoincrement, login varchar(30), password varchar(255), name varchar(50), email varchar(255), nonce varchar(255), level integer, ip varchar(15), link varchar(255), timestamp integer)";
+        $this->db->query($sql);
+    }
+
+    function sample_admin()
+    {
+        $user = [
+            'login' => 'admin',
+            'password' => password_hash('password', PASSWORD_BCRYPT),
+            'name' => 'Administrator',
+            'email' => 'me@example.com',
+            'nonce' => md5('admin'),
+            'level' => 0
+        ];
+        $this->db->insert('user', $user);
+    }
+
+    function last_user()
+    {
+        $id = $this->db->lastid('user');
+        $sql = "SELECT * FROM user WHERE id = $id";
+        return $this->db->query($sql)->fetch();
+    }
 
 	/**
 	 * get_ip_address()
@@ -75,19 +109,19 @@ class user
 		}
 
 		// hacker login?
-		if ($post['login'] != sanitize::login($post['login'])) {
+		if ($post['login'] != preg_replace('%[^0-9A-Za-z]%', '', $content)) {
 			emsg('F', 'Not-allowed characters in login');
 			return FALSE;
 		}
 
 		// hacker name?
-		if ($post['name'] != sanitize::name($post['name'])) {
+		if ($post['name'] != preg_replace('%[^\. ,\-0-9A-Za-z]%', '', $content)) {
 			emsg('F', 'Not-allowed characters in user name');
 			return FALSE;
 		}
 
 		// hacker email?
-		if ($post['email'] != sanitize::email($post['email'])) {
+		if ($post['email'] != filter_var($content, FILTER_SANITIZE_EMAIL)) {
 			emsg('F', 'Invalid email address');
 			return FALSE;
 		}
@@ -166,16 +200,6 @@ EOD;
 			emsg('F', 'No such confirmation token, or token expired');
 			return FALSE;
 		}
-
-		/*
-			do the IPs match?
-			this may be removed later
-			$ip = $this->get_ip_address();
-			if ($ip != $rec['ip']) {
-				emsg($messages['F1748']);
-				return FALSE;
-			}	
-		*/
 
 		$store = array(
 			'login' => $rec['login'],
@@ -326,6 +350,10 @@ EOD;
 			'email' => $post['email']
 		];
 
+        if (isset($post['level'])) {
+            $rec['level'] = $post['level'];
+        }
+
 		// check for password change
 		if (!empty($post['password'])) {
 			// does password === confirm?
@@ -435,7 +463,7 @@ EOD;
 				return FALSE;
 			}
 		}
-		elseif ($level < $this->everyone) {
+		elseif ($level < self::EVERYONE) {
 			// user is not logged in or no user
 			// access level is "below" the "everyone" threshold
 			emsg('F', 'User not logged in or no user');
@@ -470,5 +498,5 @@ EOD;
 	}
 
 
-}; // end of class
+};
 

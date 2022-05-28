@@ -1,7 +1,21 @@
 <?php
 
+/**
+ * Router class for all controllers.
+ */
+
 class router
 {
+    /**
+     * Constructor
+     *
+     * Parse the URL. Check the existence of the controller file. If not
+     * found, used the default "welcome" controller. Check the existence of
+     * the specified method. If it doesn't exist, use the default "index"
+     * method. Ultimately, execute the controller->method.
+     *
+     */
+
     function __construct()
     {
         $controller = 'welcome';
@@ -37,6 +51,13 @@ class router
         }
 
     }
+
+    /**
+     * Parse the GET parameter.
+     *
+     * URLs should be in the form index.php?url=controller/method/param1/param2
+     *
+     */
 
     function get_url()
     {

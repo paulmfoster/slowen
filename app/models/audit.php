@@ -31,13 +31,13 @@ class audit
 		for ($i = 0; $i < $naccts; $i++) {
 			$bal = $accts[$i]['open_bal'];
 			for ($j = 0; $j < $ntxns; $j++) {
-				if ($txns[$j]['from_acct'] == $accts[$i]['acct_id']) {
+				if ($txns[$j]['from_acct'] == $accts[$i]['id']) {
 					$bal += $txns[$j]['total'];
 					break;
 				}
 			}
 
-			$bals[] = array('name' => $accts[$i]['name'], 'balance' => $bal, 'acct_id' => $accts[$i]['acct_id'], 'acct_type' => $accts[$i]['acct_type']);
+			$bals[] = array('name' => $accts[$i]['name'], 'balance' => $bal, 'id' => $accts[$i]['id'], 'acct_type' => $accts[$i]['acct_type']);
 			$bal = 0;
 		}
 		return $bals;
@@ -60,7 +60,7 @@ class audit
 	{
 		// get totals from journal for each category
 
-		$sql = "select distinct to_acct as cat_no, accounts.name as cat_name, sum(amount) as amount from journal, accounts where journal.to_acct = accounts.acct_id and accounts.acct_type = '$inc_exp' and txn_dt >= '$iso_from_date' and txn_dt <= '$iso_to_date' group by to_acct order by cat_name";
+		$sql = "select distinct to_acct as cat_no, accounts.name as cat_name, sum(amount) as amount from journal, accounts where journal.to_acct = accounts.id and accounts.acct_type = '$inc_exp' and txn_dt >= '$iso_from_date' and txn_dt <= '$iso_to_date' group by to_acct order by cat_name";
 		$r = $this->db->query($sql)->fetch_all();
 		if ($r === FALSE) {
 			// if we get to here, there is no income/expense
@@ -72,7 +72,7 @@ class audit
 
 		// get totals from splits for each category
 
-		$sql = "select splits.to_acct as cat_no, sum(splits.amount) as amount, accounts.name as cat_name from splits, journal, accounts where journal.txnid = splits.txnid and accounts.acct_id = splits.to_acct and accounts.acct_type = '$inc_exp' and journal.txn_dt >= '$iso_from_date' and journal.txn_dt <= '$iso_to_date' group by splits.to_acct order by splits.to_acct";
+		$sql = "select splits.to_acct as cat_no, sum(splits.amount) as amount, accounts.name as cat_name from splits, journal, accounts where journal.id = splits.jnlid and accounts.id = splits.to_acct and accounts.acct_type = '$inc_exp' and journal.txn_dt >= '$iso_from_date' and journal.txn_dt <= '$iso_to_date' group by splits.to_acct order by splits.to_acct";
 		$s = $this->db->query($sql)->fetch_all();
 		if ($s === FALSE) {
 			// if we get to here, there were no splits
@@ -176,7 +176,7 @@ class audit
 		for ($i = 0; $i < $nbals; $i++) {
 			$diff = $to_bals[$i]['balance'] - $from_bals[$i]['balance'];
 			$balances[] = array(
-				'acct_id' => $from_bals[$i]['acct_id'],
+				'id' => $from_bals[$i]['id'],
 				'acct_type' => $from_bals[$i]['acct_type'],
 				'acct_name' => $from_bals[$i]['name'],
 				'from_bal' => $from_bals[$i]['balance'],
@@ -238,7 +238,7 @@ class audit
 		// now we have cash, ltdebt, stdebt, total_exp, total_inc, inc_exp
 		// also arrays: $totals, $incs, $exps
 
-		$final = $cash - $inc_exp + $ltdebt + $stdebt + $equity; //
+		$final = $cash - $inc_exp + $ltdebt + $stdebt + $equity;
 
 		$analysis = array(
 			array('name' => 'Cash', 'total' => $cash),
@@ -247,7 +247,7 @@ class audit
 			array('name' => 'Inc/Exp', 'total' => $inc_exp),
 			array('name' => 'S/T Debt', 'total' => $stdebt),
 			array('name' => 'L/T Debt', 'total' => $ltdebt),
-			array('name' => "Owner's Equity", 'total' => $equity), //
+			array('name' => "Owner's Equity", 'total' => $equity),
 			array('name' => 'Difference', 'total' => $final)
 		);
 
@@ -255,7 +255,7 @@ class audit
 		$data['balances'] = $balances;
 		$data['incomes'] = $incomes;
 		$data['expenses'] = $expenses;
-		$data['equity'] =  $equity; //
+		$data['equity'] =  $equity;
 		$data['analysis'] = $analysis;
 
 		return $data;	

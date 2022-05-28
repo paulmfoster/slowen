@@ -21,15 +21,15 @@ class transaction
 	function get_names($from_acct, $payee_id, $to_acct)
 	{
 
-		$sql1 = "select name from accounts where acct_id = $from_acct";
+		$sql1 = "select name from accounts where id = $from_acct";
 		$d = $this->db->query($sql1)->fetch();
 		$rtn['from_acct_name'] = $d['name'] ? $d['name'] : '';
 
-		$sql2 = "select name from accounts where acct_id = $to_acct";
+		$sql2 = "select name from accounts where id = $to_acct";
 		$e = $this->db->query($sql2)->fetch();
 		$rtn['to_acct_name'] = $e['name'] ? $e['name'] : '';
 
-		$sql3 = "select name from payees where payee_id = $payee_id";
+		$sql3 = "select name from payees where id = $payee_id";
 		$f = $this->db->query($sql3)->fetch();
 		$rtn['payee_name'] = $f['name'] ? $f['name'] : '';
 
@@ -59,11 +59,11 @@ class transaction
 		return $accounts;
 	}
 
-	function get_account($acct_id)
+	function get_account($id)
 	{
         global $acct_types;
 
-		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.acct_id = a1.parent WHERE a1.acct_id = $acct_id ORDER BY lower(a1.name)";
+		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.id = a1.parent WHERE a1.id = $id ORDER BY lower(a1.name)";
 		$acct = $this->db->query($sql)->fetch();
 
 		if ($acct === FALSE) {
@@ -79,17 +79,16 @@ class transaction
 		return $acct;
 	}
 
-	function get_open_bal($acct_id)
+	function get_open_bal($id)
 	{
-		$sql = "SELECT open_bal FROM accounts WHERE acct_id = $acct_id";
+		$sql = "SELECT open_bal FROM accounts WHERE id = $id";
 		$rec = $this->db->query($sql)->fetch();
 		return $rec['open_bal'];
 	}
 
 	function transactions_sql($where_clause)
 	{
-		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE $where_clause ORDER BY txn_dt, checkno, txnid";
-
+		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.id = journal.to_acct WHERE $where_clause ORDER BY txn_dt, checkno, txnid";
 		return $sql;
 	}
 
@@ -175,7 +174,7 @@ class transaction
 	{
         global $statuses;
 
-		$sql = "select journal.*, payees.name as payee_name, a3.name as from_acct_name, a4.name as to_acct_name from journal left join payees on journal.payee_id = payees.payee_id left join accounts as a3 on journal.from_acct = a3.acct_id left join accounts as a4 on journal.to_acct = a4.acct_id where journal.txnid = $txnid order by journal.id";
+		$sql = "select journal.*, payees.name as payee_name, a3.name as from_acct_name, a4.name as to_acct_name from journal left join payees on journal.payee_id = payees.id left join accounts as a3 on journal.from_acct = a3.id left join accounts as a4 on journal.to_acct = a4.id where journal.txnid = $txnid order by journal.id";
 
 		$txns = $this->db->query($sql)->fetch_all();
 		$max_txns = count($txns);
@@ -218,13 +217,13 @@ class transaction
 	{
 		$sql = "SELECT * FROM accounts WHERE parent != 0 ORDER BY lower(name)";
 		$to_accts = $this->db->query($sql)->fetch_all();
-		array_unshift($to_accts, array('acct_id' => '0', 'name' => 'NONE', 'acct_type' => ' '));
+		array_unshift($to_accts, array('id' => '0', 'name' => 'NONE', 'acct_type' => ' '));
 		return $to_accts;
 	}
 
 	function get_splits($txnid)
 	{
-		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.payee_id = s.payee_id LEFT JOIN accounts AS a ON a.acct_id = s.to_acct WHERE txnid = $txnid";
+		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.id = s.payee_id LEFT JOIN accounts AS a ON a.id = s.to_acct WHERE txnid = $txnid";
 		$splits = $this->db->query($sql)->fetch_all();
 		return $splits;
 	}
@@ -303,145 +302,4 @@ class transaction
 		return TRUE;
 	}
 
-	/**
-	 * add_transaction()
-	 *
-	 * @param array The POST data to save
-	 *
-	 * @return boolean TRUE on success, FALSE on error
-	 */
-
-	function add_transaction($post)
-	{
-		$this->db->begin();
-
-		// get next transaction ID
-		$post['txnid'] = $this->get_next_txnid();
-
-		// checkboxes, unchecked don't show up in $_POST
-
-		if (!isset($post['xfer'])) {
-			$post['xfer'] = 0;
-		}
-
-		if (!isset($post['split'])) {
-			$post['split'] = 0;
-		}
-
-		if (!isset($post['status'])) {
-			$post['status'] = ' ';
-		}
-
-		// integerize amount
-
-		if ($post['status'] == 'V') {
-			$post['amount'] = 0;
-		}
-		else {
-			if (!empty($post['dr_amount'])) {
-				if (!is_numeric($post['dr_amount'])) {
-					emsg('Amount must be a numeric. You entered ' . $post['dr_amount']);
-					return FALSE;
-				}
-				$post['amount'] = - dec2int($post['dr_amount']);
-			}
-
-			if (!empty($post['cr_amount'])) {
-				if (!is_numeric($post['cr_amount'])) {
-					emsg('Amount must be a numeric. You entered ' . $post['cr_amount']);
-					return FALSE;
-				}
-				$post['amount'] = dec2int($post['cr_amount']);
-			}
-		}
-
-		if ($post['split'] == 0) {
-
-			if ($post['payee_id'] == '0') {
-				emsg('F', 'Normal transactions must have a valid payee');
-				return FALSE;
-			}
-		
-			if ($post['to_acct'] == '0') {
-				emsg('F','Normal transactions must have a valid to account');
-				return FALSE;
-			}
-		}
-
-		if ($post['xfer'] == 1 && $post['to_acct'] == 0) {
-			emsg('F', 'Transfers must have a valid to account');
-			return FALSE;
-		}
-
-		if (!isset($post['checkno'])) {
-			$post['checkno'] = '';
-		}
-
-		if (!isset($post['recon_dt'])) {
-			$post['recon_dt'] = '';
-		}
-
-		$rec = $this->db->prepare('journal', $post);
-		$this->db->insert('journal', $rec);
-
-		// handle transfers, if any
-
-		if ($post['xfer'] == 1) {
-
-			$temp = $post['from_acct'];
-			$post['from_acct'] = $post['to_acct'];
-			$post['to_acct'] = $temp;
-			$post['amount'] = - $post['amount'];
-
-			$rec = $this->db->prepare('journal', $post);
-			$this->db->insert('journal', $rec);
-		}
-
-		// handle splits as needed
-
-		if ($post['split'] && $post['max_splits'] > 0) {
-
-			$check_amount = $post['amount'];
-
-			for ($k = 0; $k < $post['max_splits']; $k++) {
-				if ($post['split_to_acct'][$k] == 0) {
-					emsg('F', 'Splits must have a valid to account');
-					$this->db->rollback();
-					return FALSE;
-				}
-
-				if (!empty($post['split_dr_amount'][$k])) {
-					$amount = - $post['split_dr_amount'][$k];
-				}
-				elseif (!empty($post['split_cr_amount'][$k])) {
-					$amount = $post['split_cr_amount'][$k];
-				}
-
-				$split = array(
-					'txnid' => $post['txnid'],
-					'to_acct' => $post['split_to_acct'][$k],
-					'memo' => $post['split_memo'][$k],
-					'payee_id' => $post['split_payee_id'][$k],
-					'amount' => dec2int($amount)
-				);
-				$check_amount -= dec2int($amount);
-				$rec = $this->db->prepare('splits', $split);
-				$this->db->insert('splits', $rec);
-			}
-
-			if ($check_amount != 0) {
-				instrument('check_amount', $check_amount);
-				instrument('POST', $post);
-				die("Amounts didn't add up.");
-				emsg('F', "Split amounts don't add up to transaction amount");
-				$this->db->rollback();
-				return FALSE;
-			}
-
-		}
-
-		$this->db->end();
-		emsg('S', 'Transaction(s) stored.');
-		return TRUE;
-	}
 }

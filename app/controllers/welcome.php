@@ -4,8 +4,11 @@ class welcome extends controller
 {
     function __construct()
     {
-        global $init;
-        list($this->cfg, $this->form, $this->nav) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
     }
 
     function index()

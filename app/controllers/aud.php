@@ -4,8 +4,11 @@ class aud extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->audit = model('audit', $this->db);
     }
 
@@ -50,7 +53,7 @@ class aud extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Monthly Audit';
-        $this->return = 'index.php?url=aud/show';
+        $this->return = url('aud', 'show');
         $this->focus_field = 'month';
         $this->view('auditm.view.php');
     }
@@ -78,7 +81,7 @@ class aud extends controller
         $this->form->set($fields);
         $this->page_title = 'Yearly Audit';
         $this->focus_field = 'year';
-        $this->return = 'index.php?url=aud/show';
+        $this->return = url('aud', 'show');
         $this->view('audity.view.php');
     }
 

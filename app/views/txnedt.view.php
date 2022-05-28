@@ -122,7 +122,7 @@ else {
 <p>
 <?php $this->form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon("index.php?url=txn/show/{$txn['txnid']}"); ?>
+<?php form::abandon(url('txn', 'show', $txn['txnid'])); ?>
 </p>
 
 

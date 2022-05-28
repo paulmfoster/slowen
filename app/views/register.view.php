@@ -27,11 +27,11 @@
 <tr class="row<?php echo $row++ & 1;?>">
 <td>
 
-<a href="index.php?url=txn/show/<?php echo $txn['txnid']; ?>">Show</a>
+<a href="<?php echo url('txn', 'show', $txn['txnid']); ?>">Show</a>
 <br/>
-<a href="index.php?url=txn/edit/<?php echo $txn['txnid']; ?>">Edit</a>
+<a href="<?php echo url('txn', 'edit', $txn['txnid']); ?>">Edit</a>
 <br/>
-<a href="index.php?url=txn/void/<?php echo $txn['txnid']; ?>">Void</a>
+<a href="<?php echo url('txn', 'void', $txn['txnid']); ?>">Void</a>
 
 </td>
 <td><?php echo pdate::iso2am($txn['txn_dt']); ?></td>

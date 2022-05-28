@@ -9,7 +9,7 @@ class report
 
 	function transactions_sql($where_clause)
 	{
-		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE $where_clause ORDER BY txn_dt, checkno, txnid";
+		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.id = journal.to_acct WHERE $where_clause ORDER BY txn_dt, checkno, txnid";
 
 		return $sql;
 	}
@@ -174,7 +174,7 @@ class report
 		// should give us all totals, plus from_acct and account name
 		// | from_acct | total | name |
 
-		$sql = "SELECT DISTINCT from_acct, sum(amount) as total, accounts.name as name FROM journal, accounts WHERE txn_dt <= '$last_dt' and accounts.acct_id = journal.from_acct GROUP BY from_acct order by accounts.name";
+		$sql = "SELECT DISTINCT from_acct, sum(amount) as total, accounts.name as name FROM journal, accounts WHERE txn_dt <= '$last_dt' and accounts.id = journal.from_acct GROUP BY from_acct order by accounts.name";
 
 		$balances = $this->db->query($sql)->fetch_all();
 
@@ -187,7 +187,7 @@ class report
 		$bals = array();
 		for ($i = 0; $i < $max_accts; $i++) {
 			for ($j = 0; $j < $max_bals; $j++) {
-				if ($accts[$i]['acct_id'] == $balances[$j]['from_acct']) {
+				if ($accts[$i]['id'] == $balances[$j]['from_acct']) {
 					$bals[] = array('name' => $accts[$i]['name'],
 						'balance' => $balances[$j]['total'] + $accts[$i]['open_bal']);
 					break;
@@ -207,7 +207,7 @@ class report
 	
 	function get_expenses($from_date, $to_date)
 	{
-        $sql = "select j.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from journal as j join accounts as a on (a.acct_id = j.from_acct) join accounts as b on (b.acct_id = j.to_acct) join payees as p on (p.payee_id = j.payee_id) where b.acct_type = 'E' and j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' order by to_acct_name";
+        $sql = "select j.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from journal as j join accounts as a on (a.id = j.from_acct) join accounts as b on (b.id = j.to_acct) join payees as p on (p.id = j.payee_id) where b.acct_type = 'E' and j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' order by to_acct_name";
 		$result = $this->db->query($sql)->fetch_all();
 		return $result;
 	}

@@ -4,11 +4,13 @@ class txn extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->trans = model('transaction', $this->db);
     }
-
 
     function show($txnid = NULL)
     {
@@ -46,7 +48,7 @@ class txn extends controller
         $payees = $this->trans->get_payees();
         $payee_options[] = ['lbl' => 'NONE', 'val' => 0];
         foreach($payees as $payee) {
-            $payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+            $payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
         }
 
         $status_options = array();
@@ -58,7 +60,7 @@ class txn extends controller
         $to_options = array();
         foreach ($to_accts as $to_acct) {
             $to_options[] = array('lbl' => $to_acct['name'] . ' ' . $atnames[$to_acct['acct_type']], 
-                'val' => $to_acct['acct_id']);
+                'val' => $to_acct['id']);
         }
 
         $splits = $this->trans->get_splits($txns[0]['txnid']);
@@ -72,7 +74,7 @@ class txn extends controller
         $split_to_options = array();
         foreach ($to_accts as $to_acct) {
             $split_to_options[] = array('lbl' => $to_acct['name'] . ' ' . $atnames[$to_acct['acct_type']], 
-                'val' => $to_acct['acct_id']);
+                'val' => $to_acct['id']);
         }
 
         if ($max_txns == 1) {
@@ -80,8 +82,8 @@ class txn extends controller
             // single transaction
 
             $fields = array(
-                'acct_id' => array(
-                    'name' => 'acct_id',
+                'id' => array(
+                    'name' => 'id',
                     'type' => 'hidden'
                 ),
                 'txntype' => array(
@@ -185,7 +187,7 @@ class txn extends controller
 
             $data = ['txns' => $txns, 'statuses' => $statuses, 'max_txns' => $max_txns, 'max_splits' => $max_splits, 'splits' => $splits];
             $this->page_title = 'Edit Transaction';
-            $this->return = 'index.php?url=txn/update';
+            $this->return = url('txn', 'update');
             $this->view('txnedt.view.php', $data);
 
         }
@@ -236,7 +238,7 @@ class txn extends controller
 
             $data = ['txns' => $txns, 'statuses' => $statuses];
             $this->page_title = 'Edit Inter-Account Transfer';
-            $this->return = 'index.php?url=txn/update';
+            $this->return = url('txn', 'update');
 
             $this->view('xferedt.view.php', $data);
         }
@@ -284,7 +286,7 @@ class txn extends controller
         $this->form->set($fields);
 
         $this->page_title = 'Void Transaction';
-        $this->return = 'index.php?url=txn/vconfirm';
+        $this->return = url('txn', 'vconfirm');
         $data = ['txns' => $txns, 'splits' => $splits];
         $this->view('txnvoid.view.php', $data);
 
@@ -299,8 +301,6 @@ class txn extends controller
 
         $this->trans->void_transaction($txnid);
         $this->show($txnid);
-        // redirect("index.php?url=txn/show/$txnid");
-
     }
 
 }

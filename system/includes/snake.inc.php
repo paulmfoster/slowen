@@ -3,6 +3,8 @@
 /**
  * Yields "snaked" columns.
  *
+ * This routine yields table rows.
+ *
  * @param integer $numcols How many columns do you want?
  * @param array $arr Indexed array of user values.
  *
@@ -21,19 +23,25 @@ function snake($numcols, $arr)
 	else
 		$maxrows = $numlines / $maxcols;
 
-	$master = array();
-	for ($i = 0; $i < $numlines; $i++) {
+    $ncells = $maxcols * $maxrows;
 
+	$master = array();
+	for ($i = 0; $i < $ncells; $i++) {
 		$row = $i % $maxrows;
 		$col = floor($i / $maxrows);
 
-		$master[$row][$col] = $arr[$i];
+        if (isset($arr[$i])) {
+    		$master[$row][$col] = $arr[$i];
+        }
+        else {
+    		$master[$row][$col] = '';
+        }
 	}
 
 	$str = '';
 	for ($x = 0; $x < $maxrows; $x++) {
 
-		$z = $q++ & 1;
+		$z = $x & 1;
 		$str .= "<tr class=\"row$z\">\n";
 
 		for ($y = 0; $y < $maxcols; $y++) {
@@ -48,6 +56,8 @@ function snake($numcols, $arr)
 
 /**
  * Yields "snaked" columns.
+ *
+ * This routine is designed for printouts.
  *
  * @param integer $numcols How many columns do you want?
  * @param array $arr Indexed array of user values.

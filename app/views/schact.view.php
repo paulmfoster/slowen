@@ -23,6 +23,7 @@ any scheduled transactions you wish to activate.</h2>
 <th>To Acct/Category</th>
 <th>Debit</th>
 <th>Credit</th>
+<th>Last Date</th>
 </tr>
 
 <?php foreach ($r as $txn): ?>
@@ -46,6 +47,8 @@ any scheduled transactions you wish to activate.</h2>
 <?php else: ?>
 <td></td><td class="align-right"><?php echo int2dec($txn['amount']); ?></td>
 <?php endif; ?>
+
+<td><?php echo pdate::iso2am($txn['last']); ?></td>
 
 </tr>
 

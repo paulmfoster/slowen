@@ -88,8 +88,6 @@ Amount
 
 <p>
 <?php $this->form->submit('s1'); ?>
-&nbsp;
-<?php form::abandon('index.php?url=atxn/check'); ?>
 </p>
 
 </form>

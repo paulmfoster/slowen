@@ -30,7 +30,7 @@
 </div>
 <!-- END OF HEADER -->
 
-<div id="left-nav">
+<div id="top-nav">
 <?php echo $this->nav->show(); ?>
 </div>
 

@@ -4,8 +4,6 @@
 <strong>Payee Name</strong>&nbsp;
 <?php $this->form->text('name'); ?>
 <br/>
-<?php form::abandon('index.php?url=pay/add'); ?>
-&nbsp;
 <?php $this->form->submit('s1'); ?>
 </form>
 

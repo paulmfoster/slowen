@@ -5,6 +5,24 @@
  *
  * This class primarily displays form controls
  *
+ * Example usage:
+ * 
+ * $fields = [
+ *  'custno' => [
+ *      'name' => 'custno',
+ *      'type' => 'text',
+ *      'size' => 20,
+ *      'maxlength' => 20
+ *  ],
+ *  's1' => [
+ *      'name' => 's1',
+ *      'type' => 'submit',
+ *      'value' => 'Save'
+ *  ]
+ * ];
+ *
+ * $form->set($fields);
+ *
  */
 
 class form
@@ -17,10 +35,20 @@ class form
 		$this->fields = $fields;
 	}
 
+    /**
+     * Set the parameters for a field
+     *
+     * @param array Parameters
+     */
+
 	function set($fields = [])
 	{
 		$this->fields = $fields;
 	}
+
+    /**
+     * Clear the fields
+     */
 
 	function clear()
 	{
@@ -85,7 +113,6 @@ class form
 		}
 	}
 
-
 	// =======================================================
 	// Display Routines
 	// =======================================================
@@ -95,6 +122,14 @@ class form
 		$str = $key . '="' . $value . '" ';
 		return $str;
 	}
+
+    /**
+     * Return text field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function text($field_name, $content = NULL)
 	{
@@ -130,6 +165,10 @@ class form
 			$str .= ' ' . $fld['javascript'];
 		}
 
+        if (isset($fld['disabled'])) {
+            $str .= ' disabled ';
+        }
+
 		// added for HTML5
 		if (isset($fld['required'])) {
 			$str .= 'required';
@@ -139,6 +178,14 @@ class form
 
 		echo $str;
 	}
+
+    /**
+     * Return password field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function password($field_name, $content = NULL)
 	{
@@ -172,6 +219,14 @@ class form
 
 		echo $str;
 	}
+
+    /**
+     * Return date field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function date($field_name, $content = NULL)
 	{
@@ -208,6 +263,14 @@ class form
 
 		echo $str;
 	}
+
+    /**
+     * Return select field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function select($field_name, $select_value = NULL)
 	{
@@ -294,7 +357,16 @@ class form
 		echo $str;
 	}
 
-	function bare_radio($fld, $option, $checked_value = NULL)
+    /**
+     * Generic radio button.
+     *
+     * @param array Field specific values
+     * @param string Option
+     * @param mixed The value of the field when checked
+     * @return string HTML output
+     */
+
+	private function bare_radio($fld, $option, $checked_value = NULL)
 	{
 		$str = '<input ';
 		$str .= $this->key_value('type', 'radio');
@@ -320,6 +392,14 @@ class form
 
 		return $str;
 	}
+
+    /**
+     * Return radio field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function radio($field_name, $checked_value = NULL)
 	{
@@ -366,6 +446,14 @@ class form
 		echo $str;
 	}
 
+    /**
+     * Return checkbox field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
+
 	function checkbox($field_name, $checked_value = NULL)
 	{
 		$this->mismatch($field_name, 'checkbox');
@@ -397,6 +485,14 @@ class form
 		echo $str;
 	}
 
+    /**
+     * Return file field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
+
 	function file($field_name)
 	{
 		$this->mismatch($field_name, 'file');
@@ -415,6 +511,14 @@ class form
 		$str .= '/>' . PHP_EOL;
 		echo $str;
 	}
+
+    /**
+     * Return hidden field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function hidden($field_name, $content = NULL)
 	{
@@ -435,6 +539,14 @@ class form
 		$str .= '/>' . PHP_EOL;
 		echo $str;
 	}
+
+    /**
+     * Return textarea field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function textarea($field_name, $content = NULL)
 	{
@@ -462,6 +574,9 @@ class form
 		if (isset($parms['wrap'])) {
 			$str .= $this->key_value('wrap', $parms['wrap']);
 		}
+        if (isset($parms['disabled'])) {
+            $str .= ' disabled ';
+        }
 
 		// added for HTML5
 		if (isset($fld['required'])) {
@@ -481,6 +596,14 @@ class form
 
 		echo $str;
 	}
+
+    /**
+     * Return submit field HTML
+     *
+     * @param string Field name
+     * @param string Default content for the field
+     * @return string HTML
+     */
 
 	function submit($field_name)
 	{
@@ -583,11 +706,27 @@ class form
 	// Static Functions
 	// =======================================================
 
+    /**
+     * Return button field.
+     *
+     * @param string Legend for the button
+     * @param string The action link for the button
+     * @return string HTML
+     */
+
 	static function button($legend, $link)
 	{
 		$str = '<a href="' . $link . '"><button type="button">' . $legend . '</button></a>' . PHP_EOL;
 		echo $str;
 	}
+
+    /**
+     * Return abandon button field.
+     *
+     * @param string Legend for the button
+     * @param string The action link for the button
+     * @return string HTML
+     */
 
 	static function abandon($link)
 	{

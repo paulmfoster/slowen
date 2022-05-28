@@ -4,8 +4,11 @@ class atxn extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         load('memory');
         $this->trans = model('addtxn', $this->db);
     }
@@ -30,33 +33,34 @@ class atxn extends controller
         foreach($bank_accts as $bank_acct) {
             $this->bank_options[] = array('lbl' => 
                 $bank_acct['name'] . ' ' . $atnames[$bank_acct['acct_type']], 
-                'val' => $bank_acct['acct_id']);
+                'val' => $bank_acct['id']);
         }
 
         $this->from_options = array();
         foreach($from_accts as $from_acct) {
             $this->from_options[] = array('lbl' => 
                 $from_acct['name'] . ' ' . $atnames[$from_acct['acct_type']], 
-                'val' => $from_acct['acct_id']);
+                'val' => $from_acct['id']);
         }
 
         $this->ccard_options = array();
         foreach($ccard_accts as $ccard_acct) {
             $this->ccard_options[] = array('lbl' => 
                 $ccard_acct['name'] . ' ' . $atnames[$ccard_acct['acct_type']], 
-                'val' => $ccard_acct['acct_id']);
+                'val' => $ccard_acct['id']);
         }
 
         $this->payee_options = array();
         $this->payee_options[] = array('lbl' => 'NONE', 'val' => 0);
         foreach($payees as $payee) {
-            $this->payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['payee_id']);
+            $this->payee_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
         }
 
         $this->to_options = array();
+        $this->to_options[] = ['lbl' => 'NONE', 'val' => 0];
         foreach($to_accts as $to_acct) {
             $this->to_options[] = array('lbl' => $to_acct['name'] . ' ' . $atnames[$to_acct['acct_type']], 
-                'val' => $to_acct['acct_id']);
+                'val' => $to_acct['id']);
         }
 
         $this->status_options = array();
@@ -65,19 +69,234 @@ class atxn extends controller
         }
     }
 
-    // This is where we end up if $cfg['confirm_transaction'] is true.
-    function save($rtn)
+    function settle()
     {
-        if (!isset($_POST)) {
-            $this->$rtn;
+        memory::merge($_POST);
+
+        if ($_POST['status'] == 'V') {
+            memory::set('amount', 0);
+        }
+        elseif (!empty($_POST['cr_amount'])) {
+            memory::set('amount', $_POST['cr_amount']);
+        }
+        elseif (!empty($_POST['dr_amount'])) {
+            memory::set('amount', - $_POST['dr_amount']);
+        }
+        else {
+            memory::set('amount', 0);
+        }
+
+        $split = $_POST['split'] ?? 0;
+        if ($split == 1) {
+            $this->split();
+        }
+        else {
+            $this->verify();
+        }
+    }
+
+    private function split()
+    {
+        $max_splits = $_POST['max_splits'];
+
+        $this->options();
+
+        $fields = array(
+            'max_splits' => array(
+                'name' => 'max_splits',
+                'type' => 'hidden',
+                'value' => $_POST['max_splits']
+            ),
+            'split_payee_id' => array(
+                'name' => 'split_payee_id[]',
+                'type' => 'select',
+                'options' => $this->payee_options
+            ),
+            'split_to_acct' => array(
+                'name' => 'split_to_acct[]',
+                'type' => 'select',
+                'options' => $this->to_options
+            ),
+            'split_memo' => array(
+                'name' => 'split_memo[]',
+                'type' => 'text',
+                'size' => 35,
+                'maxlength' => 35
+            ),
+            'split_cr_amount' => array(
+                'name' => 'split_cr_amount[]',
+                'type' => 'text',
+                'size' => 12,
+                'maxlength' => 12
+            ),
+            'split_dr_amount' => array(
+                'name' => 'split_dr_amount[]',
+                'type' => 'text',
+                'size' => 12,
+                'maxlength' => 12
+            ),
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Save'
+            )
+        );
+
+        $this->form->set($fields);
+        $this->page_title = 'Splits Entry';
+        $data = ['max_splits' => $_POST['max_splits']];
+        $this->return = url('atxn', 'verify');
+        $this->view('txnsplt.view.php', $data);
+    }
+
+    function verify()
+    {
+        global $statuses;
+
+        if ($this->cfg['confirm_transactions'] == 0) {
+            $txnid = $this->trans->add_transaction(memory::get_all());
+            memory::clear();
+            $this->add();
         }
 
         memory::merge($_POST);
-        $txnid = $this->trans->add_transaction(memory::get_all());
-        memory::clear();
 
-        $this->$rtn();
+        $fields = array(
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Confirm'
+            )
+        );
+
+        $this->form->set($fields);
+
+        $data = memory::get_all();
+        $names = $this->trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
+        $data['from_acct_name'] = $names['from_acct_name'];
+        $data['to_acct_name'] = $names['to_acct_name'];
+        $data['payee_name'] = $names['payee_name'];
+        $data['status_descrip'] = $statuses[$data['status']];
+
+        if (isset($data['split']) && $data['max_splits'] > 0) {
+            for ($e = 0; $e < $data['max_splits']; $e++) {
+                $names = $this->trans->get_split_names($data['split_payee_id'][$e], $data['split_to_acct'][$e]);
+                $data['split_to_name'][$e] = $names['split_to_name'];
+                $data['split_payee_name'][$e] = $names['split_payee_name'];
+            }
+        }
+
+        $this->page_title = 'Confirm Transaction';
+        $this->return = url('atxn', 'save');
+        $this->view('othvrfy.view.php', $data);
     }
+
+    // This is where we end up if $cfg['confirm_transaction'] is true.
+    function save()
+    {
+        $save = $_POST['s1'] ?? NULL;
+        if (!is_null($save)) {
+            $txnid = $this->trans->add_transaction(memory::get_all());
+            memory::clear();
+        }
+        else {
+            emsg('Transaction save aborted.');
+        }
+
+        $this->add();
+    }
+
+    function add()
+    {
+        global $atnames, $statuses;
+
+        memory::clear();
+        $this->options();
+
+        $fields = array(
+            'from_acct' => array(
+                'name' => 'from_acct',
+                'type' => 'select',
+                'options' => $this->from_options
+            ),
+            'txn_dt' => array(
+                'name' => 'txn_dt',
+                'type' => 'date'
+            ),
+            'split' => array(
+                'name' => 'split',
+                'type' => 'checkbox',
+                'value' => 1
+            ),
+            'checkno' => array(
+                'name' => 'checkno',
+                'type' => 'text',
+                'size' => 12,
+                'maxlength' => 12
+            ),
+            'payee_id' => array(
+                'name' => 'payee_id',
+                'type' => 'select',
+                'options' => $this->payee_options
+            ),
+            'memo' => array(
+                'name' => 'memo',
+                'type' => 'text',
+                'size' => 35,
+                'maxlength' => 35
+            ),
+            'to_acct' => array(
+                'name' => 'to_acct',
+                'type' => 'select',
+                'options' => $this->to_options
+            ),
+            'line_no' => array(
+                'name' => 'line_no',
+                'type' => 'hidden'
+            ),
+            'status' => array(
+                'name' => 'status',
+                'type' => 'select',
+                'options' => $this->status_options
+            ),
+            'recon_dt' => array(
+                'name' => 'recon_dt',
+                'type' => 'date'
+            ),
+            'dr_amount' => array(
+                'name' => 'dr_amount',
+                'type' => 'text',
+                'size' => 12,
+                'maxlength' => 12
+            ),
+            'cr_amount' => array(
+                'name' => 'cr_amount',
+                'type' => 'text',
+                'size' => 12,
+                'maxlength' => 12
+            ),
+            'max_splits' => array(
+                'name' => 'max_splits',
+                'type' => 'text',
+                'size' => 2,
+                'maxlength' => 2
+            ),
+            'save' => array(
+                'name' => 'save',
+                'type' => 'submit',
+                'value' => 'Save'
+            )
+        );
+        $this->form->set($fields);
+        $this->page_title = 'Enter Transaction';
+        $this->focus_field = 'from_acct';
+        $this->return = url('atxn', 'settle');
+        $this->view('addtxn.view.php');
+    }
+
+    /****************************************************************
+     * ITEMS BELOW ARE DEPRECATED.
+     ****************************************************************/
 
     function check()
     {
@@ -136,7 +355,7 @@ class atxn extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Enter Check';
-        $this->return = 'index.php?url=atxn/chkvrfy';
+        $this->return = url('atxn', 'chkvrfy');
         $this->focus_field = 'from_acct';
         $this->view('chkadd.view.php');
     }
@@ -531,8 +750,50 @@ class atxn extends controller
         $this->view('othadd.view.php');
     }
 
+    function othvrfy()
+    {
+        global $statuses;
+
+        memory::merge($_POST);
+
+        if ($this->cfg['confirm_transactions'] == 0) {
+            $txnid = $this->trans->add_transaction(memory::get_all());
+            memory::clear();
+            $this->other();
+        }
+
+        $fields = array(
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Confirm'
+            )
+        );
+
+        $this->form->set($fields);
+
+        $data = memory::get_all();
+        $names = $this->trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
+        $data['from_acct_name'] = $names['from_acct_name'];
+        $data['to_acct_name'] = $names['to_acct_name'];
+        $data['payee_name'] = $names['payee_name'];
+        $data['status_descrip'] = $statuses[$data['status']];
+
+        if (isset($data['split']) && $data['max_splits'] > 0) {
+            for ($e = 0; $e < $data['max_splits']; $e++) {
+                $names = $this->trans->get_split_names($data['split_payee_id'][$e], $data['split_to_acct'][$e]);
+                $data['split_to_name'][$e] = $names['split_to_name'];
+                $data['split_payee_name'][$e] = $names['split_payee_name'];
+            }
+        }
+
+        $this->page_title = 'Confirm Transaction';
+        $this->return = 'index.php?url=atxn/save/other';
+        $this->view('othvrfy.view.php', $data);
+    }
+
     // This is an additional verification step where there are splits.
-    function split()
+    function old_split()
     {
         memory::merge($_POST);
 
@@ -603,46 +864,5 @@ class atxn extends controller
         $this->view('txnsplt.view.php', $data);
     }
 
-    function othvrfy()
-    {
-        global $statuses;
-
-        memory::merge($_POST);
-
-        if ($this->cfg['confirm_transactions'] == 0) {
-            $txnid = $this->trans->add_transaction(memory::get_all());
-            memory::clear();
-            $this->other();
-        }
-
-        $fields = array(
-            's1' => array(
-                'name' => 's1',
-                'type' => 'submit',
-                'value' => 'Confirm'
-            )
-        );
-
-        $this->form->set($fields);
-
-        $data = memory::get_all();
-        $names = $this->trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
-        $data['from_acct_name'] = $names['from_acct_name'];
-        $data['to_acct_name'] = $names['to_acct_name'];
-        $data['payee_name'] = $names['payee_name'];
-        $data['status_descrip'] = $statuses[$data['status']];
-
-        if (isset($data['split']) && $data['max_splits'] > 0) {
-            for ($e = 0; $e < $data['max_splits']; $e++) {
-                $names = $this->trans->get_split_names($data['split_payee_id'][$e], $data['split_to_acct'][$e]);
-                $data['split_to_name'][$e] = $names['split_to_name'];
-                $data['split_payee_name'][$e] = $names['split_payee_name'];
-            }
-        }
-
-        $this->page_title = 'Confirm Transaction';
-        $this->return = 'index.php?url=atxn/save/other';
-        $this->view('othvrfy.view.php', $data);
-    }
 }
 

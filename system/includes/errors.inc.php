@@ -64,6 +64,15 @@ function trace()
 
 }
 
+/**
+ * Fatal message.
+ *
+ * Send a programmer message, and a message to the user.
+ *
+ * @param string programmer message
+ * @param string user message
+ */
+
 function fatal($pgmr_message, $user_message)
 {
 	error_log("DATE: " . date('c') . "\n", 3, 'error.log');

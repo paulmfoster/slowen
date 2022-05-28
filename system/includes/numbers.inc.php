@@ -80,68 +80,6 @@ function dec2int($number)
 	return $new;
 }
 
-/*
-
-function dec2int($number)
-{
-	// trim first
-	$number = trim($number);
-	if (empty($number)) {
-		return 0;
-	}
-
-	// handle signs
-	if ($number[0] == '+' || $number[0] == '-') {
-		$vlen = strlen($number);
-		$sign = 1;
-		for ($v = 0; $v < $vlen; $v++) {
-			if ($number[$v] == '-')
-				$sign = -$sign;
-			elseif ($number[$v] == '+')
-				continue;
-			else
-				break;
-		}
-
-		// We assume $v will never get to $vlen - 1.
-		// That would mean the string was all just signs
-		// therefore not a real number
-
-		$start = $v;
-		if ($sign < 0)
-			$number = '-' . substr($number, $start);
-		else
-			$number = substr($number, $start);
-
-	}
-
-	$posn = strpos($number, DECIMAL_SYMBOL);
-	if ($posn === FALSE) {
-		$suffix = str_repeat('0', DECIMALS);
-		return $number . $suffix;
-	}
-	else {
-		$left = substr($number, 0, $posn);
-		$right = substr($number, $posn + 1);
-		$rlen = strlen($right);
-		if ($rlen > DECIMALS) {
-			$suffix = substr($right, 0, DECIMALS);
-			return $left . $suffix;
-		}
-		elseif ($rlen == DECIMALS) {
-			return $left . $right;
-		}
-		else {
-			// less than two digits
-			$add = DECIMALS - $rlen;
-			$str = str_repeat('0', $add);
-			return $left . $right . $str;
-		}
-	}
-}
-
- */
-
 /**
  * Convert integer value to decimal (or other).
  *
@@ -188,37 +126,3 @@ function int2dec($number = 0)
 	return $sign . $left . DECIMAL_SYMBOL . $right;
 }
 
-/**
- * This converts a string representation of an integer
- * into a string representation of money (in the U.S.,
- * for example, 200 would be 2.00).
- */
-
-/*
-function int2dec($number)
-{
-	// don't process if the number is already decimalized
-	if (strpos($number, DECIMAL_SYMBOL) !== FALSE)
-		return $number;
-
-	if (!empty($number)) {
-		$slen = strlen($number);
-
-		$rlen = $slen - DECIMALS;
-		if ($rlen < 0) {
-			$rlen = abs($rlen);
-			$pad = str_repeat('0', $rlen);
-			$right = $pad . $number;
-		}
-		else {
-			$right = substr($number, $slen - DECIMALS, DECIMALS);
-		}
-		$left = substr($number, 0, $slen - DECIMALS);
-		$new_number = $left . DECIMAL_SYMBOL . $right;
-	}
-	else {
-		$new_number = '0' . DECIMAL_SYMBOL . str_repeat('0', DECIMALS);
-	}
-	return $new_number;
-}
- */

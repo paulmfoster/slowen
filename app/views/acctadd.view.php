@@ -94,8 +94,6 @@ Reconciled Balance
 </table>
 
 <p>
-<?php echo form::abandon('index.php?url=acct/add'); ?>
-&nbsp;
 <?php $this->form->submit('s1'); ?>
 </p>
 

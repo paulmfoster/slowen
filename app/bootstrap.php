@@ -37,71 +37,63 @@ $statuses = array(
 );
 
 $nav_links = [
+    'Home' => 'index.php',
 	'Accounts' => [
-		'Register' => 'index.php?url=register/select',
-		'Reconcile' => 'index.php?url=recon/prelim',
-		'Add Account' => 'index.php?url=acct/add',
-		'Edit Account' => 'index.php?url=acct/select/edit',
-		'Delete Account' => 'index.php?url=acct/select/delete',
-		'Search By Account' => 'index.php?url=acct/search'
+		'Register' => url('register', 'select'),
+		'Reconcile' => url('recon', 'prelim'),
+		'Add Account' => url('acct', 'add'),
+        'List Accounts' => url('acct', 'list'),
+		'Search By Account' => url('acct', 'search')
 	],
 	'Payees' => [
-		'Add Payee' => 'index.php?url=pay/add',
-		'Edit Payee' => 'index.php?url=pay/select/edit',
-		'Delete Payee' => 'index.php?url=pay/select/delete',
-		'Search By Payee' => 'index.php?url=pay/search'
+		'Add Payee' => url('pay', 'add'),
+        'List Payees' => url('pay', 'list'),
+		'Search By Payee' => url('pay', 'search')
 	],
-	'Transactions' => [
-		'Check' => 'index.php?url=atxn/check',
-		'Deposit' => 'index.php?url=atxn/deposit',
-		'Credit Card' => 'index.php?url=atxn/ccard',
-		'Transfer' => 'index.php?url=atxn/transfer',
-		'Other/Split' => 'index.php?url=atxn/other'
-	],
+	'Transaction' => url('atxn', 'add'),
 	'Scheduled' => [
-		'Add Transaction' => 'index.php?url=sched/add',
-		'Delete Transaction' => 'index.php?url=sched/delete',
-        'List Transactions' => 'index.php?url=sched/list',
-		'Activate Transaction' => 'index.php?url=sched/activate'
+		'Add Transaction' => url('sched', 'add'),
+		'Delete Transaction' => url('sched', 'delete'),
+        'List Transactions' => url('sched', 'list'),
+		'Activate Transaction' => url('sched', 'activate')
 	],
 	'Search' => [
-		'Accounts/Categories' => 'index.php?url=acct/search',
-		'Payees' => 'index.php?url=pay/search'
+		'Accounts/Categories' => url('acct', 'search'),
+		'Payees' => url('pay', 'search')
 	],
 	'Reports' => [
-		'Balances' => 'index.php?url=rpt/balances',
-		'Register' => 'index.php?url=register/select',
-		'Budget' => 'index.php?url=rpt/budget',
-		'Weekly Expenses' => 'index.php?url=rpt/expenses',
-		'Monthly Audit' => 'index.php?url=aud/monthly',
-		'Yearly Audit' => 'index.php?url=aud/yearly'
+		'Balances' => url('rpt', 'balances'),
+		'Register' => url('register', 'select'),
+		'Budget' => url('rpt', 'budget'),
+		'Weekly Expenses' => url('rpt', 'expenses'),
+		'Monthly Audit' => url('aud', 'monthly'),
+		'Yearly Audit' => url('aud', 'yearly')
 	],
 	'Help' => [
 		'Introduction' => 'index.php',
-		'History' => 'index.php?url=welcome/history'
+		'History' => url('welcome', 'history')
 	]
 ];
 
 // This code is common to many/most controllers
 session_start();
 $cfg = parse_ini_file(CFGDIR . 'config.ini');
+
 $dsn = explode(':', $cfg['dsn']);
+$not_there = FALSE;
 if (!file_exists($dsn[1])) {
-    $db = make_tables($cfg['dsn'], APPDIR . 'coldstart.sqlite');
+    $not_there = TRUE;
 }
-else {
-    $db = load('database', $cfg['dsn']);
+$db = load('database', $cfg['dsn']);
+if ($not_there) {
+    genpop($db, APPDIR . 'coldstart.php');
 }
+
 load('errors');
 load('messages');
 $form = load('form');
 $nav = load('navigation');
-$nav->init('A', $nav_links);
+$nav->init('T', $nav_links);
 load('numbers');
 load('pdate');
-
-$init[0] = $cfg;
-$init[1] = $form;
-$init[2] = $nav;
-$init[3] = $db;
 

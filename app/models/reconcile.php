@@ -38,8 +38,7 @@ class reconcile
 
 	function get_uncleared_transactions($param)
 	{
-		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.payee_id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.acct_id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.acct_id = journal.to_acct WHERE journal.from_acct = $param AND journal.status NOT IN ('R', 'V') ORDER BY txn_dt, checkno, txnid";
-
+		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.id = journal.to_acct WHERE journal.from_acct = $param AND journal.status NOT IN ('R', 'V') ORDER BY txn_dt, checkno, txnid";
 		$txns = $this->db->query($sql)->fetch_all();	
 
 		if ($txns === FALSE)
@@ -67,11 +66,11 @@ class reconcile
 		
 	}
 
-	function get_account($acct_id)
+	function get_account($id)
 	{
 		global $acct_types;
 
-		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.acct_id = a1.parent WHERE a1.acct_id = $acct_id ORDER BY lower(a1.name)";
+		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.id = a1.parent WHERE a1.id = $id ORDER BY lower(a1.name)";
 		$acct = $this->db->query($sql)->fetch();
 
 		if ($acct === FALSE) {
@@ -293,14 +292,8 @@ class reconcile
 		$balance = dec2int($stmt_end_bal);
 
 		$this->db->begin();
-
-		$sql = "update accounts set rec_bal = $balance, recon_dt = '$recon_dt' where acct_id = $from_acct";
-		$this->db->query($sql);
-
-		// sql for the actual update
-		$sql = "update journal set status = 'R', recon_dt = '$recon_dt' where id in (" . $ids . ")"; 
-		$this->db->query($sql);
-
+        $this->db->update('accounts', ['rec_bal' => $balance, 'recon_dt' => $recon_dt], "id = $from_acct");
+        $this->db->update('journal', ['status' => 'R', 'recon_dt' => $recon_dt], "id in ($ids)");
 		$this->db->commit();
 	}
 }

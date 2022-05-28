@@ -4,8 +4,11 @@ class rpt extends controller
 {
     function __construct()
     {
-		global $init;
-        list($this->cfg, $this->form, $this->nav, $this->db) = $init;
+        global $cfg, $form, $nav, $db;
+        $this->cfg = $cfg;
+        $this->form = $form;
+        $this->nav = $nav;
+        $this->db = $db;
         $this->report = model('report', $this->db);
     }
 
@@ -27,7 +30,7 @@ class rpt extends controller
         $this->form->set($fields);
         $this->page_title = 'List Balances';
         $this->focus_field = 'last_dt';
-        $this->return = 'index.php?url=rpt/balshow';
+        $this->return = url('rpt', 'balshow');
         $this->view('balances.view.php');
     }
 
@@ -71,7 +74,7 @@ class rpt extends controller
             elseif ($acct['acct_type'] == 'E') {
                 $type = ' (expense)';
             }
-            $cat_options[] = ['lbl' => $acct['name'] . $type, 'val' => $acct['acct_id']];
+            $cat_options[] = ['lbl' => $acct['name'] . $type, 'val' => $acct['id']];
         }	
 
         $fields = [
@@ -103,7 +106,7 @@ class rpt extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Budget Query';
-        $this->return = 'index.php?url=rpt/bgtshow';
+        $this->return = url('rpt', 'bgtshow');
         $this->view('budget.view.php');
     }
 
@@ -148,7 +151,7 @@ class rpt extends controller
         $this->form->set($fields);
         $this->page_title = 'Weekly Expenses';
         $this->focus_field = 'from_date';
-        $this->return = 'index.php?url=rpt/expshow';
+        $this->return = url('rpt', 'expshow');
         $this->view('expenses.view.php');
     }
 

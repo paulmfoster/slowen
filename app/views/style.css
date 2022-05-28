@@ -9,8 +9,9 @@ body {
 
 .container {
 	display: grid;
-	grid-template-columns: 12% repeat(7, 1fr);
-	grid-template-rows: 3;
+	/* grid-template-columns: 12% repeat(7, 1fr); */
+	/* grid-template-rows: 3; */
+    grid-template-rows: 4;
 	grid-gap: 1em;
 }
 
@@ -25,10 +26,11 @@ input, select, textarea, button {
 
 #header {
 	color: var(--header-fg);
-	/* margin: 0 0 0 0; */
-	padding: 1em 2.5mm 1em 4mm;
-	border-bottom: 5px solid var(--header-fg);
-	grid-column: 1 / 9;
+	padding: 1em 2.5mm 0em 4mm;
+    font-style: italic;
+    font-weight: bold;
+	/* border-bottom: 5px solid var(--header-fg); */
+	/* grid-column: 1 / 9; */
 	grid-row: 1;
 }
 
@@ -46,10 +48,9 @@ input, select, textarea, button {
 	line-height: 1.5em;
 	font-size: 1.1em;
 	padding: 1em 1em 1em 1em;
-	/* margin-left: 13%; */
-	/* min-height: 25em; */
-	grid-column: 2 / 9;
-	grid-row: 2;
+	/* grid-column: 2 / 9; */
+	/* grid-row: 2; */
+	grid-row: 3;
 }
 
 #content h1 {
@@ -81,8 +82,12 @@ p {
 	width: 50%;
 }
 
-label {
+.tdlabel {
     text-align: right;
+    font-weight: bold;
+}
+
+label {
     font-weight: bold;
 }
 
@@ -106,7 +111,7 @@ button {
 	color: var(--button-fg);
 	font-weight: bold;
 	padding: 5px 2px 5px 2px;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 
 button:hover {
@@ -123,7 +128,7 @@ input[type="submit"] {
 	color: var(--button-fg);
 	font-weight: bold;
 	padding: 5px;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 
 input[type="submit"]:hover {
@@ -182,9 +187,10 @@ dt {
   font-size: 1.2em;
   margin-top: 2em;
   padding: 1em 1em;
-  border-top: 5px solid var(--header-fg);
-  grid-column: 1 / 9;
-  grid-row: 3;
+  /* border-top: 5px solid var(--header-fg); */
+  /* grid-column: 1 / 9; */
+  /* grid-row: 3; */
+  grid-row: 4;
 }
 
 /* table stuff */
@@ -253,6 +259,8 @@ form table, form th, form td {
 	display: none;
 }
 
+
+
 #left-nav input[type="checkbox"] {
 	display: none;
 }
@@ -264,6 +272,7 @@ form table, form th, form td {
 	cursor: pointer;
 	background: var(--menu-label-bg);
 	color: var(--menu-label-fg);
+    font-weight: bold;
 }
 
 #left-nav label:hover {
@@ -285,6 +294,7 @@ form table, form th, form td {
 .menu-items a {
 	color: var(--menu-item-fg);
 	background-color: var(--menu-item-bg);
+    padding: 0.25em 1em 0.25em 0;
 	text-decoration: none;
 	display: block;
 }
@@ -300,6 +310,74 @@ form table, form th, form td {
 
 .accordion input:checked + label + .menu-items {
 	display: block;
+}
+
+#top-nav {
+    font-family: sans-serif;
+	/* border-bottom: 5px solid var(--header-fg);
+	border-top: 5px solid var(--header-fg); */
+    clear: right;
+    float: left;
+    width: 100%;
+    grid-row: 2;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#top-nav a {
+    text-decoration: none;
+}
+
+#top-nav ul {
+    /* background: var(--menu-bg); */
+    color: var(--menu-fg);
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+#top-nav li {
+    color: #fff;
+    background: var(--menu-item-bg);
+    color: var(--menu-item-fg);
+    display: block;
+    float: left;
+    padding: 0.6rem;
+    position: relative;
+    text-decoration: none;
+}
+  
+#top-nav li a {
+    color: #fff;
+}
+
+#top-nav li:hover {
+    background: var(--menu-item-hover-bg);
+    color: var(--menu-item-hover-fg);
+    cursor: pointer;
+}
+
+#top-nav ul li ul {
+    background: var(--menu-bg);
+    visibility: hidden;
+    opacity: 0;
+    min-width: 5rem;
+    position: absolute;
+    margin-top: 0.6rem;
+    left: 0;
+    display: none;
+}
+
+#top-nav ul li:hover > ul,
+ul li ul:hover {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+
+#top-nav ul li ul li {
+    clear: both;
+    width: 100%;
 }
 
 

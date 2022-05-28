@@ -29,11 +29,11 @@ class addtxn
 		return $ret;
 	}
 
-	function get_account($acct_id)
+	function get_account($id)
 	{
 		global $acct_types;
 
-		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.acct_id = a1.parent WHERE a1.acct_id = $acct_id ORDER BY lower(a1.name)";
+		$sql = "SELECT a1.*, a2.name as x_parent FROM accounts as a1 left join accounts as a2 on a2.id = a1.parent WHERE a1.id = $id ORDER BY lower(a1.name)";
 		$acct = $this->db->query($sql)->fetch();
 
 		if ($acct === FALSE) {
@@ -64,7 +64,7 @@ class addtxn
 	{
 		$sql = "SELECT * FROM accounts WHERE parent != 0 ORDER BY lower(name)";
 		$to_accts = $this->db->query($sql)->fetch_all();
-		array_unshift($to_accts, array('acct_id' => '0', 'name' => 'NONE', 'acct_type' => ' '));
+		array_unshift($to_accts, array('id' => '0', 'name' => 'NONE', 'acct_type' => ' '));
 		return $to_accts;
 	}
 
@@ -95,7 +95,7 @@ class addtxn
 
     function get_all_accounts()
     {
-		$sql = "SELECT * FROM accounts ORDER BY lower(name)";
+		$sql = "SELECT * FROM accounts WHERE parent != 0 ORDER BY lower(name)";
 		$accounts = $this->db->query($sql)->fetch_all();
 
         $raccts = [];
@@ -105,14 +105,17 @@ class addtxn
                 case 'R':
                     $raccts['ccard'][] = $a;
                     $raccts['from'][] = $a;
+                    $raccts['to'][] = $a;
                     break;
                 case 'C':
                     $raccts['from'][] = $a;
                     $raccts['bank'][] = $a;
+                    $raccts['to'][] = $a;
                     break;
                 case 'S':
                     $raccts['from'][] = $a;
                     $raccts['bank'][] = $a;
+                    $raccts['to'][] = $a;
                     break;
                 case 'L':
                     $raccts['from'][] = $a;
@@ -121,6 +124,7 @@ class addtxn
                     $raccts['from'][] = $a;
                     break;
                 default:
+                    // I, E, A
                     $raccts['to'][] = $a;
                 }
             }
@@ -135,6 +139,26 @@ class addtxn
 		return $from_accts;
 	}
 
+    function should_xfer($from_acct, $to_acct)
+    {
+        $sql = "SELECT acct_type FROM accounts WHERE id = $from_acct";
+        $from = $this->db->query($sql)->fetch();
+        $sql = "SELECT acct_type FROM accounts WHERE id = $to_acct";
+        $to = $this->db->query($sql)->fetch();
+
+        $xfer = FALSE;
+        if ($from['acct_type'] == 'C' || $from['acct_type'] == 'S') {
+            switch ($to['acct_type']) {
+            case 'R':
+            case 'C':
+            case 'S':
+                $xfer = TRUE;
+                break;
+            }
+        }
+        return $xfer;
+    }
+
 	/**
 	 * add_transaction()
 	 *
@@ -145,6 +169,14 @@ class addtxn
 
 	function add_transaction($post)
 	{
+        if ($post['max_splits'] != 0) {
+            // no transfers on splits
+            $post['xfer'] = 0;
+        }
+        else {
+            $post['xfer'] = $this->should_xfer($post['from_acct'], $post['to_acct']);
+        }
+
 		$this->db->begin();
 
 		// get next transaction ID
@@ -273,7 +305,7 @@ class addtxn
 	function get_names($from_acct = NULL, $payee_id = NULL, $to_acct = NULL)
 	{
         if (!is_null($from_acct)) {
-            $sql1 = "select name from accounts where acct_id = $from_acct";
+            $sql1 = "select name from accounts where id = $from_acct";
             $d = $this->db->query($sql1)->fetch();
             $rtn['from_acct_name'] = $d['name'] ?? '';
         }
@@ -282,7 +314,7 @@ class addtxn
         }
 
         if (!is_null($to_acct)) {
-            $sql2 = "select name from accounts where acct_id = $to_acct";
+            $sql2 = "select name from accounts where id = $to_acct";
             $e = $this->db->query($sql2)->fetch();
             $rtn['to_acct_name'] = $e['name'] ?? '';
         }
@@ -291,7 +323,7 @@ class addtxn
         }
 
         if (!is_null($payee_id)) {
-            $sql3 = "select name from payees where payee_id = $payee_id";
+            $sql3 = "select name from payees where id = $payee_id";
             $f = $this->db->query($sql3)->fetch();
             $rtn['payee_name'] = $f['name'] ?? '';
         }
@@ -311,11 +343,11 @@ class addtxn
 
 	function get_split_names($payee_id, $to_acct)
 	{
-		$sql2 = "select name from accounts where acct_id = $to_acct";
+		$sql2 = "select name from accounts where id = $to_acct";
 		$e = $this->db->query($sql2)->fetch();
 		$rtn['split_to_name'] = $e['name'] ?? '';
 
-		$sql3 = "select name from payees where payee_id = $payee_id";
+		$sql3 = "select name from payees where id = $payee_id";
 		$f = $this->db->query($sql3)->fetch();
 		$rtn['split_payee_name'] = $f['name'] ?? '';
 
@@ -346,7 +378,7 @@ class addtxn
 					$split_to_accts[] = $accounts[$i];
 			}
 		}
-		array_unshift($split_to_accts, array('id' => '0', 'name' => 'NONE', 'acct_type' => ' ', 'acct_id' => 0));
+		array_unshift($split_to_accts, array('id' => '0', 'name' => 'NONE', 'acct_type' => ' '));
 		return $split_to_accts;
 	}
 

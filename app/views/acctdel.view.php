@@ -3,7 +3,7 @@
 <?php extract($data); ?>
 
 <form method="post" action="<?php echo $this->return; ?>">
-<?php $this->form->hidden('acct_id'); ?>
+<?php $this->form->hidden('id'); ?>
 <table>
 
 <tr>
@@ -11,7 +11,7 @@
 <strong>Account ID</strong>
 </td>
 <td>
-<?php echo $acct['acct_id']; ?>
+<?php echo $acct['id']; ?>
 </td>
 </tr>
 
@@ -90,8 +90,6 @@
 </table>
 
 <p>
-<?php form::abandon('index.php'); ?>
-&nbsp;
 <?php $this->form->submit('s1'); ?>
 
 </form>

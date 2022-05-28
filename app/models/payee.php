@@ -22,9 +22,9 @@ class payee
 		return $payees;
 	}
 	
-	function get_payee($payee_id)
+	function get_payee($id)
 	{
-		$sql = "SELECT * FROM payees WHERE payee_id = $payee_id";
+		$sql = "SELECT * FROM payees WHERE id = $id";
 		$result = $this->db->query($sql)->fetch();
 		if ($result === FALSE) {
 			return $FALSE;
@@ -32,51 +32,51 @@ class payee
 		return $result;
 	}
 
-	function get_payee_name($payee_id)
+	function get_payee_name($id)
 	{
-		$sql = "SELECT name FROM payees WHERE payee_id = $payee_id";
+		$sql = "SELECT name FROM payees WHERE id = $id";
 		$rec = $this->db->query($sql)->fetch();
 		return $rec['name'];
 	}
 
 	function add_payee($name)
 	{
-		$sql = 'SELECT max(payee_id) as lastid FROM payees';
+		$sql = 'SELECT max(id) as lastid FROM payees';
 		$rec = $this->db->query($sql)->fetch();
-		$this->db->insert('payees', array('payee_id' => $rec['lastid'] + 1, 'name' => $name));
+		$this->db->insert('payees', array('id' => $rec['lastid'] + 1, 'name' => $name));
 		emsg('S', 'Payee added');
 		return TRUE;
 	}
 
-	function update_payee($payee_id, $name)
+	function update_payee($id, $name)
 	{
 		// real payee?
-		if ($this->get_payee($payee_id) === FALSE) {
+		if ($this->get_payee($id) === FALSE) {
 			emsg('F', "Cannot edit non-existent payee");
 			return FALSE;
 		}
 
 		$rec = $this->db->prepare('payees', array('name' => $name));
-		$this->db->update('payees', $rec, "payee_id = $payee_id");
+		$this->db->update('payees', $rec, "id = $id");
 		emsg('S', 'Payee updated');
 		return TRUE;
 	}
 
-	function delete_payee($payee_id)
+	function delete_payee($id)
 	{
-		if ($this->get_payee($payee_id) === FALSE) {
+		if ($this->get_payee($id) === FALSE) {
 			emsg('F', "Attempt to delete non-existent payee. Aborted.");
 			return FALSE;
 		}
 
 		// is this payee in use?
-		$sql = "SELECT id FROM journal WHERE payee_id = $payee_id";
+		$sql = "SELECT id FROM journal WHERE payee_id = $id";
 		if ($this->db->query($sql)->fetch()) {
 			emsg('F', "Payee is linked to transactions. Aborted");
 			return FALSE;
 		}
 			
-		$this->db->delete('payees', "payee_id = $payee_id");
+		$this->db->delete('payees', "id = $id");
 		emsg('S', 'Payee deleted');
 		return TRUE;
 	}

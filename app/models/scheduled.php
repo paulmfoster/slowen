@@ -60,7 +60,7 @@ class scheduled
 	}
 
 	/**
-	 * Fetch the name of an account, given the acct_id.
+	 * Fetch the name of an account, given the acct id.
 	 *
 	 * Using a list of account IDs and account names accumulated from
 	 * repeated calls to this function, return the name.
@@ -79,7 +79,7 @@ class scheduled
 			}
 		}
 
-		$sql = "SELECT name FROM accounts WHERE acct_id = $acct_id";
+		$sql = "SELECT name FROM accounts WHERE id = $acct_id";
 		$rec = $this->db->query($sql)->fetch();
 		$accts[] = ['id' => $acct_id, 'name' => $rec['name']];
 
@@ -95,7 +95,7 @@ class scheduled
 	function fetch_scheduled()
 	{
 		// fetch transaction and payee name
-		$sql = "select s.id as id, from_acct, txn_dom, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name from scheduled as s, payees as p where p.payee_id = s.payee_id";
+		$sql = "select s.id as id, s.last as last, from_acct, txn_dom, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name from scheduled as s, payees as p where p.id = s.payee_id";
 		$txns = $this->db->query($sql)->fetch_all();
 		if ($txns === FALSE) {
 			return FALSE;
@@ -175,6 +175,7 @@ class scheduled
 		$rec['txnid'] = $this->get_next_txnid();
 		$rec['checkno'] = '';
 		$rec['memo'] = $rec['memo'] ?? '';
+        unset($rec['last']);
 
 		$this->db->insert('journal', $rec);
 	}
@@ -203,7 +204,7 @@ class scheduled
 
     function scheduled_list()
     {
-        $sql = 'select s.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from scheduled as s join accounts as a on (a.acct_id = s.from_acct) join accounts as b on (b.acct_id = s.to_acct) join payees as p on (p.payee_id = s.payee_id) order by txn_dom';
+        $sql = 'select s.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from scheduled as s join accounts as a on (a.id = s.from_acct) join accounts as b on (b.id = s.to_acct) join payees as p on (p.id = s.payee_id) order by txn_dom';
         $list = $this->db->query($sql)->fetch_all();
         return $list;
     }

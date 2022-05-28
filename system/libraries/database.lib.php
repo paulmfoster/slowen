@@ -29,12 +29,14 @@ class database
 		switch ($parms[0]) {
 		case 'sqlite':
 		case 'sqlite3':
-			include LIBDIR . 'pdosqlite3.lib.php';
+            if (!class_exists('pdosqlite3')) {
+			    include LIBDIR . 'pdosqlite3.lib.php';
+            }
 			$this->dbh = new pdosqlite3($dsn);
 			break;
 		case 'pg':
 		case 'postgresql':
-			include LIBDIR . 'pbopgsql.lib.php';
+			include LIBDIR . 'pdopgsql.lib.php';
 			$this->dbh = new dbpostgresql($dsn);
 			break;
 		case 'mysql':
@@ -99,7 +101,7 @@ class database
 
 	function insert($table, $record)
 	{
-		$this->dbh->insert($table, $record);
+		return $this->dbh->insert($table, $record);
 	}
 
 	function update($table, $fields, $where_clause)

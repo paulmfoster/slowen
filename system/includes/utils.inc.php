@@ -159,18 +159,16 @@ function redirect($url)
 	exit();
 }
 
-/**
- * Create the tables for this application.
+/** Create the tables for this application.
  *
  * Generally assumes that a database exists (the connection for which is
  * passed in as a parameter), but that no tables exist. This routine looks
- * for a file called 'coldstart.<driver_type>'. Driver types are those
- * accepted by the PHP PDO class. This file should be a dump of the
- * structures of all the tables needed, in SQL format for the driver
+ * for a file of SQL statements, one per line. This file should be a dump
+ * of the structures of all the tables needed, in SQL format for the driver
  * involved. It then executes the SQL to create the tables.
  *
- * @param string $dsn The PDO DSN for the database
- * @param string $sqlfile The SQL file to build the tables
+ * @param string $dsn The PDO DSN for the database 
+ * @param string $sqlfile The SQL file to build the tables 
  * @return object Database object for use later
  */
 
@@ -187,5 +185,77 @@ function make_tables($dsn, $sqlfile)
 	}
 
     return $db;
+}
+
+/** Create the tables for this application.
+ *
+ * Generally assumes that a database exists (the connection for which is
+ * passed in as a parameter), but that no tables exist. This routine looks
+ * for a PHP file which contains an array of SQL "CREATE TABLE" statments
+ * in an array called $schema.  file called 'coldstart.<driver_type>'. It
+ * then executes the SQL to create the tables.
+ *
+ * @param string $dsn The PDO DSN for the database
+ * @param string $sqlfile The SQL file to build the tables
+ * @return object Database object for use later
+ */
+
+function generate_tables($dsn, $sqlfile)
+{
+	// add the tables
+	if (!file_exists($sqlfile)) {
+		die("You need the file '$sqlfile' to start, and it's missing.");
+	}
+    $db = load('database', $dsn);
+    include $sqlfile;
+	foreach ($schema as $sql) {
+		$db->query($sql);
+	}
+
+    return $db;
+}
+
+/**
+ * Generate/populate tables.
+ *
+ * Assumes you have a PHP file with an array of SQL statements. This
+ * routine will run those statements one at a time to either
+ * create/generate the tables needed or populate them.
+ *
+ * @param object $db A database object
+ * @param string $sqlfile The PHP file with SQL statement array
+ */
+
+function genpop($db, $sqlfile)
+{
+	// add the tables
+	if (!file_exists($sqlfile)) {
+		die("You need the file '$sqlfile' to start, and it's missing.");
+	}
+    include $sqlfile;
+	foreach ($records as $sql) {
+		$db->query($sql);
+	}
+}
+
+/** Simplify writing out URLs for user.
+ *
+ * Originally, Grotworx wanted URLs in the form of
+ * "index.php?url=controller/method/params". This is cumbersome to write
+ * out. And at some point, some "better" scheme might be used. This
+ * function is designed to allow the user to skip the "index.php?url="
+ * preamble, and just supply the controller, method and parameters. In
+ * addition, if the "index.php?url=" part ever changes, it only has to be
+ * changed in this function (and the router code) in order to make the
+ * change global (assuming the user uses this function for his/her URLs).
+ *
+ * @return string The URL needed for the system.
+ */
+
+function url()
+{
+    $args = func_get_args();
+    $str = implode('/', $args);
+    return "index.php?url=$str";
 }
 
