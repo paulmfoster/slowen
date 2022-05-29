@@ -1,0 +1,28 @@
+:root {
+	--menu-bg: #ffffff;
+	--menu-label-bg: #ffffff;
+	--menu-label-fg: #3300ff;
+	--menu-label-hover-bg: #ffffff;
+	--menu-label-hover-fg: #993366;
+	--menu-item-fg: #fffff;
+	--menu-item-bg: #6699cc;
+	--menu-item-hover-fg: #ffffff;
+	--menu-item-hover-bg: #993366;
+	--header-bg: white;
+	--header-fg: #3366cc;
+	--button-bg: white;
+	--button-fg: #3366cc;
+	--button-hover-bg: white;
+	--button-hover-fg: #993366;
+	--th-bg: #6699cc;
+	--th-fg: white;
+	--app-name: #993366;
+	--link-bg: white;
+	--link-fg: #0000ff;
+	--link-hover-bg: white;
+	--link-hover-fg: #ff0000;
+	--failure-bg: yellow;
+	--failure-fg: red;
+	--success-bg: #6699cc;
+	--success-fg: white;
+}

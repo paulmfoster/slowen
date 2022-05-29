@@ -1,0 +1,61 @@
+<?php
+$schema = [
+'PRAGMA foreign_keys=OFF',
+'BEGIN TRANSACTION',
+"CREATE TABLE accounts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    parent INTEGER NOT NULL DEFAULT 0, 
+    lft INTEGER, 
+    rgt INTEGER, 
+    open_dt DATE, 
+    recon_dt DATE, 
+    acct_type CHAR(1) NOT NULL, 
+    name VARCHAR(35) NOT NULL, 
+    descrip VARCHAR(50), 
+    open_bal INTEGER DEFAULT 0, 
+    rec_bal INTEGER DEFAULT 0)",
+"CREATE TABLE payees (
+    id integer primary key autoincrement, 
+    name varchar(35) not null)",
+"CREATE TABLE journal (
+    id integer primary key autoincrement, 
+    txnid integer not null, 
+    from_acct integer not null references accounts(id), 
+    txn_dt date not null, 
+    checkno varchar(12), 
+    split boolean default 0, 
+    payee_id integer, 
+    to_acct integer, 
+    memo varchar(35), 
+    status char(1) not null default ' ', 
+    recon_dt date, 
+    amount integer not null)",
+"CREATE TABLE recon (
+    id integer primary key autoincrement, 
+    from_acct integer, 
+    stmt_start_bal integer, 
+    stmt_end_bal integer, 
+    stmt_close_date date)",
+"CREATE TABLE scheduled (
+    id integer primary key autoincrement, 
+    from_acct integer not null references accounts(id), 
+    txn_dom integer not null, 
+    payee_id integer references payees(id), 
+    to_acct integer references accounts(id), 
+    memo varchar(35), 
+    amount integer not null,
+    last date)",
+"CREATE TABLE splits (
+    id integer primary key autoincrement, 
+    jnlid integer not null references journal(id), 
+    to_acct integer not null references accounts(id), 
+    memo varchar(35), 
+    payee_id integer references payees(id), 
+    amount integer not null)",
+"CREATE INDEX journal_ndx on journal (
+    from_acct, 
+    txn_dt, 
+    checkno, 
+    txnid)",
+'COMMIT'
+];
