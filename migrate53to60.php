@@ -60,21 +60,23 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM accounts ORDER BY acct_id";
 $accts = $db->query($sql)->fetch_all();
-foreach ($accts as $acct) {
-    $rec = [
-        'id' => $acct['acct_id'],
-        'parent' => $acct['parent'],
-        'lft' => $acct['lft'],
-        'rgt' => $acct['rgt'],
-        'open_dt' => $acct['open_dt'],
-        'recon_dt' => $acct['recon_dt'],
-        'acct_type' => $acct['acct_type'],
-        'name' => $acct['name'],
-        'descrip' => $acct['descrip'],
-        'open_bal' => $acct['open_bal'],
-        'rec_bal' => $acct['rec_bal']
-    ];
-    $newdb->insert('accounts', $rec);
+if ($accts != FALSE) {
+    foreach ($accts as $acct) {
+        $rec = [
+            'id' => $acct['acct_id'],
+            'parent' => $acct['parent'],
+            'lft' => $acct['lft'],
+            'rgt' => $acct['rgt'],
+            'open_dt' => $acct['open_dt'],
+            'recon_dt' => $acct['recon_dt'],
+            'acct_type' => $acct['acct_type'],
+            'name' => $acct['name'],
+            'descrip' => $acct['descrip'],
+            'open_bal' => $acct['open_bal'],
+            'rec_bal' => $acct['rec_bal']
+        ];
+        $newdb->insert('accounts', $rec);
+    }
 }
 
 echo 'Creating and populating new payees table.<br/>';
@@ -87,12 +89,14 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM payees ORDER BY payee_id";
 $payees = $db->query($sql)->fetch_all();
-foreach ($payees as $payee) {
-    $rec = [
-        'id' => $payee['payee_id'],
-        'name' => $payee['name']
-    ];
-    $newdb->insert('payees', $rec);
+if ($payees != FALSE) {
+    foreach ($payees as $payee) {
+        $rec = [
+            'id' => $payee['payee_id'],
+            'name' => $payee['name']
+        ];
+        $newdb->insert('payees', $rec);
+    }
 }
 
 echo 'Creating and populating journal table.<br/>';
@@ -116,22 +120,24 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM journal ORDER BY id";
 $jnls = $db->query($sql)->fetch_all();
-foreach ($jnls as $jnl) {
-    $rec = [
-        'id' => $jnl['id'],
-        'txnid' => $jnl['txnid'],
-        'from_acct' => $jnl['from_acct'],
-        'txn_dt' => $jnl['txn_dt'],
-        'checkno' => $jnl['checkno'],
-        'split' => $jnl['split'],
-        'payee_id' => $jnl['payee_id'],
-        'to_acct' => $jnl['to_acct'],
-        'memo' => $jnl['memo'],
-        'status' => $jnl['status'],
-        'recon_dt' => $jnl['recon_dt'],
-        'amount' => $jnl['amount']
-    ];
-    $newdb->insert('journal', $rec);
+if ($jnls != FALSE) {
+    foreach ($jnls as $jnl) {
+        $rec = [
+            'id' => $jnl['id'],
+            'txnid' => $jnl['txnid'],
+            'from_acct' => $jnl['from_acct'],
+            'txn_dt' => $jnl['txn_dt'],
+            'checkno' => $jnl['checkno'],
+            'split' => $jnl['split'],
+            'payee_id' => $jnl['payee_id'],
+            'to_acct' => $jnl['to_acct'],
+            'memo' => $jnl['memo'],
+            'status' => $jnl['status'],
+            'recon_dt' => $jnl['recon_dt'],
+            'amount' => $jnl['amount']
+        ];
+        $newdb->insert('journal', $rec);
+    }
 }
 
 echo 'Creating and populating recon table.<br/>';
@@ -146,15 +152,17 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM recon ORDER BY id";
 $recons = $db->query($sql)->fetch_all();
-foreach ($recons as $recon) {
-    $rec = [
-        'id' => $recon['id'],
-        'from_acct' => $recon['from_acct'],
-        'stmt_start_bal' => $recon['stmt_start_bal'],
-        'stmt_end_bal' => $recon['stmt_end_bal'],
-        'stmt_close_date' => $recon['stmt_close_date']
-    ];
-    $newdb->insert('recon', $rec);
+if ($recons != FALSE) {
+    foreach ($recons as $recon) {
+        $rec = [
+            'id' => $recon['id'],
+            'from_acct' => $recon['from_acct'],
+            'stmt_start_bal' => $recon['stmt_start_bal'],
+            'stmt_end_bal' => $recon['stmt_end_bal'],
+            'stmt_close_date' => $recon['stmt_close_date']
+        ];
+        $newdb->insert('recon', $rec);
+    }
 }
 
 echo 'Creating and populating new scheduled table.<br/>';
@@ -174,17 +182,19 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM scheduled ORDER BY id";
 $scheds = $db->query($sql)->fetch_all();
-foreach ($scheds as $sched) {
-    $rec = [
-        'id' => $sched['id'],
-        'from_acct' => $sched['from_acct'],
-        'txn_dom' => $sched['txn_dom'],
-        'payee_id' => $sched['payee_id'],
-        'to_acct' => $sched['to_acct'],
-        'memo' => $sched['memo'],
-        'amount' => $sched['amount']
-    ];
-    $newdb->insert('scheduled', $rec);
+if ($scheds != FALSE) {
+    foreach ($scheds as $sched) {
+        $rec = [
+            'id' => $sched['id'],
+            'from_acct' => $sched['from_acct'],
+            'txn_dom' => $sched['txn_dom'],
+            'payee_id' => $sched['payee_id'],
+            'to_acct' => $sched['to_acct'],
+            'memo' => $sched['memo'],
+            'amount' => $sched['amount']
+        ];
+        $newdb->insert('scheduled', $rec);
+    }
 }
 
 echo 'Creating and populating new splits table.<br/>';
@@ -202,18 +212,20 @@ $newdb->query($sql);
 
 $sql = "SELECT * FROM splits ORDER BY id";
 $splits = $db->query($sql)->fetch_all();
-foreach ($splits as $split) {
-    $sql = "SELECT id FROM journal WHERE txnid = {$split['txnid']}";
-    $journal = $db->query($sql)->fetch();
-    $rec = [
-        'id' => $split['id'],
-        'jnlid' => $journal['id'],
-        'to_acct' => $split['to_acct'],
-        'memo' => $split['memo'],
-        'payee_id' => $split['payee_id'],
-        'amount' => $split['amount']
-    ];
-    $newdb->insert('splits', $rec);
+if ($splits != FALSE) {
+    foreach ($splits as $split) {
+        $sql = "SELECT id FROM journal WHERE txnid = {$split['txnid']}";
+        $journal = $db->query($sql)->fetch();
+        $rec = [
+            'id' => $split['id'],
+            'jnlid' => $journal['id'],
+            'to_acct' => $split['to_acct'],
+            'memo' => $split['memo'],
+            'payee_id' => $split['payee_id'],
+            'amount' => $split['amount']
+        ];
+        $newdb->insert('splits', $rec);
+    }
 }
 
 echo 'Creating and populating journal_ndx index.<br/>';
