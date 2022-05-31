@@ -223,7 +223,7 @@ class transaction
 
 	function get_splits($txnid)
 	{
-		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.id = s.payee_id LEFT JOIN accounts AS a ON a.id = s.to_acct WHERE txnid = $txnid";
+		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.id = s.payee_id LEFT JOIN accounts AS a ON a.id = s.to_acct WHERE jnlid = $txnid";
 		$splits = $this->db->query($sql)->fetch_all();
 		return $splits;
 	}
