@@ -2,6 +2,7 @@
 
 <?php extract($data); ?>
 
+<?php $row = 0; ?>
 <?php $p = 0; ?>
 
 <?php foreach ($txns as $txn): ?>
@@ -13,7 +14,7 @@
 <table>
 <tr><th>Item</th><th>Value</th></tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Transaction ID</label>
 </td>
@@ -22,7 +23,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>From Account</label>
 </td>
@@ -31,7 +32,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Date</label>
 </td>
@@ -40,7 +41,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Check #</label>
 </td>
@@ -49,7 +50,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Split?</label>
 </td>
@@ -58,7 +59,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Payee</label>
 </td>
@@ -67,7 +68,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>To Account</label>
 </td>
@@ -76,7 +77,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Memo</label>
 </td>
@@ -85,7 +86,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Status</label>
 </td>
@@ -94,7 +95,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Reconciliation Date</label>
 </td>
@@ -103,7 +104,7 @@
 </td>
 </tr>
 
-<tr>
+<tr class="row<?php echo $row++ & 1; ?>">
 <td>
 <label>Amount</label>
 </td>

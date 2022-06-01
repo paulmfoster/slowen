@@ -94,6 +94,7 @@ class transaction
 
 	/**
 	 * Get transactions for display
+     *
 	 * P parameter gets transactions by payee
 	 * C parameter gets transactions by category
 	 * (blank) parameter gets transactions by from_acct
@@ -163,6 +164,7 @@ class transaction
 	 *
 	 * Get a transaction, based on txnid, including splits.
 	 * Massage values which aren't really human readable.
+     * Splits are not included.
 	 *
 	 * @param integer $txnid
 	 *
@@ -221,9 +223,9 @@ class transaction
 		return $to_accts;
 	}
 
-	function get_splits($txnid)
+	function get_splits($jnlid)
 	{
-		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.id = s.payee_id LEFT JOIN accounts AS a ON a.id = s.to_acct WHERE jnlid = $txnid";
+		$sql = "SELECT s.*, p.name AS payee_name, a.name AS to_acct_name FROM splits AS s left JOIN payees AS p ON p.id = s.payee_id LEFT JOIN accounts AS a ON a.id = s.to_acct WHERE jnlid = $jnlid";
 		$splits = $this->db->query($sql)->fetch_all();
 		return $splits;
 	}
@@ -253,7 +255,8 @@ class transaction
 			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
 		}
 
-		if ($post['txntype'] == 'single' || $post['txntype'] == 'splits') {
+		if ($post['txntype'] == 'single' || $post['txntype'] == 'split') {
+            // if status is 'R' or 'V', no amount present in POST
 			if (isset($post['amount'])) {
 				$post['amount'] = dec2int($post['amount']);
 			}

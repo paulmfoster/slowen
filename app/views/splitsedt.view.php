@@ -57,13 +57,35 @@
 <tr>
 <td class="tdlabel">Amount</td>
 <td>
-<?php if (array_key_exists('amount', $this->form->fields)): ?>
-<?php $this->form->text('amount', int2dec($txn['amount'])); ?>
-<?php else: ?>
 <?php echo int2dec($txn['amount']); ?>
-<?php endif; ?>
 </td>
 </tr>
+
+<?php for ($k = 0; $k < $max_splits; $k++): ?>
+<?php $this->form->hidden('split_id', $splits[$k]['id']); ?>
+
+<tr>
+<td class="tdlabel">Split Payee <?php echo $k + 1; ?></td>
+<td><?php $this->form->select('split_payee_id', $splits[$k]['payee_id']); ?></td>
+</tr>
+
+<tr>
+<td class="tdlabel">Split To Acct <?php echo $k + 1; ?></td>
+<td><?php $this->form->select('split_to_acct', $splits[$k]['to_acct']); ?></td>
+</tr>
+
+<tr>
+<td class="tdlabel">Split Memo <?php echo $k + 1; ?></td>
+<td><?php $this->form->text('split_memo', $splits[$k]['memo']); ?></td>
+</tr>
+
+<tr>
+<td class="tdlabel">Split Amount <?php echo $k + 1; ?></td>
+<td><?php $this->form->text('split_amount', int2dec($splits[$k]['amount'])); ?></td>
+</tr>
+
+<?php endfor; ?>
+
 </table>
 
 <p>
