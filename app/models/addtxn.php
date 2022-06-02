@@ -171,28 +171,16 @@ class addtxn
 	{
         if ($post['max_splits'] != 0) {
             // no transfers on splits
-            $post['xfer'] = 0;
+            $post['xfer'] = FALSE;
         }
         else {
             $post['xfer'] = $this->should_xfer($post['from_acct'], $post['to_acct']);
         }
 
-		$this->db->begin();
-
-		// get next transaction ID
-		$post['txnid'] = $this->get_next_txnid();
-
 		// checkboxes, unchecked don't show up in $_POST
 
-		if (!isset($post['xfer'])) {
-			$post['xfer'] = 0;
-		}
 		if (!isset($post['split'])) {
 			$post['split'] = 0;
-		}
-
-		if (!isset($post['status'])) {
-			$post['status'] = ' ';
 		}
 
 		if (empty($post['amount']) || $post['status'] == 'V') {
@@ -216,18 +204,16 @@ class addtxn
 			}
 		}
 
-		if ($post['xfer'] == 1 && empty($post['to_acct'])) {
+		if ($post['xfer'] && empty($post['to_acct'])) {
 			emsg('F', 'Transfers must have a valid TO account');
 			return FALSE;
 		}
 
-		if (!isset($post['checkno'])) {
-			$post['checkno'] = '';
-		} 
+        // start actually saving data
+		$this->db->begin();
 
-		if (!isset($post['recon_dt'])) {
-			$post['recon_dt'] = '';
-		}
+		// get next transaction ID
+		$post['txnid'] = $this->get_next_txnid();
 
 		$rec = $this->db->prepare('journal', $post);
 		$this->db->insert('journal', $rec);
@@ -249,8 +235,11 @@ class addtxn
 
 		if ($post['split'] == 1 && $post['max_splits'] > 0) {
 
+            // use journal ID, not transaction ID
+            $jnlid = $this->db->lastid('journal');
+
 			$splits_amount = 0;
-			$check_amount = $post['amount'];
+			$check_amount = $post['amount']; // integer
 
 			for ($k = 0; $k < $post['max_splits']; $k++) {
 				if (empty($post['split_to_acct'][$k])) {
@@ -260,20 +249,20 @@ class addtxn
 				}
 
 				if (!empty($post['split_dr_amount'][$k])) {
-					$amount = - $post['split_dr_amount'][$k];
+					$amount = - dec2int($post['split_dr_amount'][$k]);
 				}
 				elseif (!empty($post['split_cr_amount'][$k])) {
-					$amount = $post['split_cr_amount'][$k];
+					$amount = dec2int($post['split_cr_amount'][$k]);
 				}
 
 				$split = array(
-					'txnid' => $post['txnid'],
+					'jnlid' => $jnlid,
 					'to_acct' => $post['split_to_acct'][$k],
 					'memo' => $post['split_memo'][$k],
 					'payee_id' => $post['split_payee_id'][$k],
-					'amount' => dec2int($amount)
+					'amount' => $amount
 				);
-				$splits_amount += dec2int($amount);
+				$splits_amount += $amount;
 				$rec = $this->db->prepare('splits', $split);
 				$this->db->insert('splits', $rec);
 			} // for

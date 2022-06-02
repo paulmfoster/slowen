@@ -140,8 +140,8 @@ class atxn extends controller
                 'size' => 12,
                 'maxlength' => 12
             ),
-            's1' => array(
-                'name' => 's1',
+            'save' => array(
+                'name' => 'save',
                 'type' => 'submit',
                 'value' => 'Save'
             )
@@ -182,13 +182,15 @@ class atxn extends controller
         $this->form->set($fields);
 
         $data = memory::get_all();
+        $data['x_status'] = $statuses[$data['status']];
+
         $names = $this->trans->get_names($data['from_acct'], $data['payee_id'], $data['to_acct']);
         $data['from_acct_name'] = $names['from_acct_name'];
         $data['to_acct_name'] = $names['to_acct_name'];
         $data['payee_name'] = $names['payee_name'];
         $data['status_descrip'] = $statuses[$data['status']];
 
-        if (isset($data['split']) && $data['max_splits'] > 0) {
+        if ($data['max_splits'] > 0) {
             for ($e = 0; $e < $data['max_splits']; $e++) {
                 $names = $this->trans->get_split_names($data['split_payee_id'][$e], $data['split_to_acct'][$e]);
                 $data['split_to_name'][$e] = $names['split_to_name'];

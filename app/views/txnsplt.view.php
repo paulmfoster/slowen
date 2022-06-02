@@ -45,9 +45,9 @@
 
 <tr>
 <td>
-<?php $this->form->submit('s1'); ?>
+<?php $this->form->submit('save'); ?>
 &nbsp;
-<?php form::abandon(url('txn', 'other')); ?>
+<?php form::abandon(url('txn', 'add')); ?>
 </td>
 <td></td>
 </tr>

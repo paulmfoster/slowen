@@ -5,173 +5,139 @@
 <form method="post" action="<?php echo $this->return; ?>">
 
 <?php $row = 0; ?>
-<?php $p = 0; ?>
-
-<?php foreach ($txns as $txn): ?>
-
-<?php if ($p > 0): ?>
-<h3>Transfer Information</h3>
-<?php endif; ?>
 
 <table>
+
 <tr><th>Item</th><th>Value</th></tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">From Account</td>
 <td>
-<label>Transaction ID</label>
-</td>
-<td>
-<?php echo $txn['txnid']; ?>
+<?php echo $from_acct . ' ' . $from_acct_name; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Date</td>
 <td>
-<label>From Account</label>
-</td>
-<td>
-<?php echo $txn['from_acct'] . ' ' . $txn['from_acct_name']; ?>
+<?php echo pdate::iso2am($txn_dt); ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Check #</td>
 <td>
-<label>Date</label>
-</td>
-<td>
-<?php echo pdate::iso2am($txn['txn_dt']); ?>
+<?php echo $checkno; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel"># Split</td>
 <td>
-<label>Check #</label>
-</td>
-<td>
-<?php echo $txn['checkno']; ?>
+<?php echo $max_splits; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Payee</td>
 <td>
-<label>Split?</label>
-</td>
-<td>
-<?php echo $txn['split'] ? 'Yes' : 'No';?>
+<?php echo $payee_id . ' ' . $payee_name; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">To Account</td>
 <td>
-<label>Payee</label>
-</td>
-<td>
-<?php echo $txn['payee_id'] . ' ' . $txn['payee_name']; ?>
+<?php echo $to_acct . ' ' .  $to_acct_name; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Memo</td>
 <td>
-<label>To Account</label>
-</td>
-<td>
-<?php echo $txn['to_acct'] . ' ' .  $txn['to_acct_name']; ?>
+<?php echo $memo; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Status</td>
 <td>
-<label>Memo</label>
-</td>
-<td>
-<?php echo $txn['memo']; ?>
+<?php echo $x_status; ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Reconciliation Date</td>
 <td>
-<label>Status</label>
-</td>
-<td>
-<?php echo $txn['x_status']; ?>
+<?php echo pdate::iso2am($recon_dt); ?>
 </td>
 </tr>
 
 <tr class="row<?php echo $row++ & 1; ?>">
+<td class="tdlabel">Amount</td>
 <td>
-<label>Reconciliation Date</label>
-</td>
-<td>
-<?php echo pdate::iso2am($txn['recon_dt']); ?>
+<?php echo $amount; ?>
 </td>
 </tr>
-
-<tr class="row<?php echo $row++ & 1; ?>">
-<td>
-<label>Amount</label>
-</td>
-<td>
-<?php if ($txn['amount'] < 0) {
-	echo $txn['dr_amount'];
-}
-else {
-	echo $txn['cr_amount'];
-}
-?>
 
 </table>
 
-<?php if ($txn['split'] == 1): ?>
-<?php $splitno = 1; ?>
+<?php if ($max_splits > 0): ?>
+
 <h3>Splits</h3>
+
 <table rules="all" border="1">
 <tr><th>#</th><th>Item</th><th>Value</th></tr>
-<?php foreach ($splits as $split): ?>
+
+<?php for ($k = 0; $k < $max_splits; $k++): ?>
 
 <tr>
-<td rowspan="4"><?php echo $splitno; ?></td>
+<td rowspan="4"><?php echo $k; ?></td>
+
 <td><label>Payee</label></td>
 <td>
-<?php echo $split['payee_id'] . ' ' . $split['payee_name']; ?>
+<?php echo $split_payee_id[$k] . ' ' . $split_payee_name[$k]; ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Destination Acct</label></td>
 <td>
-<?php echo $split['to_acct'] . ' ' . $split['to_acct_name']; ?>
+<?php echo $split_to_acct[$k] . ' ' . $split_to_name[$k]; ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Memo</label></td>
 <td>
-<?php echo $split['memo']; ?>
+<?php echo $split_memo[$k]; ?>
 </td>
 </tr>
 
 <tr>
 <td><label>Amount</label></td>
 <td>
-<?php echo int2dec($split['amount']); ?>
+<?php 
+if (!empty($split_cr_amount[$k])) {
+    $split_amount[$k] = $split_cr_amount[$k];
+}
+else {
+    $split_amount[$k] = - $split_dr_amount[$k];
+}
+?>
+<?php echo $split_amount[$k]; ?>
 </td>
 </tr>
 
-<?php $splitno++; ?>
-
-<?php endforeach; ?>
+<?php endfor; ?>
 </table>
+
 <?php endif; /* has splits */ ?>
 
-<?php $p++; ?>
-
-<?php endforeach; ?>
-
 <p>
-<?php $this->form->hidden('txnid'); ?>
 <?php $this->form->submit('confirm'); ?>
 &nbsp;
-<?php form::abandon("index.php"); ?>
+<?php form::abandon(url('txn', 'add')); ?>
 </p>
 
 </form>
