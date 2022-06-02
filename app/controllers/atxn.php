@@ -69,6 +69,11 @@ class atxn extends controller
         }
     }
 
+    /**
+     * Determine what to do after entering the main part of a transaction.
+     *
+     */
+
     function settle()
     {
         memory::merge($_POST);
@@ -162,8 +167,12 @@ class atxn extends controller
         memory::merge($_POST);
 
         $fields = array(
-            's1' => array(
-                'name' => 's1',
+            'txnid' => array(
+                'name' => 'txnid',
+                'type' => 'hidden',
+                'value' => $
+            'confirm' => array(
+                'name' => 'confirm',
                 'type' => 'submit',
                 'value' => 'Confirm'
             )
@@ -188,14 +197,14 @@ class atxn extends controller
 
         $this->page_title = 'Confirm Transaction';
         $this->return = url('atxn', 'save');
-        $this->view('othvrfy.view.php', $data);
+        $this->view('txnvrfy.view.php', $data);
     }
 
     // This is where we end up if $cfg['confirm_transaction'] is true.
     function save()
     {
-        $save = $_POST['s1'] ?? NULL;
-        if (!is_null($save)) {
+        $confirm = $_POST['confirm'] ?? NULL;
+        if (!is_null($confirm)) {
             $txnid = $this->trans->add_transaction(memory::get_all());
             memory::clear();
         }
