@@ -170,7 +170,8 @@ class atxn extends controller
             'txnid' => array(
                 'name' => 'txnid',
                 'type' => 'hidden',
-                'value' => $
+                'value' => memory::get('txnid')
+            ),
             'confirm' => array(
                 'name' => 'confirm',
                 'type' => 'submit',
