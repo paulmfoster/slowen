@@ -153,7 +153,8 @@ class scheduled
 	 * Activate a single scheduled transaction.
 	 *
 	 * This method takes the data for a scheduled transaction and creates a
-	 * new transaction in the journal table from that data.
+	 * new transaction in the journal table from that data. It also updates
+     * the "last" field in the scheduled table.
 	 *
 	 * @param integer $id The transaction ID
 	 */
@@ -166,6 +167,9 @@ class scheduled
 		$refdt = pdate::now();
 		$dtarr = pdate::set($refdt['y'], $refdt['m'], $rec['txn_dom']);
 		$today = pdate::get($dtarr, 'Y-m-d');
+
+        // update the "last" field in scheduled table
+        $this->db->update('scheduled', ['last' => $today], "id = $id");
 
 		// these will throw errors if copied into journal table
 		unset($rec['id']);
