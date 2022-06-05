@@ -207,26 +207,40 @@ class report
 	
 	function get_expenses($from_date, $to_date)
 	{
-        $sql = "select j.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from journal as j join accounts as a on (a.id = j.from_acct) join accounts as b on (b.id = j.to_acct) join payees as p on (p.id = j.payee_id) where b.acct_type = 'E' and j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' order by to_acct_name";
+        $sql = "select j.*, 
+            a.name as from_acct_name, 
+            b.name as to_acct_name, 
+            p.name as payee_name 
+            from journal as j 
+            join accounts as a on (a.id = j.from_acct) 
+            join accounts as b on (b.id = j.to_acct) 
+            join payees as p on (p.id = j.payee_id) 
+            where b.acct_type = 'E' 
+            and j.txn_dt >= '$from_date' 
+            and j.txn_dt <= '$to_date' 
+            order by to_acct_name";
 		$result = $this->db->query($sql)->fetch_all();
 
         if ($result === FALSE) {
             return FALSE;
         }
 
+        /*
+        // fixme: is the following needed?
 		// add from_acct name
-		$sql = "SELECT acct_id, name FROM accounts WHERE acct_type in ('C', 'R', 'S')";
+		$sql = "SELECT id, name FROM accounts WHERE acct_type in ('C', 'R', 'S')";
 		$accts = $this->db->query($sql)->fetch_all();
 
 		$nres = count($result);
 		for ($i = 0; $i < $nres; $i++) {
 			foreach ($accts as $acct) {
-				if ($result[$i]['from_acct'] == $acct['acct_id']) {
+				if ($result[$i]['from_acct'] == $acct['id']) {
 					$result[$i]['fromname'] = $acct['name'];
 					break;
 				}
 			}
 		}
+         */
 
 		return $result;
 	}
