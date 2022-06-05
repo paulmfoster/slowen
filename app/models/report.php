@@ -209,7 +209,7 @@ class report
 	{
         $sql = "select j.*, a.name as from_acct_name, b.name as to_acct_name, p.name as payee_name from journal as j join accounts as a on (a.id = j.from_acct) join accounts as b on (b.id = j.to_acct) join payees as p on (p.id = j.payee_id) where b.acct_type = 'E' and j.txn_dt >= '$from_date' and j.txn_dt <= '$to_date' order by to_acct_name";
 		$result = $this->db->query($sql)->fetch_all();
-<<<<<<< HEAD:models/report.mdl.php
+
         if ($result === FALSE) {
             return FALSE;
         }
@@ -228,8 +228,6 @@ class report
 			}
 		}
 
-=======
->>>>>>> oop:app/models/report.php
 		return $result;
 	}
 }
