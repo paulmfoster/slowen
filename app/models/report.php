@@ -220,7 +220,8 @@ class report
             and j.txn_dt <= '$to_date' 
             order by to_acct_name";
 		$result = $this->db->query($sql)->fetch_all();
-
+        instrument('result', $result);
+        die('golf');
         if ($result === FALSE) {
             return FALSE;
         }
