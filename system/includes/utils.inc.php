@@ -148,6 +148,9 @@ function filled_out($post, $indexes)
 		elseif (is_null($post[$value])) {
 			$errors++;	
 		}
+        elseif (strlen(trim($post[$value])) == 0) {
+            $errors++;
+        }
 	}
 
 	return ($errors == 0) ? TRUE : FALSE;

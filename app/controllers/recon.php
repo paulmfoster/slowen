@@ -113,7 +113,7 @@ class recon extends controller
         $acct = $this->reconcile->get_account($_POST['from_acct']);
         $errors = 0;
 
-        if (empty($_POST['stmt_start_bal']) || empty($_POST['stmt_end_bal'])) {
+        if (!filled_out($_POST, ['stmt_start_bal', 'stmt_end_bal'])) {
             // user failed to provide either of the stmt balances we asked for
             $errors++;
             emsg('F', 'Beginning and/or ending balance omitted');
