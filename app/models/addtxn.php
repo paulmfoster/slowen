@@ -146,6 +146,12 @@ class addtxn
         $sql = "SELECT acct_type FROM accounts WHERE id = $to_acct";
         $to = $this->db->query($sql)->fetch();
 
+        if (!$from || !$to) {
+            // if one or another account is false, no xfer; probably a VOID
+            // transaction
+            return FALSE;
+        }
+
         $xfer = FALSE;
         if ($from['acct_type'] == 'C' || $from['acct_type'] == 'S') {
             switch ($to['acct_type']) {
