@@ -15,14 +15,14 @@ class navigation
     /**
      * Initialize menu.
      *
-     * @param character Menu type (H, h, A, a, L, l)
+     * @param character Menu type (H, h, A, a, L, l, T, t)
      * @param array Associative array of links
      * @param array Any existing menu items
      */
 
-	function init($menu_type = '', $links, $top = NULL)
+	function init($menu_type, $links, $top = NULL)
 	{
-		if (!is_string($menu_type) || strpos('HhLlAaTt', $menu_type) === FALSE) {
+		if (strpos('HhLlAaTt', $menu_type) === FALSE) {
 			die('Specified a non-existent menu type. Aborting.');
 		}
 

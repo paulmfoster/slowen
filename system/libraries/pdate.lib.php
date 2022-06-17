@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @package apps
- * @copyright  2012, 2017Paul M. Foster <paulf@quillandmouse.com>
+ * @copyright  2012, 2017 Paul M. Foster <paulf@quillandmouse.com>
  * @author Paul M. Foster <paulf@quillandmouse.com>
  * @license LICENSE file
  * @version 8.2
@@ -177,36 +176,61 @@ class pdate
 		return $n % 7;
 	}
 
-	/**
-	 * Internal function, sets jday
+    /**
+     * Return the julian day, given month, day and year
+     *
+     * There is a PHP function which does this: gregoriantojc(), but it's
+     * not compiled into the version of PHP shipped with Arch (2022/06). So
+     * this is the DIY version. Note: this code returns a FLOAT, not an
+     * integer.
+     *
 	 * Original calculations from http://www.astro.uu.nl/~strous/AA/en/reken/juliaansedag.html
-	 *
-	 * @param array $dt date arrayr
-	 * @return integer Julian day
-	 */
-
-	private static function cymd2jul($dt)
+     *
+     * @param integer year
+     * @param integer month
+     * @param integer day
+     * @return float The julian date
+	 */ 
+	
+	private static function g2j($year, $month, $day)
 	{
-		$dt['j'] = gregoriantojd($dt['m'], $dt['d'], $dt['y']);
-		return $dt;
+	    if ($month < 3) {
+	        $m = $month + 12;
+	        $y = $year - 1;
+	    }
+	    else {
+	        $m = $month;
+	        $y = $year;
+	    }
+	    $c = 2 - floor($y / 100) + floor($y / 400);
+	    $jday = floor(1461 * ($y + 4716) / 4) + floor(153 * ($m + 1) / 5) + $day + $c - 1524.5;
+	    return $jday;
 	}
+	
+    /**
+     * Return year, month and day, given a julian date
+     *
+     * See comments from g2j().
+     *
+     * @param float julian date
+     * @return array [year, month, day]
+     */
 
-	/**
-	 * Internal function, returns array of y, m, d
-	 * Calculations from http://www.astro.uu.nl/~strous/AA/en/reken/juliaansedag.html
-	 *
-	 * @param array pdate 
-	 * @return array Array of integers as year, month and day of month
-	 */
-
-	private static function jul2cymd($dt)
+	private static function j2g($jday)
 	{
-		$str = jdtogregorian($dt['j']);
-		$arr = explode('/', $str);
-		$dt['m'] = $arr[0];
-		$dt['d'] = $arr[1];
-		$dt['y'] = $arr[2];
-		return $dt;
+	    $p = floor($jday + 0.5);
+	    $s1 = $p + 68569;
+	    $n = floor(4 * $s1 / 146097);
+	    $s2 = $s1 - floor((146097 * $n + 3) / 4);
+	    $i = floor(4000 * ($s2 + 1) / 1461001);
+	    $s3 = $s2 - floor(1461 * $i / 4) + 31;
+	    $q = floor(80 * $s3 / 2447);
+	    $e = $s3 - floor(2447 * $q / 80);
+	    $s4 = floor($q / 11);
+	    $m = $q + 2 - 12 * $s4;
+	    $y = 100 * ($n - 49) + $i + $s4;
+	    $d = $e + $jday - $p + 0.5;
+	    return array($y, $m, $d);
 	}
 
 	/*============================================================
@@ -234,15 +258,18 @@ class pdate
 	{
 
 		if ($starting_point === 'd') {
-			$dt = self::cymd2jul($dt);
+            $dt['j'] = self::g2j($dt['y'], $dt['m'], $dt['d']);
 		}
 		elseif ($starting_point === 'j') {
-			$dt = self::jul2cymd($dt);
+            $arr = self::j2g($dt['j']);
+            $dt['y'] = $arr[0];
+            $dt['m'] = $arr[1];
+            $dt['d'] = $arr[2];
 		}
 		$dt['w'] = self::jul2dow($dt['j']);
 		$dt['dm'] = self::days_in_month($dt['m'], $dt['y']);
-		$timestamp = mktime(0, 0, 0, $dt['m'], $dt['d'], $dt['y']);
-		$str = strftime('%j^%U', $timestamp);
+        $timestamp = mktime(0, 0, 0, $dt['m'], $dt['d'], $dt['y']);
+        $str = date('z^W', $timestamp);
 		$arr = explode('^', $str);
 		$dt['dy'] = $arr[0];
 		$dt['wy'] = $arr[1];
@@ -250,8 +277,6 @@ class pdate
 
 		return $dt;
 	}
-
-
 
 	/**
 	 * Return today's date as pdate object/array.
