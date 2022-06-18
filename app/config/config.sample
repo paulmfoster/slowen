@@ -2,6 +2,6 @@ programmer_email = paulf@quillandmouse.com
 charset = us-ascii
 language = en_us
 dsn = "sqlite:app/data/slowen.sq3"
-app_name = Slowen Personal
+app_name = Slowen
 ; change this to 0 to avoid having to confirm transactions
 confirm_transactions = 1

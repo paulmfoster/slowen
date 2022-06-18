@@ -77,6 +77,9 @@ $nav_links = [
 
 // This code is common to many/most controllers
 session_start();
+if (!file_exists(CFGDIR . 'config.ini')) {
+    copy(CFGDIR . 'config.sample', CFGDIR . 'config.ini');
+}
 $cfg = parse_ini_file(CFGDIR . 'config.ini');
 
 $dsn = explode(':', $cfg['dsn']);
