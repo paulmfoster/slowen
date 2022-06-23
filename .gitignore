@@ -2,5 +2,6 @@
 error.log
 Session.vim
 *.sq3
-printq/*
+app/printq/*
 *~
+app/config/config.ini

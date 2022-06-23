@@ -41,21 +41,24 @@ class register extends controller
 		$this->view('acctsel.view.php');
 	}
 
-    function show()
+    function show($id = NULL)
     {
-        if (!isset($_POST['id'])) {
-            $this->select();
+        if (is_null($id)) {
+            if (!isset($_POST['id'])) {
+                $this->select();
+            }
+            else {
+                $id = $_POST['id'];
+            }
         }
 
         $txns = model('transaction', $this->db);
 
-        $acct = $txns->get_account($_POST['id']);
-        $r = $txns->get_transactions($_POST['id'], 'F');
+        $acct = $txns->get_account($id);
+        $r = $txns->get_transactions($id, 'F');
 
         $this->page_title = 'Account Register';
-
         $this->view('register.view.php', ['acct' => $acct, 'r' => $r]);
-
     }
 
 }
