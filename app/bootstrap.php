@@ -101,7 +101,7 @@ $nav_links = [
 
 $reg = model('reg', $db);
 $accts = $reg->get_from_accounts();
-if ($acct != FALSE) {
+if ($accts != FALSE) {
     foreach ($accts as $acct) {
         $nav_links['Register'][$acct['name']] = url('register', 'show', $acct['id']);
     }
