@@ -78,6 +78,14 @@ $nav_links = [
 		'Search By Payee' => url('pay', 'search')
 	],
     'Register' => [],
+	'Reports' => [
+		'Balances' => url('rpt', 'balances'),
+		'Register' => url('register', 'select'),
+		'Budget' => url('rpt', 'budget'),
+		'Weekly Expenses' => url('rpt', 'expenses'),
+		'Monthly Audit' => url('aud', 'monthly'),
+		'Yearly Audit' => url('aud', 'yearly')
+	],
 	'Scheduled' => [
 		'Add Transaction' => url('sched', 'add'),
 		'Delete Transaction' => url('sched', 'delete'),
@@ -87,14 +95,6 @@ $nav_links = [
 	'Search' => [
 		'Accounts/Categories' => url('acct', 'search'),
 		'Payees' => url('pay', 'search')
-	],
-	'Reports' => [
-		'Balances' => url('rpt', 'balances'),
-		'Register' => url('register', 'select'),
-		'Budget' => url('rpt', 'budget'),
-		'Weekly Expenses' => url('rpt', 'expenses'),
-		'Monthly Audit' => url('aud', 'monthly'),
-		'Yearly Audit' => url('aud', 'yearly')
 	],
     'Transaction' => url('atxn', 'add')
 ];
