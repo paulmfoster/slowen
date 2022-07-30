@@ -60,11 +60,6 @@ load('numbers');
 load('pdate');
 
 $nav_links = [
-	'Help' => [
-		'Introduction' => 'index.php',
-		'History' => url('welcome', 'history')
-	],
-    'Home' => 'index.php',
 	'Accounts' => [
 		'Register' => url('register', 'select'),
 		'Reconcile' => url('recon', 'prelim'),
@@ -72,6 +67,11 @@ $nav_links = [
         'List Accounts' => url('acct', 'list'),
 		'Search By Account' => url('acct', 'search')
 	],
+	'Help' => [
+		'Introduction' => 'index.php',
+		'History' => url('welcome', 'history')
+	],
+    'Home' => 'index.php',
 	'Payees' => [
 		'Add Payee' => url('pay', 'add'),
         'List Payees' => url('pay', 'list'),
