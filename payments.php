@@ -36,7 +36,8 @@ where txn_dt >= '$from_date'
 and txn_dt <= '$to_date' 
 and amount > 0 
 and journal.from_acct = accounts.id 
-and accounts.acct_type = 'R'";
+and accounts.acct_type = 'R'
+and status != 'V'";
 
 $result = $db->query($sql)->fetch_all();
 

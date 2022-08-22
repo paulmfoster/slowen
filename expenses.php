@@ -35,7 +35,8 @@ join accounts as b on b.id = journal.to_acct
 join payees on payees.id = journal.payee_id
 where b.acct_type = 'E' 
 and journal.txn_dt >= '$from_date' 
-and journal.txn_dt <= '$to_date' 
+and journal.txn_dt <= '$to_date'
+and status != 'V'  
 order by to_acct_name";
 
 $result = $db->query($sql)->fetch_all();
