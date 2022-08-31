@@ -157,7 +157,7 @@ class acct extends controller
         if (isset($_POST['s1'])) {
             $this->account->add_account($_POST);
         }
-        $this->list();
+        redirect(url('acct', 'list'));
     }
 
     function edit($id)
@@ -252,7 +252,7 @@ class acct extends controller
             }
         }	
 
-        $this->show($_POST['id']);
+        redirect(url('acct', 'show', $_POST['id']));
     }
 
     function show($id)
@@ -320,7 +320,7 @@ class acct extends controller
         if (isset($_POST['s1'])) {
             $this->account->delete_account($_POST['id']); 
         }
-        $this->list();
+        redirect(url('acct', 'list'));
     }
 
     function search()

@@ -337,7 +337,7 @@ class txn extends controller
             redirect('index.php');
         }
         $this->trans->update_transaction($_POST);
-        $this->show($_POST['txnid']);
+        redirect(url('txn', 'show', $_POST['txnid']));
     }
 
     function void($txnid)
@@ -384,7 +384,7 @@ class txn extends controller
         }
 
         $this->trans->void_transaction($txnid);
-        $this->show($txnid);
+        redirect(url('txn', 'show', $txnid));
     }
 
 }

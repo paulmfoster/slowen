@@ -89,7 +89,8 @@ class pay extends controller
         if (isset($_POST['s1'])) {
             $this->payee->add_payee($_POST['name']);
         }
-        $this->add();
+
+        redirect(url('pay', 'add'));
     }
 
     function select($rtn)
@@ -165,7 +166,7 @@ class pay extends controller
             $this->payee->update_payee($_POST['id'], $_POST['name']); 
         }	
 
-        $this->show($_POST['id']);
+        redirect(url('pay', 'show', $_POST['id']));
     }
 
     function show($id)
@@ -210,7 +211,7 @@ class pay extends controller
             $this->payee->delete_payee($_POST['id']);
         }
 
-        $this->list();
+        redirect(url('pay', 'list'));
     }
 
     function search()

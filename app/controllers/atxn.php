@@ -215,7 +215,7 @@ class atxn extends controller
             emsg('Transaction save aborted.');
         }
 
-        $this->add();
+        redirect(url('atxn', 'add'));
     }
 
     function add()

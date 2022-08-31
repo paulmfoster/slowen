@@ -113,6 +113,5 @@ class aud extends controller
 
         $this->page_title = 'Audit';
         $this->view('audshow.view.php', $d);
-
     }
 }

@@ -115,7 +115,7 @@ class sched extends controller
         if ($status) {
             emsg('S', "Scheduled transaction added.");
         }
-        $this->add();
+        redirect(url('sched', 'add'));
     }
 
     function list()
@@ -143,7 +143,7 @@ class sched extends controller
             emsg('S', 'Scheduled transactions deleted.');
         }
 
-        $this->list();
+        redirect(url('sched', 'list'));
     }
 
     function activate()
@@ -162,7 +162,8 @@ class sched extends controller
         if ($status) {
             emsg('S', 'Scheduled transactions activated.');
         }
-        $this->list();
+
+        redirect(url('sched', 'list'));
     }
 
 }
