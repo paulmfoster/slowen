@@ -93,16 +93,20 @@ class atxn extends controller
 
         $split = $_POST['split'] ?? 0;
         if ($split == 1) {
-            $this->split();
+            redirect(url('atxn', 'split', $_POST['max_splits']));
         }
         else {
-            $this->verify();
+            memory::merge($_POST);
+            redirect(url('atxn', 'verify'));
         }
     }
 
-    private function split()
+    function split($max_splits = NULL)
     {
-        $max_splits = $_POST['max_splits'];
+        if (is_null($max_splits)) {
+            emsg('F', 'For split transaction no number of splits specified');
+            redirect('atxn', 'add');
+        }
 
         $this->options();
 
@@ -110,7 +114,7 @@ class atxn extends controller
             'max_splits' => array(
                 'name' => 'max_splits',
                 'type' => 'hidden',
-                'value' => $_POST['max_splits']
+                'value' => $max_splits
             ),
             'split_payee_id' => array(
                 'name' => 'split_payee_id[]',
@@ -149,7 +153,7 @@ class atxn extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Splits Entry';
-        $data = ['max_splits' => $_POST['max_splits']];
+        $data = ['max_splits' => $max_splits];
         $this->return = url('atxn', 'verify');
         $this->view('txnsplt.view.php', $data);
     }
@@ -158,12 +162,10 @@ class atxn extends controller
     {
         global $statuses;
 
-        memory::merge($_POST);
-
         if ($this->cfg['confirm_transactions'] == 0) {
             $txnid = $this->trans->add_transaction(memory::get_all());
             memory::clear();
-            $this->add();
+            redirect(url('atxn', 'add'));
         }
 
         $fields = array(
