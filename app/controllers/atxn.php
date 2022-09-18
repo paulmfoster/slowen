@@ -163,6 +163,8 @@ class atxn extends controller
         global $statuses;
 
         if ($this->cfg['confirm_transactions'] == 0) {
+            // for splits
+            memory::merge($_POST);
             $txnid = $this->trans->add_transaction(memory::get_all());
             memory::clear();
             redirect(url('atxn', 'add'));

@@ -247,7 +247,6 @@ class addtxn
 			$splits_amount = 0;
 			$check_amount = $post['amount']; // integer
 
-
 			for ($k = 0; $k < $post['max_splits']; $k++) {
 				if (empty($post['split_to_acct'][$k])) {
 					emsg('F', 'Splits must have a valid to account');
