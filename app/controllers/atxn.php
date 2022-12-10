@@ -96,6 +96,7 @@ class atxn extends controller
             redirect(url('atxn', 'split', $_POST['max_splits']));
         }
         else {
+            $_POST['max_splits'] = 0;
             memory::merge($_POST);
             redirect(url('atxn', 'verify'));
         }

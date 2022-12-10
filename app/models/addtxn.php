@@ -175,6 +175,7 @@ class addtxn
 
 	function add_transaction($post)
 	{
+        // figure out transfers first
         if ($post['max_splits'] != 0) {
             // no transfers on splits
             $post['xfer'] = FALSE;
