@@ -139,14 +139,14 @@ function gd_graph($statname, $filename, $filetype, $values)
 
 	$x = $img_width / 2;
 	$y = $mgn_top / 2;
-	imagestring($img, 5, $x, $y, $statname, $stat_color);
+	imagestring($img, 5, (int) $x, (int) $y, $statname, $stat_color);
 
 	// draw bottom labels
 
 	$div = $x_span / ($num_stats - 1);
 
 	for ($i = 0; $i < $num_stats; $i++) {
-		imagestringup($img, 0, $mgn_lft + ($i * $div), $img_height - 15, $values[$i]['dstamp'], $date_color);
+		imagestringup($img, 0, (int) ($mgn_lft + ($i * $div)), (int) ($img_height - 15), $values[$i]['dstamp'], $date_color);
 	}
 
 	// draw side labels
@@ -171,12 +171,12 @@ function gd_graph($statname, $filename, $filetype, $values)
 				$color = $downstat_color;
 			}
 			// the stat line itself
-			$results = imageline($img, $prior_x, $prior_y, $stat_x_coords[$i], $stat_y_coords[$i], $color);
+			$results = imageline($img, (int) $prior_x, (int) $prior_y, (int) $stat_x_coords[$i], (int) $stat_y_coords[$i], $color);
 		}
 
 		if (is_numeric($values[$i]['value'])) {
 			// the value labels
-			imagestring($img, 0, $stat_x_coords[$i] + 5, $stat_y_coords[$i], (string) $values[$i]['value'], $stat_color);
+			imagestring($img, 0, (int) ($stat_x_coords[$i] + 5), (int) $stat_y_coords[$i], (string) $values[$i]['value'], $stat_color);
 		}
 
 		$prior_x = $stat_x_coords[$i];
@@ -213,45 +213,41 @@ function gd_graph($statname, $filename, $filetype, $values)
  * @return string Graph file name
  */
 
-function gnuplot_graph($statname, $filename, $filetype, $values)
+function gnuplot_graph($statname, $imgdir, $statcode, $filetype, $values)
 {
-	$stats_file = fopen("stats/$statcode.csv", "w");
-	$max = count($values);
-	for ($i = 0; $i < $max; $i++) {
-		if ($values[$i]['value'] != NULL) {
-			$line = $values[$i]['dstamp'] . ',' . $values[$i]['value'] . PHP_EOL;
-		}
-		else {
-			$line = $values[$i]['dstamp'] . ',' . '?' . PHP_EOL;
-		}
+    $csvfile = $imgdir . $statcode . '.csv';
+    $gpfile = $imgdir . $statcode . '.gnuplot';
 
-		fputs($stats_file, $line);
-	}
-	fclose($stats_file);
+    $fp = fopen($csvfile, 'w');
+    foreach ($values as $set) {
+        fputcsv($fp, [$set['dstamp'], $set['value']]);
+    }
+    fclose($fp);
+
+    $max = count($values);
 
 	$fromdate = $values[0]['dstamp'];
 	$todate = $values[$max - 1]['dstamp'];
 
+    $basefile = $imgdir . $statcode;
 	switch ($filetype) {
 	case 'jpeg':
 	case 'jpg':
-		$fname = $filename . '.jpg';
+		$fname = $basefile . '.jpg';
 		$imgtype = 'jpeg';
 		$imgsuffix = 'jpg';
 		break;
 	case 'png':
-		$fname = $filename . '.png';
+		$fname = $basefile . '.png';
 		$imgtype = 'png';
 		$imgsuffix = 'png';
 		break;
 	case 'pdf':
 		$imgtype = 'postscript portrait';
-		$fname = $filename . '.pdf';
+		$fname = $basefile . '.pdf';
 		$imgsuffix = 'ps';
 		break;
 	};
-
-	$gpfile = fopen("stats/$statcode.gnuplot", "w");
 
 	$str =<<<EOD
 set datafile separator ','
@@ -263,16 +259,17 @@ set xtics rotate '$fromdate', 604800
 set xrange ['$fromdate':'$todate']
 set grid
 set terminal $imgtype
-set output 'stats/{$statcode}.$imgsuffix'
-plot 'stats/$statcode.csv' using 1:($2) title '$statname'
+set output '$basefile.$imgsuffix'
+plot '$csvfile' using 1:($2) title '$statname'
 EOD;
 
-	fputs($gpfile, $str);
-	fclose($gpfile);
+	$fp = fopen($gpfile, "w");
+	fputs($fp, $str);
+	fclose($fp);
 
-	system("/usr/bin/gnuplot stats/$statcode.gnuplot");
+	system("/usr/bin/gnuplot $gpfile");
 	if ($filetype == 'pdf') {
-		system("/usr/bin/ps2pdf stats/$statcode.ps $fname");
+		system("/usr/bin/ps2pdf $imgdir{$statcode}.ps $fname");
 	}
 	return $fname;
 }
