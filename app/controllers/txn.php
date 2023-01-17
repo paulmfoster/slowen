@@ -348,6 +348,13 @@ class txn extends controller
         }
 
         $txns = $this->trans->get_transaction($txnid);
+
+        // can't void a reconciled transaction
+        if ($txns[0]['status'] == 'R') {
+            emsg('F', "Transaction is reconciled and can't be voided.");
+            $this->show($txnid);
+        }
+
         if ($txns[0]['split'] == 1) {
             $splits = $this->trans->get_splits($txns[0]['txnid']);
         }

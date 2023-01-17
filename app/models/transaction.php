@@ -162,9 +162,9 @@ class transaction
 	/**
 	 * get_transaction()
 	 *
-	 * Get a transaction, based on txnid, including splits.
+	 * Get a transaction, based on txnid.
 	 * Massage values which aren't really human readable.
-     * Splits are not included.
+     * Splits are not included. May return multiple records (xfers).
 	 *
 	 * @param integer $txnid
 	 *
@@ -234,6 +234,7 @@ class transaction
 	/**
 	 * Saves edits from the transaction edit screen
 	 *
+     * FIXME it DOES check some input
 	 * NOTE: This routine does not check user input; it simply stores
 	 * the input.
 	 *
@@ -254,8 +255,7 @@ class transaction
 			];
 			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
 		}
-
-		if ($post['txntype'] == 'single' || $post['txntype'] == 'split') {
+        elseif ($post['txntype'] == 'single') {
             // if status is 'R' or 'V', no amount present in POST
 			if (isset($post['amount'])) {
 				$post['amount'] = dec2int($post['amount']);
@@ -263,9 +263,39 @@ class transaction
 			$rec = $this->db->prepare('journal', $post);
 			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
 		}
+        elseif ($post['txntype'] == 'split') {
 
-		if ($post['txntype'] == 'splits') {
+            // update header first
+
+            // if status is 'R' or 'V', no amount present in POST
+			if (isset($post['amount'])) {
+				$post['amount'] = dec2int($post['amount']);
+			}
+			$rec = $this->db->prepare('journal', $post);
+			$this->db->update('journal', $rec, "txnid = {$post['txnid']}");
+
+            // update splits
+
 			$max_splits = count($post['split_amount']);
+
+            // check that main total equals sum of split amounts
+            $total = 0;
+            for ($k = 0; $k < $max_splits; $k++) {
+                $total += dec2int($post['split_amount'][$k]);
+            }
+            if (!isset($post['amount'])) {
+                $txn = $this->get_transaction($post['txnid']);
+                $amount = $txn[0]['amount'];
+            }
+            else {
+                $amount = $post['amount'];
+            }
+            if ($amount != $total) {
+                emsg('F', "Split amounts and total don't match. Aborting.");
+                $this->db->rollback();
+                return FALSE;
+            }
+
 			for ($j = 0; $j < $max_splits; $j++) {
 				$rec = array(
 					'payee_id' => $post['split_payee_id'][$j],
@@ -286,7 +316,7 @@ class transaction
 
 	function void_transaction($txnid)
 	{
-		// don't allow user to delete cleared transactions
+		// don't allow user to void cleared transactions
 		$sql = "SELECT * FROM journal WHERE txnid = $txnid";
 		$r = $this->db->query($sql)->fetch_all();
 		if ($r[0]['status'] == 'R') {

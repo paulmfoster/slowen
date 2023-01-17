@@ -271,7 +271,7 @@ class audit
 	function yearly_audit($year)
 	{
 		$from_str = $year . '-01-01';
-		$to_str = $year . '12-31';
+		$to_str = $year . '-12-31';
 
 		$data = $this->do_audit($from_str, $to_str);
 		$data['time_frame'] = $year;
