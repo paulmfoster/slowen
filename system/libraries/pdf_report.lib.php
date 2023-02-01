@@ -64,13 +64,10 @@ class pdf_report
 	function skip_line($num = 1)
 	{
 		$this->y += $num * $this->font_size;
-		
-		/*
 		if ($this->y >= $this->bottom_margin) {
 			$this->add_page();
 			$this->y = $this->top_margin;
 		}
-		 */
 	}
 
     /**
