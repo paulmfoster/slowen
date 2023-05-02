@@ -6,8 +6,10 @@
 
 class navigation
 {
+    public $links, $menu_type;
+
 	function __construct()
-	{
+    {
 		$this->links = [];
 		$this->menu_type = '';
 	}

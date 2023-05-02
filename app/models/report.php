@@ -2,6 +2,8 @@
 
 class report
 {
+    public $db;
+
 	function __construct($db)
 	{
 		$this->db = $db;

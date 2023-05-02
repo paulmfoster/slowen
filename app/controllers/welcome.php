@@ -2,6 +2,8 @@
 
 class welcome extends controller
 {
+    public $cfg, $form, $nav, $db, $page_title;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;

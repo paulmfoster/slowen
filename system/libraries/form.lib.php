@@ -27,6 +27,8 @@
 
 class form
 {
+    public $fields;
+
 	// Added the capability to call constructor without a fields
 	// argument. We add a set() routine later to compensate.
 	

@@ -16,6 +16,7 @@
 class pdosqlite3
 {
 	var $handle, $dd = array();
+    public $db_status, $result, $dbh;
 
 	function __construct($dsn)
 	{

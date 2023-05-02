@@ -2,6 +2,8 @@
 
 class addtxn
 {
+    public $db, $statuses;
+
 	function __construct($db)
 	{
 		$this->db = $db;

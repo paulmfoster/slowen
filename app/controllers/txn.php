@@ -2,6 +2,9 @@
 
 class txn extends controller
 {
+    public $cfg, $form, $nav, $db, $trans;
+    public $page_title, $return;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;

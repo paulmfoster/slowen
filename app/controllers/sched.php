@@ -2,6 +2,10 @@
 
 class sched extends controller
 {
+    public $cfg, $form, $nav, $db, $sched, $trans, $accounts;
+    public $page_title, $return, $focus_field;
+    public $from_options, $to_options, $payee_options;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;

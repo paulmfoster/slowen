@@ -2,6 +2,9 @@
 
 class pay extends controller
 {
+    public $cfg, $form, $nav, $db, $payee;
+    public $page_title, $return, $focus_field;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;

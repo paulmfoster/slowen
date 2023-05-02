@@ -2,6 +2,9 @@
 
 class aud extends controller
 {
+    public $cfg, $form, $nav, $db, $audit;
+    public $page_title, $return, $focus_field;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;

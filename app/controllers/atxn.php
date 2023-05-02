@@ -2,6 +2,10 @@
 
 class atxn extends controller
 {
+    public $cfg, $form, $nav, $db, $trans, $accounts, $bank_options;
+    public $to_options, $ccard_options, $from_options, $payee_options, $status_options;
+    public $page_title, $return, $focus_field;
+
     function __construct()
     {
         global $cfg, $form, $nav, $db;
