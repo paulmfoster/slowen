@@ -2,6 +2,8 @@
 
 class pdf_report
 {
+    public $pdf, $font_size, $dir, $x, $y, $top_margin, $bottom_margin, $lines_per_page;
+
 	function __construct()
 	{
 		define('FPDF_FONTPATH', LIBDIR . 'fpdf/font/');
