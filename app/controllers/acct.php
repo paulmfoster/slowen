@@ -53,7 +53,7 @@ class acct extends controller
         ];
         $this->form->set($fields);
         $this->page_title = 'Accounts List';
-        $this->focus_fields = 'id';
+        $this->focus_field = 'id';
         $this->return = url('acct', 'resolve');
         $this->view('acctlst.view.php');
     }
