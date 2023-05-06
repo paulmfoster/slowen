@@ -93,9 +93,24 @@ function dec2int($number)
  * to decimals if they are equivalent to integers.
  *
  * @param integer The number to convert
- * @return float The number converted to float
+ * @return string The number converted to decimal
  */
 
+function int2dec($number)
+{
+    if (strpos($number, DECIMAL_SYMBOL) != FALSE)
+        return NULL;
+
+    $multiplier = pow(10, DECIMALS);
+
+    $left = intdiv($number, $multiplier);
+    $right = $number % $multiplier;
+    $str = sprintf("%d.%*d", $left, DECIMALS, abs($right));
+
+    return $str;
+}
+
+/*
 function int2dec($number = 0)
 {
 	// don't process if the number is already decimalized
@@ -125,4 +140,5 @@ function int2dec($number = 0)
 
 	return $sign . $left . DECIMAL_SYMBOL . $right;
 }
+ */
 
