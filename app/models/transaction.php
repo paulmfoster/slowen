@@ -140,15 +140,15 @@ class transaction
 			
 			if ($txns[$i]['amount'] < 0) {
 				$txns[$i]['debit'] = - $txns[$i]['amount'];
-				$txns[$i]['credit'] = '';
+				$txns[$i]['credit'] = 0;
 			}
 			elseif ($txns[$i]['amount'] > 0) {
 				$txns[$i]['credit'] = $txns[$i]['amount'];
-				$txns[$i]['debit'] = '';
+				$txns[$i]['debit'] = 0;
 			}
             else {
-                $txns[$i]['credit'] = '';
-                $txns[$i]['debit'] = '';
+                $txns[$i]['credit'] = 0;
+                $txns[$i]['debit'] = 0;
             }
 
 			if ($type == 'F') {

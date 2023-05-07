@@ -105,7 +105,7 @@ function int2dec($number)
 
     $left = intdiv($number, $multiplier);
     $right = $number % $multiplier;
-    $str = sprintf("%d.%*d", $left, DECIMALS, abs($right));
+    $str = sprintf("%d.%0*d", $left, DECIMALS, abs($right));
 
     return $str;
 }

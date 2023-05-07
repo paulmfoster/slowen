@@ -45,8 +45,19 @@ else {
 </td>
 <td><?php echo $transactions[$j]['payee_name'] . '<br/>' . $transactions[$j]['memo'] . '<br/>' . $transactions[$j]['to_acct_name']; ?></td>
 <td><?php echo $transactions[$j]['status']; ?></td>
+
+<?php if ($transactions[$j]['debit'] == 0): ?>
+<td>&nbsp;</td>
+<?php else: ?>
 <td class="align-right"><?php echo int2dec($transactions[$j]['debit']); ?></td>
+<?php endif; ?>
+
+<?php if ($transactions[$j]['credit'] == 0): ?>
+<td>&nbsp;</td>
+<?php else: ?>
 <td class="align-right"><?php echo int2dec($transactions[$j]['credit']); ?></td>
+<?php endif; ?>
+
 </tr>
 <?php endfor; ?>
 </table>
