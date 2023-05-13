@@ -39,8 +39,8 @@
 <td><?php echo ($txn['split'] == 1) ? 'Y' : 'N'; ?></td>
 <td><?php echo $txn['payee_name'] . '<br/>' . $txn['memo'] . '<br/>' . $txn['to_acct_name']; ?></td>
 <td><?php echo $txn['status']; ?></td>
-<td class="align-right"><?php echo ($txn['debit'] != '') ? int2dec($txn['debit']) : ''; ?></td>
-<td class="align-right"><?php echo ($txn['credit'] != '') ? int2dec($txn['credit']) : ''; ?></td>
+<td class="align-right"><?php echo ($txn['debit'] != 0) ? int2dec($txn['debit']) : ''; ?></td>
+<td class="align-right"><?php echo ($txn['credit'] != 0) ? int2dec($txn['credit']) : ''; ?></td>
 <td class="align-right"><?php echo int2dec($txn['balance']); ?></td>
 </tr>
 <?php endforeach; ?>
