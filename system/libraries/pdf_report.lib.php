@@ -96,8 +96,10 @@ class pdf_report
 
     function center($text, $new_page = FALSE)
     {
+        $cols = $this->columns;
         $this->set_column((85 - strlen($text)) / 2);
         $this->print_line($text, $new_page);
+        $this->set_column($cols);
     }
 
     /**
