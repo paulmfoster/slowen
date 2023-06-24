@@ -332,8 +332,6 @@ class audit
 		global $cfg;
 
         $pdf = load('pdf_report');
-		// LIBDIR . 'pdf_report.lib.php';
-		// $pdf = new pdf_report;
 
 		$pdf->add_page();
 		$pdf->set_margins(6, 6, 5);
@@ -354,49 +352,49 @@ class audit
 				int2dec($data['balances'][$i]['from_bal']),
 				int2dec($data['balances'][$i]['to_bal']),
 				int2dec($data['balances'][$i]['diff_bal']));
-			$pdf->print_line($line);
+			$pdf->print_line($line, TRUE);
 		}
 
-		$pdf->skip_line(2);
+		$pdf->skip_line();
 
 		$inc_hdr1 = '         Income Category               Amount';
-		$pdf->print_line($inc_hdr1);
+		$pdf->print_line($inc_hdr1, TRUE);
 		$inc_hdr2 = '----------------------------------- ------------';
-		$pdf->print_line($inc_hdr2);
+		$pdf->print_line($inc_hdr2, TRUE);
 
 		$nincs = count($data['incomes']);
 		for ($j = 0; $j < $nincs; $j++) {
 			$line = sprintf('%35s %12.2f', $data['incomes'][$j]['cat_name'],
 				int2dec($data['incomes'][$j]['amount']));
-			$pdf->print_line($line);
+			$pdf->print_line($line, TRUE);
 		}
 
-		$pdf->skip_line(2);
+		$pdf->skip_line();
 
 		$exp_hdr1 = '         Expense Category              Amount';
-		$pdf->print_line($exp_hdr1);
+		$pdf->print_line($exp_hdr1, TRUE);
 		$exp_hdr2 = '----------------------------------- ------------';
-		$pdf->print_line($exp_hdr2);
+		$pdf->print_line($exp_hdr2, TRUE);
 
 		$nincs = count($data['expenses']);
 		for ($k = 0; $k < $nincs; $k++) {
 			$line = sprintf('%35s %12.2f', $data['expenses'][$k]['cat_name'],
 				int2dec($data['expenses'][$k]['amount']));
-			$pdf->print_line($line);
+			$pdf->print_line($line, TRUE);
 		}
 
-		$pdf->skip_line(2);
+		$pdf->skip_line();
 
 		$anl_hdr1 = '          Analysis Category            Amount';
-		$pdf->print_line($anl_hdr1);
+		$pdf->print_line($anl_hdr1, TRUE);
 		$anl_hdr2 = '----------------------------------- ------------';
-		$pdf->print_line($anl_hdr2);
+		$pdf->print_line($anl_hdr2, TRUE);
 
 		$nitems = count($data['analysis']);
 		for ($m = 0; $m < $nitems; $m++) {
 			$line = sprintf('%35s %12.2f', $data['analysis'][$m]['name'],
 				int2dec($data['analysis'][$m]['total']));
-			$pdf->print_line($line);
+			$pdf->print_line($line, TRUE);
 		}
 
 		$pdf->output($filename);
