@@ -17,8 +17,13 @@
 </tr>
 
 <tr>
-<td><label for="txn_dt">Date</label></td>
-<td><?php $this->form->select('txn_dom'); ?></td>
+<td><label>Frequency</label></td>
+<td><?php $this->form->text('freq'); ?></td>
+</tr>
+
+<tr>
+<td><label>Period</label></td>
+<td><?php $this->form->select('period'); ?></td>
 </tr>
 
 <tr>

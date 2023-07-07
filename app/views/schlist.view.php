@@ -8,7 +8,8 @@
 
 <tr>
 <th>ID</th>
-<th>Day</th>
+<th>Freq</th>
+<th>Per</th>
 <th>From Acct</th>
 <th>Payee/Memo/Category</th>
 <th>Debit</th>
@@ -19,7 +20,8 @@
 <?php foreach ($list as $t): ?>
 <tr class="row<?php echo $row++ & 1; ?>">
 <td><?php echo $t['id']; ?></td>
-<td align="right"><?php echo $t['txn_dom']; ?></td>
+<td align="right"><?php echo $t['freq']; ?></td>
+<td><?php echo $t['period']; ?></td>
 <td><?php echo $t['from_acct_name']; ?></td>
 <td>
 <?php echo $t['payee_name']; ?><br/>

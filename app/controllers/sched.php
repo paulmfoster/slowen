@@ -51,6 +51,13 @@ class sched extends controller
                 'val' => $to_acct['id']);
         }
 
+        $period_options = [];
+        $period_options[] = ['lbl' => 'Day', 'val' => 'D'];
+        $period_options[] = ['lbl' => 'Week', 'val' => 'W'];
+        $period_options[] = ['lbl' => 'Month', 'val' => 'M'];
+        $period_options[] = ['lbl' => 'Quarter', 'val' => 'Q'];
+        $period_options[] = ['lbl' => 'Year', 'val' => 'Y'];
+
         $dom_options = [];
         for ($i = 1; $i < 31; $i++) {
             $dom_options[] = ['lbl' => $i, 'val' => $i];
@@ -62,10 +69,16 @@ class sched extends controller
                 'type' => 'select',
                 'options' => $this->from_options
             ),
-            'txn_dom' => array(
-                'name' => 'txn_dom',
+            'freq' => array(
+                'name' => 'freq',
+                'type' => 'text',
+                'size' => 3,
+                'maxlength' => 3
+            ),
+            'period' => array(
+                'name' => 'period',
                 'type' => 'select',
-                'options' => $dom_options
+                'options' => $period_options
             ),
             'xfer' => array(
                 'name' => 'xfer',
@@ -124,7 +137,7 @@ class sched extends controller
 
     function list()
     {
-        $list = $this->sched->scheduled_list();
+        $list = $this->sched->fetch_scheduled();
 
         $this->page_title = 'Scheduled Transactions List';
         $this->view('schlist.view.php', ['list' => $list]);
