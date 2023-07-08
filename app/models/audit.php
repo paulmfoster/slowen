@@ -155,10 +155,11 @@ class audit
 		 * balance at the end of the DAY BEFORE. VERY IMPORTANT.
 		 */
 
-		$from_dt = pdate::fromiso($from_date);
+        $from_dt = new xdate();
+		$from_dt->from_iso($from_date);
 		// adjust to the day before
-		$from_dt = pdate::adddays($from_dt, -1);
-		$start_dt = pdate::get($from_dt, 'Y-m-d');
+		$from_dt->add_days(-1);
+        $start_dt = $from_dt->to_iso();
 
 		$from_bals = $this->audit_bals($start_dt);
 		$nfrom_bals = count($from_bals);
@@ -172,7 +173,7 @@ class audit
 		$cash = 0;
 		$ltdebt = 0;
 		$stdebt = 0;
-		$equity = 0; //
+		$equity = 0;
 
 		$nbals = count($from_bals); // $to_bals should have same count
 		for ($i = 0; $i < $nbals; $i++) {
@@ -212,8 +213,8 @@ class audit
 		// diff_bals[n] => <number>
 		// Now move the start date to January 1
 		
-		$from_dt = pdate::adddays($from_dt, 1);
-		$start_dt = pdate::get($from_dt, 'Y-m-d');
+        $from_dt->add_days(1);
+		$start_dt = $from_dt->to_iso();
 
 		$incomes = $this->audit_cats($start_dt, $end_dt, 'I');
 		$expenses = $this->audit_cats($start_dt, $end_dt, 'E');
@@ -295,16 +296,15 @@ class audit
 	function monthly_audit($year, $month)
 	{
 		$month_names = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-		$dims = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-		$leap = pdate::is_leap_year($year);
-		if ($leap) {
-			$dims[1] = 29;
-		}
 
-		$from_dt = pdate::fromints($year, $month, 1);
-		$start_dt = pdate::toiso($from_dt);
-		$to_dt = pdate::fromints($year, $month, $dims[$month - 1]);
-		$end_dt = pdate::toiso($to_dt);
+        $from_dt = new xdate();
+        $from_dt->from_ints($year, $month, 1);
+        $leap = $from_dt->is_leap_year();
+
+		$start_dt = $from_dt->to_iso();
+        $to_dt = new xdate();
+        $to_dt->end_of_month();
+		$end_dt = $to_dt->to_iso();
 
 		$data = $this->do_audit($start_dt, $end_dt);
 		$data['time_frame'] = $month_names[$month - 1] . ' ' . $year;
