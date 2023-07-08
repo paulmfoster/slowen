@@ -58,6 +58,7 @@ load('messages');
 $form = load('form');
 load('numbers');
 load('pdate');
+load('xdate'); // added 2023-07-08
 
 $nav_links = [
 	'Accounts' => [

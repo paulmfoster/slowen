@@ -149,33 +149,31 @@ class scheduled
     /**
      * Returns the next date in a recurring date series.
 	 *
-     * Takes all the recurring parameters, plus the date ($mydate)
-     * as an ISO date.
      * Based on the period and frequency, it returns a date the appropriate
      * amount of time in the future.
 	 * Return is in ISO date format
 	 *
-	 * @param date $mydate The next date?
-	 * @param integer $freq The frequency for this job
-	 * @param string $period The periodicity of the job
+	 * @param xdate The reference date (last time)
+	 * @param integer The frequency for this job
+	 * @param string The periodicity of the job
 	 *
-	 * @return pdate The next date
+	 * @return xdate The next date
      */
 
     function get_next_date($dt, $freq, $period)
     {
         if ($period == 'M')
-			$ndt = pdate::addmonths($dt, $freq);
+			$dt->add_months($freq);
 		elseif ($period == 'Q')
-			$ndt = pdate::addmonths($dt, 3 * $freq);
+			$dt->add_months(3 * $freq);
         elseif ($period == 'D')
-			$ndt = pdate::adddays($dt, $freq);
+			$dt->add_days($freq);
         elseif ($period == 'Y')
-			$ndt = pdate::addyears($dt, $freq);
+			$dt->add_years($freq);
 		elseif ($period == 'W')
-			$ndt = pdate::adddays($dt, $freq * 7);
+			$dt->add_days($freq * 7);
 
-        return $ndt;
+        return $dt;
     }
 
 	/**
@@ -194,20 +192,18 @@ class scheduled
 		$sql = "SELECT * FROM scheduled2 WHERE id = $id";
 		$rec = $this->db->query($sql)->fetch();
 
-        $today = pdate::now();
-        // first of this month
-        $fom = pdate::fromints($today['y'], $today['m'], 1);
-        // first of next month
-        $fonm = pdate::addmonths($fom, 1);
-        // end of this month
-        $eomonth = pdate::adddays($fonm, -1);
+        $limit = new xdate();
+        $limit->day_after_month();
 
-		$lastdt = pdate::set('Y-m-d', $rec['last']);
+        $lastdt = new xdate();
+        $lastdt->from_iso($rec['last']);
+
         $nextdt = $this->get_next_date($lastdt, $rec['freq'], $rec['period']);
 
-        if (pdate::before($nextdt, $eomonth)) {
+        if ($nextdt->before($limit)) {
 
-            $snextdt = pdate::get($nextdt, 'Y-m-d');
+            $snextdt = $nextdt->to_iso();
+
             // update the "last" field in scheduled table
             $this->db->update('scheduled2', ['last' => $snextdt], "id = $id");
 
