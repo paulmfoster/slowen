@@ -20,7 +20,8 @@
 <tr class="row<?php echo $row++ & 1; ?>">
 <td class="tdlabel">Date</td>
 <td>
-<?php echo pdate::iso2am($txn_dt); ?>
+<?php $txndt = new xdate(); ?>
+<?php echo $txndt->iso2amer($txn_dt); ?>
 </td>
 </tr>
 
@@ -69,7 +70,8 @@
 <tr class="row<?php echo $row++ & 1; ?>">
 <td class="tdlabel">Reconciliation Date</td>
 <td>
-<?php echo pdate::iso2am($recon_dt); ?>
+<?php $recondt = new xdate(); ?>
+<?php echo $recondt->iso2amer($recon_dt); ?>
 </td>
 </tr>
 

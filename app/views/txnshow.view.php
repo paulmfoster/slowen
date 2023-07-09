@@ -37,7 +37,8 @@
 <label>Date</label>
 </td>
 <td>
-<?php echo pdate::iso2am($txn['txn_dt']); ?>
+<?php $txndt = new xdate(); ?>
+<?php echo $txndt->iso2amer($txn['txn_dt']); ?>
 </td>
 </tr>
 
@@ -100,7 +101,8 @@
 <label>Reconciliation Date</label>
 </td>
 <td>
-<?php echo pdate::iso2am($txn['recon_dt']); ?>
+<?php $recondt = new xdate(); ?>
+<?php echo $recondt->iso2amer($txn['recon_dt']); ?>
 </td>
 </tr>
 

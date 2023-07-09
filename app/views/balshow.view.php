@@ -3,7 +3,7 @@
 
 <?php $j = 0; /* table shading counter */ ?>
 
-<h2>Balances as of: <?php echo pdate::iso2am($today); ?></h2>
+<h2>Balances as of: <?php echo $today; ?></h2>
 
 <table>
 <tr>

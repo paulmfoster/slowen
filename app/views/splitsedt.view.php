@@ -51,7 +51,8 @@
 
 <tr>
 <td class="tdlabel">Recon Dt</td>
-<td><?php echo pdate::iso2am($txn['recon_dt']); ?></td>
+<?php $recondt = new xdate(); ?>
+<td><?php echo $recondt->iso2amer($txn['recon_dt']); ?></td>
 </tr>
 
 <tr>

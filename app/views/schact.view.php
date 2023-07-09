@@ -51,7 +51,10 @@ any scheduled transactions you wish to activate.</h2>
 <td></td><td class="align-right"><?php echo int2dec($txn['amount']); ?></td>
 <?php endif; ?>
 
-<td><?php echo pdate::iso2am($txn['last']); ?></td>
+<?php $txnlast = new xdate(); ?>
+<?php $txnlast->from_iso($txn['last']); ?>
+
+<td><?php echo $txnlast->to_amer(); ?></td>
 
 </tr>
 

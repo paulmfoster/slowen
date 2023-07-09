@@ -28,7 +28,8 @@
 
 <tr>
 <td><label for="txn_dt">Date</label></td>
-<td colspan="2"><?php $this->form->date('txn_dt', pdate::now2iso()); ?></td>
+<?php $txndt = new xdate(); ?>
+<td colspan="2"><?php $this->form->date('txn_dt', $txndt->to_iso()); ?></td>
 <td><label for="checkno">Check #</label></td>
 <td><?php $this->form->text('checkno'); ?></td>
 </tr>

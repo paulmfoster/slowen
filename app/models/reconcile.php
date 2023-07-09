@@ -40,6 +40,8 @@ class reconcile
 
 	function get_uncleared_transactions($param)
 	{
+        $txndt = new xdate();
+
 		$sql = "SELECT journal.*, payees.name AS payee_name, a3.name AS from_acct_name, a4.name AS to_acct_name FROM journal LEFT JOIN payees ON payees.id = journal.payee_id LEFT JOIN accounts AS a3 ON a3.id = journal.from_acct LEFT JOIN accounts AS a4 ON a4.id = journal.to_acct WHERE journal.from_acct = $param AND journal.status NOT IN ('R', 'V') ORDER BY txn_dt, checkno, txnid";
 		$txns = $this->db->query($sql)->fetch_all();	
 
@@ -51,7 +53,8 @@ class reconcile
 		// massage dates, amounts
 		for ($i = 0; $i < $max_txns; $i++) {
 			
-			$txns[$i]['x_txn_dt'] = pdate::reformat('Y-m-d', $txns[$i]['txn_dt'], 'm/d/y');
+            $txndt->from_iso($txns[$i]['txn_dt']);
+			$txns[$i]['x_txn_dt'] = $txndt->to_amer();
 
 			if ($txns[$i]['amount'] < 0) {
 				$txns[$i]['debit'] = int2dec(abs($txns[$i]['amount']));

@@ -12,7 +12,8 @@
 <tr>
 
 <td>
-<?php echo pdate::iso2am($expense['txn_dt']); ?>
+<?php $txndt = new xdate(); ?>
+<?php echo $txndt->iso2amer($expense['txn_dt']); ?>
 </td>
 
 <td>

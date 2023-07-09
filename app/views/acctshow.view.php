@@ -47,7 +47,8 @@ Parent
 Open Date
 </td>
 <td>
-<?php echo pdate::iso2am($acct['open_dt']); ?>
+<?php $opendt = new xdate(); ?>
+<?php echo $opendt->iso2amer($acct['open_dt']); ?>
 </td>
 </tr>
 
@@ -56,8 +57,8 @@ Open Date
 Reconciliation Date
 </td>
 <td>
-<?php $recon_dt = ($acct['recon_dt'] == 'NULL') ? NULL : $acct['recon_dt']; ?>
-<?php echo pdate::iso2am($recon_dt); ?>
+<?php $rdt = new xdate(); ?>
+<?php echo $rdt->iso2amer($acct['recon_dt']); ?>
 </td>
 </tr>
 

@@ -167,7 +167,8 @@ class report
 	function get_balances($last_dt = NULL)
 	{
 		if (is_null($last_dt)) {
-			$last_dt = pdate::now2iso();
+            $dt = new xdate();
+			$last_dt = $dt->to_iso();
 		}
 
 		$accts = $this->get_from_accounts();

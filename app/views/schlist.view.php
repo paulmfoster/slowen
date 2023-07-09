@@ -54,7 +54,8 @@
 <?php endif; ?>
 
 <td>
-<?php echo pdate::iso2am($t['last']); ?>
+<?php $last = new xdate(); ?>
+<?php echo $last->iso2amer($t['last']); ?>
 </td>
 
 </tr>

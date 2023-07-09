@@ -33,7 +33,9 @@
 
 <tr class="row<?php echo ($row++ & 1); ?>">
 
-<td><?php echo pdate::iso2am($txn['txn_dt']); ?></td>
+<?php $txndt = new xdate(); ?>
+<?php $txndt->from_iso($txn['txn_dt']); ?>
+<td><?php echo $txndt->to_amer(); ?></td>
 <td><?php echo $txn['checkno']; ?></td>
 
 <td><?php echo $txn['split'] ? 'Yes' : 'No'; ?></td>

@@ -34,7 +34,8 @@
 <a href="<?php echo url('txn', 'void', $txn['txnid']); ?>">Void</a>
 
 </td>
-<td><?php echo pdate::iso2am($txn['txn_dt']); ?></td>
+<?php $txndt = new xdate(); ?>
+<td><?php echo $txndt->iso2amer($txn['txn_dt']); ?></td>
 <td><?php echo $txn['checkno']; ?></td>
 <td><?php echo ($txn['split'] == 1) ? 'Y' : 'N'; ?></td>
 <td><?php echo $txn['payee_name'] . '<br/>' . $txn['memo'] . '<br/>' . $txn['to_acct_name']; ?></td>

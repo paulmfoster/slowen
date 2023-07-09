@@ -21,7 +21,8 @@ Open Date
 </label>
 </td>
 <td>
-<?php $this->form->date('open_dt', pdate::now2iso()); ?>
+<?php $today = new xdate(); ?>
+<?php $this->form->date('open_dt', $today->to_iso()); ?>
 </td>
 </tr>
 

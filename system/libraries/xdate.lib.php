@@ -543,6 +543,8 @@ class xdate
 
 	function amer2iso($american_date)
 	{
+        if (is_null($american_date) || strlen($american_date) == 0)
+            return '';
         $this->from_amer($american_date);
         return $this->to_iso();
     }
@@ -563,6 +565,8 @@ class xdate
 
 	function iso2amer($iso_date)
 	{
+        if (is_null($iso_date) || strlen($iso_date) == 0)
+            return '';
         $this->from_iso($iso_date);
         return $this->to_amer();
 	}

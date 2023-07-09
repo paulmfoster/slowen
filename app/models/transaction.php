@@ -73,8 +73,13 @@ class transaction
 		}
 
 		$acct['x_acct_type'] = $acct_types[$acct['acct_type']];
-		$acct['x_open_dt'] = pdate::reformat('Y-m-d', $acct['open_dt'], 'm/d/y');
-		$acct['x_recon_dt'] = pdate::reformat('Y-m-d', $acct['recon_dt'], 'm/d/y');
+
+        $open_dt = new xdate();
+        $acct['x_open_dt'] = $open_dt->iso2amer($acct['open_dt']);
+
+        $recon_dt = new xdate();
+        $acct['x_recon_dt'] = $recon_dt->iso2amer($acct['recon_dt']);
+
 		$acct['x_open_bal'] = int2dec($acct['open_bal']);
 		$acct['x_rec_bal'] = int2dec($acct['rec_bal']);
 
@@ -236,7 +241,6 @@ class transaction
 	/**
 	 * Saves edits from the transaction edit screen
 	 *
-     * FIXME it DOES check some input
 	 * NOTE: This routine does not check user input; it simply stores
 	 * the input.
 	 *

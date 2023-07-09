@@ -17,11 +17,13 @@ class rpt extends controller
 
     function balances()
     {
+        $today = new xdate();
+
         $fields = [
             'last_dt' => [
                 'name' => 'last_dt',
                 'type' => 'date',
-                'value' => pdate::now2iso()
+                'value' => $today->to_iso()
             ],
             's1' => [
                 'name' => 's1',
@@ -39,12 +41,14 @@ class rpt extends controller
 
     function balshow()
     {
+        $dt = new xdate();
         if (!empty($_POST['last_dt'])) {
-            $today = $_POST['last_dt'];
+            $dt->from_iso($_POST['last_dt']);
+            $today = $dt->to_amer();
             $bals = $this->report->get_balances($_POST['last_dt']);
         }
         else {
-            $today = pdate::now2iso();
+            $today = $dt->to_amer();
             $bals = $this->report->get_balances();
         }
 
@@ -123,26 +127,23 @@ class rpt extends controller
 
     function expenses()
     {
-        $temp_date = pdate::now();
+        $dt = new xdate();
+        $dt->endwk();
+        $to_date = $dt->to_iso();
 
-        $oto_date = pdate::endwk($temp_date);
-        $ato_date = pdate::get($oto_date, 'm/d/y');
-        $ito_date = pdate::get($oto_date, 'Y-m-d');
-
-        $ofrom_date = pdate::adddays($oto_date, -6);
-        $afrom_date = pdate::get($ofrom_date, 'm/d/y');
-        $ifrom_date = pdate::get($ofrom_date, 'Y-m-d');
+        $dt->add_days(-6);
+        $from_date = $dt->to_iso();
 
         $fields = array(
             'from_date' => array(
                 'name' => 'from_date',
                 'type' => 'date',
-                'value' => $ifrom_date
+                'value' => $from_date
             ),
             'to_date' => array(
                 'name' => 'to_date',
                 'type' => 'date',
-                'value' => $ito_date
+                'value' => $to_date
             ),
             's1' => array(
                 'name' => 's1',

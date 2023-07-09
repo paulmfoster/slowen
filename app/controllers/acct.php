@@ -92,6 +92,8 @@ class acct extends controller
             $acct_type_options[] = array('lbl' => $value, 'val' => $key);
         }
 
+        $today = new xdate();
+
         $fields = array(
             'parent' => array(
                 'name' => 'parent',
@@ -103,7 +105,7 @@ class acct extends controller
                 'name' => 'open_dt',
                 'required' => 1,
                 'type' => 'date',
-                'value' => pdate::toiso(pdate::now()),
+                'value' => $today->to_iso(),
             ),
             'recon_dt' => array(
                 'name' => 'recon_dt',

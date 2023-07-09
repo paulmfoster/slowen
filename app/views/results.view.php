@@ -31,7 +31,9 @@ a check number, you may find that the splits share that check number.
 <tr class="row<?php echo $k++ & 1;?>">
 <td><a href="<?php echo url('txn', 'show', $transactions[$j]['txnid']); ?>">Show</a></td>
 <td><?php echo $transactions[$j]['from_acct_name']; ?></td>
-<td><?php echo pdate::iso2am($transactions[$j]['txn_dt']); ?></td>
+<?php $txndt = new xdate(); ?>
+<?php $txndt->from_iso($transactions[$j]['txn_dt']); ?>
+<td><?php echo $txndt->to_amer(); ?></td>
 <td><?php echo $transactions[$j]['checkno']; ?></td>
 <td>
 <?php 
