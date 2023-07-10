@@ -63,6 +63,8 @@ class sched extends controller
             $dom_options[] = ['lbl' => $i, 'val' => $i];
         }
 
+        $dt = new xdate();
+
         $fields = array(
             'from_acct' => array(
                 'name' => 'from_acct',
@@ -80,6 +82,11 @@ class sched extends controller
                 'type' => 'select',
                 'options' => $period_options
             ),
+            'last' => array(
+                'name' => 'last',
+                'type' => 'date',
+                'value' => $dt->to_iso()
+            ), 
             'xfer' => array(
                 'name' => 'xfer',
                 'type' => 'checkbox',
@@ -120,6 +127,7 @@ class sched extends controller
             )
         );
         $this->form->set($fields);
+        $this->focus_field = 'from_acct';
         $this->page_title = 'Add Scheduled Transaction';
         $this->return = url('sched', 'save');
         $this->view('schadd.view.php');
@@ -175,9 +183,12 @@ class sched extends controller
     {
         fork('s1', 'P', url('sched', 'activate'));
 
-        $status = $this->sched->activate_scheduled($_POST);
-        if ($status) {
+        $howmany = $this->sched->activate_scheduled($_POST);
+        if ($howmany) {
             emsg('S', 'Scheduled transactions activated.');
+        }
+        else {
+            emsg('F', 'No transactions were scheduled for activation.');
         }
 
         redirect(url('sched', 'list'));

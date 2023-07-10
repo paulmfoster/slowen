@@ -27,6 +27,11 @@
 </tr>
 
 <tr>
+<td><label>Last Date</label></td>
+<td><?php $this->form->date('last'); ?></td>
+</tr>
+
+<tr>
 <td><label for="payee_id">Payee Name</label></td>
 <td><?php $this->form->select('payee_id'); ?></td>
 </tr>

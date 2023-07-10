@@ -38,6 +38,7 @@ class scheduled
 			'from_acct' => $post['from_acct'],
             'freq' => $post['freq'],
             'period' => $post['period'],
+            'last' => $post['last'],
 			'payee_id' => $post['payee_id'],
 			'to_acct' => $post['to_acct'],
 			'memo' => $post['memo'],
@@ -51,6 +52,7 @@ class scheduled
 				'from_acct' => $post['to_acct'],
                 'freq' => $post['freq'],
                 'period' => $post['period'],
+                'last' => $post['last'],
 				'payee_id' => $post['payee_id'],
 				'to_acct' => $post['from_acct'],
 				'memo' => $post['memo'],
@@ -247,17 +249,20 @@ class scheduled
 
 	function activate_scheduled($post)
 	{
+        $howmany = 0;
 		foreach ($post as $key => $val) {
 			if (strpos($key, 'id_') === 0) {
 				$id = (int) substr($key, 3);
                 do {
                     // repeat until the month is over
                     $result = $this->activate_single($id);
+                    if ($result)
+                        $howmany++;
                 } while ($result);
 			}
 		}
 
-		return TRUE;
+		return $howmany;
 	}
 
 }

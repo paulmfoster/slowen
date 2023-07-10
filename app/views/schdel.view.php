@@ -6,6 +6,8 @@
 <h2>No scheduled transactions.</h2>
 <?php else: ?>
 
+<?php $dt = new xdate(); ?>
+
 <h2>Check the boxes of any scheduled transactions you wish to delete</h2>
 
 <form action="<?php echo $this->return; ?>" method="post">
@@ -18,6 +20,7 @@
 <th>From Acct</th>
 <th>Freq</th>
 <th>Per</th>
+<th>Last Date</th>
 <th>Payee/Memo</th>
 <th>To Acct/Category</th>
 <th>Debit</th>
@@ -32,6 +35,9 @@
 <td><?php echo $txn['from_acct_name']; ?></td>
 <td class="align-right"><?php echo $txn['freq']; ?></td>
 <td><?php echo $txn['period']; ?></td>
+
+<?php $dt->from_iso($txn['last']); ?>
+<td><?php echo $dt->to_amer(); ?></td>
 
 <td>
 <?php echo $txn['payee_name']; ?>
