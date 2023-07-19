@@ -106,7 +106,7 @@ class recon extends controller
 
     function clear()
     {
-        // check for a reconciliation in progress
+        // check for a reconciliation in progress (recon table)
         $saved = $this->reconcile->get_saved_work($_POST['from_acct']);
         if ($saved !== FALSE) {
             $this->continue($_POST['from_acct']);

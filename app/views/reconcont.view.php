@@ -4,9 +4,13 @@
 
 <?php $this->form->hidden('from_acct'); ?>
 
-<h3>Do you want to continue the reconciliation for <?php echo $name; ?>?</h3>
-Click the check box to continue: <?php $this->form->checkbox('continue'); ?>
-&nbsp;
+<h3>
+    Account: <?php echo $name; ?><br/>
+    A reconciliation is in progress on this account.<br/>
+    If you want to continue using previously entered values<br/>
+    and date, click this checkbox: <?php $this->form->checkbox('continue'); ?><br/>
+</h3>
+
 <?php $this->form->submit('s1'); ?>
 
 </form>
