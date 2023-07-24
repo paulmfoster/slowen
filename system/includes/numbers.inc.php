@@ -24,6 +24,7 @@ if (!defined('DECIMAL_SYMBOL')) {
  * @return string The converted number
  */
 
+/*
 function dec2int($number)
 {
 	// trim first
@@ -78,6 +79,16 @@ function dec2int($number)
 	$new = $neg . $unsigned;
 
 	return $new;
+}
+ */
+
+function dec2int($fnum)
+{
+    $multiplier = pow(10, DECIMALS);
+    $fnum = (float) $fnum;
+    $dollars = $multiplier * $fnum;
+    $result = (int) $dollars;
+    return $result;
 }
 
 /**
