@@ -142,7 +142,7 @@ function filled_out($post, $indexes)
 {
 	$errors = 0;
 	foreach ($indexes as $key => $value) {
-		if (! array_key_exists($value, $post)) {
+		if (! array_key_exists($key, $post)) {
 			$errors++;
 		}
 		elseif (is_null($post[$value])) {

@@ -308,6 +308,9 @@ class recon extends controller
 
     function finish()
     {
+        if (count($_POST) == 0)
+            redirect(url('recon', 'prelim'));
+
         if (!empty($_POST['status'])) {
             $cleared_list = implode(', ', $_POST['status']);
             $data = $this->reconcile->check_reconciliation($_POST['from_acct'], $_POST['stmt_start_bal'], 
