@@ -3,6 +3,7 @@
 class user
 {
     private const EVERYONE = 255;
+    private $db;
 
 	function __construct($db)
 	{
