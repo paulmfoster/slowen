@@ -87,6 +87,7 @@ function dec2int($fnum)
     $multiplier = pow(10, DECIMALS);
     $fnum = (float) $fnum;
     $dollars = $multiplier * $fnum;
+    $dollars = round($dollars);
     $result = (int) $dollars;
     return $result;
 }
