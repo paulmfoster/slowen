@@ -129,18 +129,18 @@ class sched extends controller
         $this->form->set($fields);
         $this->focus_field = 'from_acct';
         $this->page_title = 'Add Scheduled Transaction';
-        $this->return = url('sched', 'save');
+        $this->return = 'index.php?c=sched&m=save';
         $this->view('schadd.view.php');
     }
 
     function save()
     {
-        $s1 = fork('s1', 'P', url('sched', 'add'));
+        $s1 = fork('s1', 'P', 'index.php?c=sched&m=add');
         $status = $this->sched->add_scheduled($_POST);
         if ($status) {
             emsg('S', "Scheduled transaction added.");
         }
-        redirect(url('sched', 'add'));
+        redirect('index.php?c=sched&m=add');
     }
 
     function list()
@@ -155,33 +155,33 @@ class sched extends controller
     {
         $r = $this->sched->fetch_scheduled();
         $this->page_title = 'Delete Scheduled Transactions';
-        $this->return = url('sched', 'dconfirm');
+        $this->return = 'index.php?c=sched&m=dconfirm';
         $this->view('schdel.view.php', ['r' => $r]);
     }
 
     function dconfirm()
     {
-        fork('s1', 'P', url('sched', 'delete'));
+        fork('s1', 'P', 'index.php?c=sched&m=delete');
 
         $status = $this->sched->delete_scheduled($_POST);
         if ($status) {
             emsg('S', 'Scheduled transactions deleted.');
         }
 
-        redirect(url('sched', 'list'));
+        redirect('index.php?c=sched&m=list');
     }
 
     function activate()
     {
         $r = $this->sched->fetch_scheduled();
         $this->page_title = 'Activate Scheduled Transactions';
-        $this->return = url('sched', 'aconfirm');
+        $this->return = 'index.php?c=sched&m=aconfirm';
         $this->view('schact.view.php', ['r' => $r]);
     }
 
     function aconfirm()
     {
-        fork('s1', 'P', url('sched', 'activate'));
+        fork('s1', 'P', 'index.php?c=sched&m=activate');
 
         $howmany = $this->sched->activate_scheduled($_POST);
         if ($howmany) {
@@ -191,7 +191,7 @@ class sched extends controller
             emsg('F', 'No transactions were scheduled for activation.');
         }
 
-        redirect(url('sched', 'list'));
+        redirect('index.php?c=sched&m=list');
     }
 
 }

@@ -35,7 +35,7 @@ class rpt extends controller
         $this->form->set($fields);
         $this->page_title = 'List Balances';
         $this->focus_field = 'last_dt';
-        $this->return = url('rpt', 'balshow');
+        $this->return = 'index.php?c=rpt&m=balshow';
         $this->view('balances.view.php');
     }
 
@@ -113,7 +113,7 @@ class rpt extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Budget Query';
-        $this->return = url('rpt', 'bgtshow');
+        $this->return = 'index.php?c=rpt&m=bgtshow';
         $this->view('budget.view.php');
     }
 
@@ -155,7 +155,7 @@ class rpt extends controller
         $this->form->set($fields);
         $this->page_title = 'Weekly Expenses';
         $this->focus_field = 'from_date';
-        $this->return = url('rpt', 'expshow');
+        $this->return = 'index.php?c=rpt&m=expshow';
         $this->view('expenses.view.php');
     }
 

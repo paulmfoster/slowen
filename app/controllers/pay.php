@@ -15,6 +15,38 @@ class pay extends controller
         $this->payee = model('payee', $this->db);
     }
 
+    function add()
+    {
+        $fields = array(
+            'name' => array(
+                'name' => 'name',
+                'type' => 'text',
+                'size' => 35,
+                'maxlength' => 35
+            ),
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Save'
+            )
+        );
+
+        $this->form->set($fields);
+        $this->page_title = 'Add Payee';
+        $this->return = 'index.php?c=pay&m=aconfirm';
+        $this->focus_field = 'name';
+        $this->view('payadd.view.php');
+    }
+
+    function aconfirm()
+    {
+        if (isset($_POST['s1'])) {
+            $this->payee->add_payee($_POST['name']);
+        }
+
+        redirect('index.php?c=pay&m=add');
+    }
+
     function list()
     {
         $payees = $this->payee->get_payees();
@@ -44,7 +76,7 @@ class pay extends controller
 
         $this->page_title = 'List Payees';
         $this->focus_field = 'id';
-        $this->return = url('pay', 'resolve');
+        $this->return = 'index.php?c=pay&m=resolve';
         $this->view('paylst.view.php');
     }
 
@@ -64,76 +96,11 @@ class pay extends controller
         }
     }
 
-    function add()
-    {
-        $fields = array(
-            'name' => array(
-                'name' => 'name',
-                'type' => 'text',
-                'size' => 35,
-                'maxlength' => 35
-            ),
-            's1' => array(
-                'name' => 's1',
-                'type' => 'submit',
-                'value' => 'Save'
-            )
-        );
-
-        $this->form->set($fields);
-        $this->page_title = 'Add Payee';
-        $this->return = url('pay', 'aconfirm');
-        $this->focus_field = 'name';
-        $this->view('payadd.view.php');
-    }
-
-    function aconfirm()
-    {
-        if (isset($_POST['s1'])) {
-            $this->payee->add_payee($_POST['name']);
-        }
-
-        redirect(url('pay', 'add'));
-    }
-
-    function select($rtn)
-    {
-        $payees = $this->payee->get_payees();
-        if ($payees == FALSE) {
-            emsg('F', 'No payees on file.');
-            redirect('index.php');
-        }
-
-        $id_options = array();
-        foreach ($payees as $payee) {
-            $id_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
-        }
-
-        $fields = array(
-            'id' => array(
-                'name' => 'id',
-                'type' => 'select',
-                'options' => $id_options
-            ),
-            's1' => array(
-                'name' => 's1',
-                'type' => 'submit',
-                'value' => 'Edit Payee'
-            )
-        );
-        $this->form->set($fields);
-        $this->page_title = 'Select Payee';
-        $this->return = url('pay', $rtn);
-        $this->focus_field = 'id';
-        $this->view('paysel.view.php');
-
-    }
-
     function edit($id)
     {
-        if (is_null($id)) {
+        if (is_null($id))
             $this->list();
-        }
+
         $payee = $this->payee->get_payee($id);
 
         $fields = array(
@@ -159,7 +126,7 @@ class pay extends controller
         $this->form->set($fields);
         $this->page_title = 'Edit Payee';
         $this->focus_field = 'name';
-        $this->return = url('pay', 'econfirm');
+        $this->return = 'index.php?c=pay&m=econfirm';
         $this->view('payedt.view.php', ['payee' => $payee]);
     }
 
@@ -169,7 +136,7 @@ class pay extends controller
             $this->payee->update_payee($_POST['id'], $_POST['name']); 
         }	
 
-        redirect(url('pay', 'show', $_POST['id']));
+        redirect('index.php?c=pay&m=show&id=' . $_POST['id']);
     }
 
     function show($id)
@@ -181,9 +148,9 @@ class pay extends controller
 
     function delete($id)
     {
-        if (is_null($id)) {
+        if (is_null($id))
             $this->list();
-        }
+
         $p = $this->payee->get_payee($id);
 
         $fields = array(
@@ -202,7 +169,7 @@ class pay extends controller
         $this->form->set($fields);
         $this->page_title = 'Delete Payee';
         $this->focus_field = 'name';
-        $this->return = url('pay', 'dconfirm');
+        $this->return = 'index.php?c=pay&m=dconfirm';
         $this->view('paydel.view.php', ['payee' => $p]);
 
     }
@@ -214,7 +181,7 @@ class pay extends controller
             $this->payee->delete_payee($_POST['id']);
         }
 
-        redirect(url('pay', 'list'));
+        redirect('index.php?c=pay&m=list');
     }
 
     function search()
@@ -248,7 +215,7 @@ class pay extends controller
         $this->page_title = 'Search Payees';
 
         $this->focus_field = 'payee';
-        $this->return = url('pay', 'results');
+        $this->return = 'index.php?c=pay&m=results';
         $this->view('paysrch.view.php');
 
     }
@@ -270,5 +237,41 @@ class pay extends controller
         $this->view('results.view.php', ['transactions' => $transactions]);
     }
 
+    /* 2023-09-24 removed 
+
+    function select($rtn)
+    {
+        $payees = $this->payee->get_payees();
+        if ($payees == FALSE) {
+            emsg('F', 'No payees on file.');
+            redirect('index.php');
+        }
+
+        $id_options = array();
+        foreach ($payees as $payee) {
+            $id_options[] = array('lbl' => $payee['name'], 'val' => $payee['id']);
+        }
+
+        $fields = array(
+            'id' => array(
+                'name' => 'id',
+                'type' => 'select',
+                'options' => $id_options
+            ),
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Edit Payee'
+            )
+        );
+        $this->form->set($fields);
+        $this->page_title = 'Select Payee';
+        // $this->return = url('pay', $rtn);
+        $this->focus_field = 'id';
+        $this->view('paysel.view.php');
+
+    }
+
+     */
 
 }

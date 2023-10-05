@@ -1,5 +1,7 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
+<div class="box">
+
 <h2>Welcome to Slowen</h2>
 
 <p>
@@ -172,6 +174,8 @@ author, since it took me an awful long time to write the original code.
 <p>
 <strong>Paul M. Foster, programmer at large</strong>
 </p>
+
+</div>
 
 <?php include VIEWDIR . 'footer.view.php'; ?>
 

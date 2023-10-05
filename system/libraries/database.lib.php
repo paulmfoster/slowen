@@ -48,6 +48,11 @@ class database
 		$this->driver = $parms[0];
 	}
 
+    function logging($on)
+    {
+        $this->dbh->logging($on);
+    }
+
 	function status()
 	{
 		return $this->dbh->status();

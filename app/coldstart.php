@@ -53,6 +53,13 @@ $schema = [
     memo varchar(35), 
     payee_id integer references payees(id), 
     amount integer not null)",
+"CREATE TABLE sqllog (
+    id integer primary key autoincrement,
+    timestamp varchar(19),
+    ltype char(6),
+    ltable varchar(255),
+    lfields varchar(1024),
+    lwhere varchar(1024))",
 "CREATE INDEX journal_ndx on journal (
     from_acct, 
     txn_dt, 

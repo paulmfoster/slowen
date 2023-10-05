@@ -38,7 +38,7 @@ class register extends controller
 
 		$this->form->set($fields);
 
-        $this->return = url('register', 'show');
+        $this->return = 'index.php?c=register&m=show';
         $this->page_title = 'Register: Select Account';
 
 		$this->view('acctsel.view.php');
@@ -47,11 +47,11 @@ class register extends controller
     function show($id = NULL)
     {
         if (is_null($id)) {
-            if (!isset($_POST['id'])) {
-                $this->select();
+            if (isset($_POST['id'])) {
+                $id = $_POST['id'];
             }
             else {
-                $id = $_POST['id'];
+                $this->select();
             }
         }
 

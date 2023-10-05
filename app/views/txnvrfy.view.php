@@ -139,7 +139,7 @@ else {
 <p>
 <?php $this->form->submit('confirm'); ?>
 &nbsp;
-<?php form::abandon(url('txn', 'add')); ?>
+<?php form::abandon('index.php?c=txn&m=add'); ?>
 </p>
 
 </form>

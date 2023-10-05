@@ -70,7 +70,7 @@
 <p>
 <?php $this->form->submit('save'); ?>
 &nbsp;
-<?php form::abandon(url('txn', 'show', $txn['txnid'])); ?>
+<?php form::abandon('index.php?c=txn&m=show&txnid=' . $txn['txnid']); ?>
 </p>
 
 

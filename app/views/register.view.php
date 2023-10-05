@@ -27,11 +27,11 @@
 <tr class="row<?php echo $row++ & 1;?>">
 <td>
 
-<a href="<?php echo url('txn', 'show', $txn['txnid']); ?>">Show</a>
+<a href="<?php echo 'index.php?c=txn&m=show&txnid=' . $txn['txnid']; ?>">Show</a>
 <br/>
-<a href="<?php echo url('txn', 'edit', $txn['txnid']); ?>">Edit</a>
+<a href="<?php echo 'index.php?c=txn&m=edit&txnid=' . $txn['txnid']; ?>">Edit</a>
 <br/>
-<a href="<?php echo url('txn', 'void', $txn['txnid']); ?>">Void</a>
+<a href="<?php echo 'index.php?c=txn&m=void&txnid=' . $txn['txnid']; ?>">Void</a>
 
 </td>
 <?php $txndt = new xdate(); ?>

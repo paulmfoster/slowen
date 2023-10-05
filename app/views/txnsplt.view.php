@@ -47,7 +47,7 @@
 <td>
 <?php $this->form->submit('save'); ?>
 &nbsp;
-<?php form::abandon(url('txn', 'add')); ?>
+<?php form::abandon('index.php?c=txn&m=add'); ?>
 </td>
 <td></td>
 </tr>

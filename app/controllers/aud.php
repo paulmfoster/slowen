@@ -56,7 +56,7 @@ class aud extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Monthly Audit';
-        $this->return = url('aud', 'show');
+        $this->return = 'index.php?c=aud&m=show';
         $this->focus_field = 'month';
         $this->view('auditm.view.php');
     }
@@ -84,7 +84,7 @@ class aud extends controller
         $this->form->set($fields);
         $this->page_title = 'Yearly Audit';
         $this->focus_field = 'year';
-        $this->return = url('aud', 'show');
+        $this->return = 'index.php?c=aud&m=show';
         $this->view('audity.view.php');
     }
 

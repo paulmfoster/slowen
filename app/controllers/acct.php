@@ -54,7 +54,7 @@ class acct extends controller
         $this->form->set($fields);
         $this->page_title = 'Accounts List';
         $this->focus_field = 'id';
-        $this->return = url('acct', 'resolve');
+        $this->return = 'index.php?c=acct&m=resolve';
         $this->view('acctlst.view.php');
     }
 
@@ -64,13 +64,13 @@ class acct extends controller
         $delete = $_POST['delete'] ?? NULL;
         $show = $_POST['show'] ?? NULL;
         if (!is_null($show)) {
-            $this->show($_POST['id']);
+            redirect('index.php?c=acct&m=show&id=' . $_POST['id']);
         }
         elseif (!is_null($edit)) {
-            $this->edit($_POST['id']);
+            redirect('index.php?c=acct&m=edit&id=' . $_POST['id']);
         }
         elseif (!is_null($delete)) {
-            $this->delete($_POST['id']);
+            redirect('index.php?c=acct&m=delete&id=' . $_POST['id']);
         }
         else {
             $this->list();
@@ -152,7 +152,7 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Add Account';
-        $this->return = url('acct', 'aconfirm');
+        $this->return = 'index.php?c=acct&m=aconfirm';
         $this->view('acctadd.view.php');
 
     }
@@ -162,16 +162,16 @@ class acct extends controller
         if (isset($_POST['s1'])) {
             $this->account->add_account($_POST);
         }
-        redirect(url('acct', 'list'));
+        redirect('index.php?c=acct&m=list');
     }
 
     function edit($id)
     {
-        global $acct_types;
-
         if (is_null($id)) {
             $this->list();
         }
+
+        global $acct_types;
 
         $acct = $this->account->get_account($id);
 
@@ -243,7 +243,7 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Edit Account';
-        $this->return = url('acct', 'econfirm');
+        $this->return = 'index.php?c=acct&m=econfirm';
         $data = ['acct' => $acct];
         $this->view('acctedt.view.php', $data);
 
@@ -257,11 +257,14 @@ class acct extends controller
             }
         }	
 
-        redirect(url('acct', 'show', $_POST['id']));
+        redirect('index.php?c=acct&m=show&id=' . $_POST['id']);
     }
 
     function show($id)
     {
+        if (is_null($id))
+            redirect('index.php?c=acct&m=list');
+
         global $acct_types;
 
         $acct = $this->account->get_account($id);
@@ -284,7 +287,7 @@ class acct extends controller
             ]
         ];
         $this->form->set($fields);
-        $this->return = url('acct', 'resolve');
+        $this->return = 'index.php?c=acct&m=resolve';
 
         $this->page_title = 'Show Account';
         $this->view('acctshow.view.php', ['acct' => $acct]);
@@ -292,11 +295,11 @@ class acct extends controller
 
     function delete($id)
     {
-        global $acct_types;
-
         if (is_null($id)) {
             $this->list();
         }
+
+        global $acct_types;
 
         $acct = $this->account->get_account($id);
         $acct['x_acct_type'] = $acct_types[$acct['acct_type']];
@@ -316,7 +319,7 @@ class acct extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Delete Account';
-        $this->return = url('acct', 'dconfirm');
+        $this->return = 'inddx.php?c=acct&m=dconfirm';
         $this->view('acctdel.view.php', ['acct' => $acct]);
     }
 
@@ -325,7 +328,7 @@ class acct extends controller
         if (isset($_POST['s1'])) {
             $this->account->delete_account($_POST['id']); 
         }
-        redirect(url('acct', 'list'));
+        redirect('index.php?c=acct&m=list');
     }
 
     function search()
@@ -356,7 +359,7 @@ class acct extends controller
 
         $this->focus_field = 'category';
         $this->page_title = 'Search By Category/Account';
-        $this->return = url('acct', 'results');
+        $this->return = 'index.php?c=acct&m=results';
         $this->view('acctsrch.view.php');
 
     }

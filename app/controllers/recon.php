@@ -96,7 +96,7 @@ class recon extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Reconcile: Enter Preliminary Data';
-        $this->return = url('recon', 'clear');
+        $this->return = 'index.php?c=recon&m=clear';
         $this->view('prerecon.view.php');
     }
 
@@ -109,7 +109,7 @@ class recon extends controller
         // check for a reconciliation in progress (recon table)
         $saved = $this->reconcile->get_saved_work($_POST['from_acct']);
         if ($saved !== FALSE) {
-            $this->continue($_POST['from_acct']);
+            redirect('index.php?c=recon&m=continue&from_acct=' . $_POST['from_acct']);
             exit();
         }
 
@@ -189,7 +189,7 @@ class recon extends controller
         $this->form->set($fields);
         $this->page_title = 'Reconcile: Clear Transactions';
         $d = ['txns' => $txns, 'from_acct_name' => $from_acct_name];
-        $this->return = url('recon', 'finish');
+        $this->return = 'index.php?c=recon&m=finish';
         $this->view('reconlist.view.php', $d);
     }
 
@@ -197,8 +197,9 @@ class recon extends controller
      * Ask the user to continue paused reconciliation.
      */
 
-    function continue($from_acct = NULL)
+    function continue()
     {
+        $from_acct = $_GET['from_acct'] ?? NULL;
         if (is_null($from_acct)) {
             $this->prelim();
             exit();
@@ -225,7 +226,7 @@ class recon extends controller
         ];
         $this->form->set($fields);
         $this->page_title = 'Continue Reconciliation';
-        $this->return = url('recon', 'reclear');
+        $this->return = 'index.php?c=recon&m=reclear';
         $this->view('reconcont.view.php', ['name' => $acct['name']]);
 
     }
@@ -298,7 +299,7 @@ class recon extends controller
 
         $this->form->set($fields);
         $this->page_title = 'Continue Reconciliation';
-        $this->return = url('recon', 'finish');
+        $this->return = 'index.php?c=recon&m=finish';
         $this->view('reconlist.view.php', ['txns' => $txns, 'from_acct_name' => $from_acct_name]);
     }
 
@@ -309,7 +310,7 @@ class recon extends controller
     function finish()
     {
         if (count($_POST) == 0)
-            redirect(url('recon', 'prelim'));
+            redirect('index.php?c=recon&m=prelim');
 
         if (!empty($_POST['status'])) {
             $cleared_list = implode(', ', $_POST['status']);

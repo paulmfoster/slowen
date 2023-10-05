@@ -15,8 +15,9 @@ class txn extends controller
         $this->trans = model('transaction', $this->db);
     }
 
-    function show($txnid = NULL)
+    function show($txnid)
     {
+        $txnid ?? NULL;
         if (is_null($txnid)) {
             redirect('index.php');
         }
@@ -33,16 +34,15 @@ class txn extends controller
         $this->view('txnshow.view.php', ['txns' => $txns, 'splits' => $splits]);
     }
 
-    function edit($txnid = NULL)
+    function edit($txnid)
     {
-        global $atnames, $statuses;
-
-        $txnid = $txnid ?? NULL;
+        $txnid ?? NULL;
         if (is_null($txnid)) {
             redirect('index.php');
         }
 
-        // $trans = model('transaction', $this->db);
+        global $atnames, $statuses;
+
         $txns = $this->trans->get_transaction($txnid);
 
         if (count($txns) > 1) {
@@ -54,6 +54,49 @@ class txn extends controller
         else {
             $this->editsingle($txns);
         }
+    }
+
+    function void($txnid)
+    {
+        $txnid ?? NULL;
+        if (is_null($txnid)) {
+            redirect('index.php');
+        }
+
+        $txns = $this->trans->get_transaction($txnid);
+
+        // can't void a reconciled transaction
+        if ($txns[0]['status'] == 'R') {
+            emsg('F', "Transaction is reconciled and can't be voided.");
+            $this->show($txnid);
+        }
+
+        if ($txns[0]['split'] == 1) {
+            $splits = $this->trans->get_splits($txns[0]['txnid']);
+        }
+        else {
+            $splits = [];
+        }
+
+        $fields = array(
+            'txnid' => array(
+                'name' => 'txnid',
+                'type' => 'hidden',
+                'value' => $txnid
+            ),
+            's1' => array(
+                'name' => 's1',
+                'type' => 'submit',
+                'value' => 'Confirm'
+            )
+        );
+        $this->form->set($fields);
+
+        $this->page_title = 'Void Transaction';
+        $this->return = 'index.php?c=txn&m=vconfirm';
+        $data = ['txns' => $txns, 'splits' => $splits];
+        $this->view('txnvoid.view.php', $data);
+
     }
 
     function editsingle($txns)
@@ -141,7 +184,7 @@ class txn extends controller
 
         $data = ['txns' => $txns, 'statuses' => $statuses];
         $this->page_title = 'Edit Single Transaction';
-        $this->return = url('txn', 'update');
+        $this->return = 'index.php?c=txn&m=update';
         $this->view('txnedt.view.php', $data);
     }
 
@@ -211,7 +254,7 @@ class txn extends controller
 
         $data = ['txns' => $txns, 'statuses' => $statuses];
         $this->page_title = 'Edit Inter-Account Transfer';
-        $this->return = url('txn', 'update');
+        $this->return = 'index.php?c=txn&m=update';
 
         $this->view('xferedt.view.php', $data);
 
@@ -328,7 +371,7 @@ class txn extends controller
 
         $data = ['txns' => $txns, 'statuses' => $statuses, 'max_splits' => $max_splits, 'splits' => $splits];
         $this->page_title = 'Edit Split Transaction';
-        $this->return = url('txn', 'update');
+        $this->return = 'index.php?c=txn&m=update';
         $this->view('splitsedt.view.php', $data);
 
     }
@@ -340,50 +383,7 @@ class txn extends controller
             redirect('index.php');
         }
         $this->trans->update_transaction($_POST);
-        redirect(url('txn', 'show', $_POST['txnid']));
-    }
-
-    function void($txnid)
-    {
-        $txnid = $txnid ?? NULL;
-        if (is_null($txnid)) {
-            redirect('index.php');
-        }
-
-        $txns = $this->trans->get_transaction($txnid);
-
-        // can't void a reconciled transaction
-        if ($txns[0]['status'] == 'R') {
-            emsg('F', "Transaction is reconciled and can't be voided.");
-            $this->show($txnid);
-        }
-
-        if ($txns[0]['split'] == 1) {
-            $splits = $this->trans->get_splits($txns[0]['txnid']);
-        }
-        else {
-            $splits = [];
-        }
-
-        $fields = array(
-            'txnid' => array(
-                'name' => 'txnid',
-                'type' => 'hidden',
-                'value' => $txnid
-            ),
-            's1' => array(
-                'name' => 's1',
-                'type' => 'submit',
-                'value' => 'Confirm'
-            )
-        );
-        $this->form->set($fields);
-
-        $this->page_title = 'Void Transaction';
-        $this->return = url('txn', 'vconfirm');
-        $data = ['txns' => $txns, 'splits' => $splits];
-        $this->view('txnvoid.view.php', $data);
-
+        redirect('index.php?c=txn&m=show&txnid=' . $_POST['txnid']);
     }
 
     function vconfirm()
@@ -394,7 +394,7 @@ class txn extends controller
         }
 
         $this->trans->void_transaction($txnid);
-        redirect(url('txn', 'show', $txnid));
+        redirect('index.php?c=txn&m=show&txnid=' . $txnid);
     }
 
 }

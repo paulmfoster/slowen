@@ -30,6 +30,28 @@ if (file_exists(APPDIR . 'bootstrap.php')) {
 	include APPDIR . 'bootstrap.php';
 }
 
+// 2023-09-24 change routing scheme
 // branch to the router
-$rtr = load('router');
+// $rtr = load('router');
+
+$controller = $_GET['c'] ?? 'welcome';
+$method = $_GET['m'] ?? 'index';
+
+if (!file_exists(CTLDIR . $controller . '.php')) {
+    $controller = 'welcome';
+}
+include CTLDIR . $controller . '.php';
+$controller = new $controller;
+
+if (!method_exists($controller, $method)) {
+    $msg = "Controller: " . $controller . " Method: " . $method . " don't exist.";
+    emsg('F', $msg);
+    exit;
+}
+
+unset($_GET['c']);
+unset($_GET['m']);
+
+// call_user_func_array([$controller, $method], $_GET);
+call_user_func_array([$controller, $method], $_GET);
 

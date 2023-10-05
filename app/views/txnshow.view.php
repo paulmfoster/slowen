@@ -168,10 +168,10 @@ else {
 <?php endforeach; ?>
 
 <p>
-<?php form::button('Edit', url('txn', 'edit', $txns[0]['txnid'])); ?>
+<?php form::button('Edit', 'index.php?c=txn&m=edit&txnid=' . $txns[0]['txnid']); ?>
 &nbsp;
 <?php if ($txns[0]['status'] != 'V'): ?>
-<?php form::button('Void', url('txn', 'void', $txns[0]['txnid'])); ?>
+<?php form::button('Void', 'index.php?c=txn&m=void&txnid=' . $txns[0]['txnid']); ?>
 &nbsp;
 <?php endif; ?>
 <?php form::abandon("index.php"); ?>
