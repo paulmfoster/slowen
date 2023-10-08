@@ -236,7 +236,7 @@ function genpop($db, $sqlfile)
 		die("You need the file '$sqlfile' to start, and it's missing.");
 	}
     include $sqlfile;
-	foreach ($records as $sql) {
+	foreach ($schema as $sql) {
 		$db->query($sql);
 	}
 }
