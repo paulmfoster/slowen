@@ -106,9 +106,9 @@ class atxn extends controller
         }
     }
 
-    function split()
+    function split($max_splits)
     {
-        $max_splits = $_GET['max_splits'] ?? NULL;
+        // $max_splits = $_GET['max_splits'] ?? NULL;
         if (is_null($max_splits)) {
             emsg('F', 'For split transaction no number of splits specified');
             redirect('atxn', 'add');
