@@ -197,9 +197,8 @@ class recon extends controller
      * Ask the user to continue paused reconciliation.
      */
 
-    function continue()
+    function continue($from_acct)
     {
-        $from_acct = $_GET['from_acct'] ?? NULL;
         if (is_null($from_acct)) {
             $this->prelim();
             exit();
