@@ -2,6 +2,10 @@
 
 <?php extract($data); ?>
 
+<?php if ($list == FALSE): ?>
+<h3>No records available.</h3>
+<?php else: ?>
+
 <?php $row = 0; ?>
 
 <table class="border-rules">
@@ -63,5 +67,7 @@
 <?php endforeach; ?>
 
 </table>
+
+<?php endif; ?>
 
 <?php include VIEWDIR . 'footer.view.php'; ?>
