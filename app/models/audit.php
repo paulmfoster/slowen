@@ -147,6 +147,7 @@ class audit
 
 	function do_audit($from_date, $end_dt)
 	{
+
 		/*
 		 * NOTE: One thing to remember about balances: the balance returned from
 		 * these routines is the balance at the end of THAT DAY. So if you want
@@ -303,6 +304,7 @@ class audit
 
 		$start_dt = $from_dt->to_iso();
         $to_dt = new xdate();
+        $to_dt->from_ints($year, $month, 1);
         $to_dt->end_of_month();
 		$end_dt = $to_dt->to_iso();
 
