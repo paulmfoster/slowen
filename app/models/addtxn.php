@@ -200,18 +200,32 @@ class addtxn
 			$post['amount'] = dec2int($post['amount']);
 		}
 
-		if ($post['split'] == 0 && $post['status'] != 'V') {
+        if ($post['status'] != 'V') {
+            if ($post['split'] == 0) {
 
-			if (empty($post['payee_id'])) {
-				emsg('F', 'Normal transactions must have a valid payee');
-				return FALSE;
-			}
-		
-			if (empty($post['to_acct'])) {
-				emsg('F','Normal transactions must have a valid to account');
-				return FALSE;
-			}
-		}
+                if (empty($post['payee_id'])) {
+                    emsg('F', 'Normal transactions must have a valid payee');
+                    return FALSE;
+                }
+
+                if (empty($post['to_acct'])) {
+                    emsg('F','Normal transactions must have a valid to account');
+                    return FALSE;
+                }
+            }
+            else {
+                // derive amount before we store the journal record
+                $post['amount'] = 0;
+			    for ($k = 0; $k < $post['max_splits']; $k++) {
+                    if (!empty($post['split_dr_amount'][$k])) {
+                        $post['amount'] += - dec2int($post['split_dr_amount'][$k]);
+                    }
+                    elseif (!empty($post['split_cr_amount'][$k])) {
+                        $post['amount'] += dec2int($post['split_cr_amount'][$k]);
+                    }
+                }
+            }
+        }
 
 		if ($post['xfer'] && empty($post['to_acct'])) {
 			emsg('F', 'Transfers must have a valid TO account');
@@ -247,8 +261,8 @@ class addtxn
             // use journal ID, not transaction ID
             $jnlid = $this->db->lastid('journal');
 
-			$splits_amount = 0;
-			$check_amount = $post['amount']; // integer
+			// $splits_amount = 0;
+			// $check_amount = $post['amount']; // integer
 
 			for ($k = 0; $k < $post['max_splits']; $k++) {
 				if (empty($post['split_to_acct'][$k])) {
@@ -271,16 +285,16 @@ class addtxn
 					'payee_id' => $post['split_payee_id'][$k],
 					'amount' => $amount
 				);
-				$splits_amount += $amount;
+				// $splits_amount += $amount;
 				$rec = $this->db->prepare('splits', $split);
 				$this->db->insert('splits', $rec);
 			} // for
 
-			if ($check_amount != $splits_amount) {
-				emsg('F', "Split amounts don't add up to transaction amount");
-				$this->db->rollback();
-				return FALSE;
-			}
+			// if ($check_amount != $splits_amount) {
+			// 	emsg('F', "Split amounts don't add up to transaction amount");
+			//	$this->db->rollback();
+		    //	return FALSE;
+			// }
 
 		} // if split
 

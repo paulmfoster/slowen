@@ -108,7 +108,6 @@ class atxn extends controller
 
     function split($max_splits)
     {
-        // $max_splits = $_GET['max_splits'] ?? NULL;
         if (is_null($max_splits)) {
             emsg('F', 'For split transaction no number of splits specified');
             redirect('atxn', 'add');
@@ -168,9 +167,10 @@ class atxn extends controller
     {
         global $statuses;
 
+        // for splits
+        memory::merge($_POST);
+
         if ($this->cfg['confirm_transactions'] == 0) {
-            // for splits
-            memory::merge($_POST);
             $txnid = $this->trans->add_transaction(memory::get_all());
             memory::clear();
             redirect('index.php?c=atxn&m=add');
