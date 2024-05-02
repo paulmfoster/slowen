@@ -76,12 +76,12 @@ class database
 
 	function begin_transaction()
 	{
-		$this->dbh->begin_transaction();
+		return $this->dbh->begin_transaction();
 	}
 
 	function begin()
 	{
-		$this->dbh->begin_transaction();
+		return $this->dbh->begin_transaction();
 	}
 
 	function query($sql)
@@ -121,12 +121,12 @@ class database
 
 	function commit()
 	{
-		$this->dbh->commit();
+		return $this->dbh->commit();
 	}
 
 	function end()
 	{
-		$this->dbh->end();
+		return $this->dbh->end();
 	}
 
 	function rollback()
@@ -136,7 +136,7 @@ class database
 
 	function version()
 	{
-		return 2.5;
+		return 2.6;
 	}
 };
 

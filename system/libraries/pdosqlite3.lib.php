@@ -238,12 +238,12 @@ lwhere varchar(1024))";
 
 	function begin_transaction()
 	{
-		$this->handle->beginTransaction();
+		return $this->handle->beginTransaction();
 	}
 
 	function begin()
 	{
-		$this->handle->beginTransaction();
+		return $this->handle->beginTransaction();
 	}
 
 	/**
@@ -458,12 +458,12 @@ lwhere varchar(1024))";
 
 	function commit()
 	{
-		$this->handle->commit();
+		return $this->handle->commit();
 	}
 
 	function end()
 	{
-		$this->handle->commit();
+		return $this->handle->commit();
 	}
 
 	function rollback()
@@ -473,7 +473,7 @@ lwhere varchar(1024))";
 
 	function version()
 	{
-		return 2.5;
+		return 2.6;
 	}
 
 }
