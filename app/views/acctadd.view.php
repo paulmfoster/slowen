@@ -1,6 +1,6 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 <table>
 
 <tr>
@@ -10,7 +10,7 @@ Parent
 </label>
 </td>
 <td>
-<?php $this->form->select('parent'); ?>
+<?php $form->select('parent'); ?>
 </td>
 </tr>
 
@@ -22,7 +22,7 @@ Open Date
 </td>
 <td>
 <?php $today = new xdate(); ?>
-<?php $this->form->date('open_dt', $today->to_iso()); ?>
+<?php $form->date('open_dt', $today->to_iso()); ?>
 </td>
 </tr>
 
@@ -33,7 +33,7 @@ Reconciliation Date
 </label>
 </td>
 <td>
-<?php $this->form->date('recon_dt'); ?>
+<?php $form->date('recon_dt'); ?>
 </td>
 </tr>
 
@@ -44,7 +44,7 @@ Account Type
 </label>
 </td>
 <td>
-<?php $this->form->select('acct_type'); ?>
+<?php $form->select('acct_type'); ?>
 </td>
 </tr>
 
@@ -55,7 +55,7 @@ Name
 </label>
 </td>
 <td>
-<?php $this->form->text('name'); ?>
+<?php $form->text('name'); ?>
 </td>
 </tr>
 
@@ -66,7 +66,7 @@ Description
 </label>
 </td>
 <td>
-<?php $this->form->text('descrip'); ?>
+<?php $form->text('descrip'); ?>
 </td>
 </tr>
 
@@ -77,7 +77,7 @@ Opening Balance
 </label>
 </td>
 <td>
-<?php $this->form->text('open_bal'); ?>
+<?php $form->text('open_bal'); ?>
 </td>
 </tr>
 
@@ -88,14 +88,14 @@ Reconciled Balance
 </label>
 </td>
 <td>
-<?php $this->form->text('rec_bal'); ?>
+<?php $form->text('rec_bal'); ?>
 </td>
 </tr>
 
 </table>
 
 <p>
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 </p>
 
 </form>

@@ -1,9 +1,7 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
-<form method="post" action="<?php echo $this->return; ?>">
-<?php $this->form->hidden('id'); ?>
+<form method="post" action="<?php echo $return; ?>">
+<?php $form->hidden('id'); ?>
 <table>
 
 <tr>
@@ -91,10 +89,10 @@ Reconciled Balance
 
 <tr>
 <td class="tdlabel">
-<?php $this->form->submit('edit'); ?>
+<?php $form->submit('edit'); ?>
 </td>
 <td>
-<?php $this->form->submit('delete'); ?>
+<?php $form->submit('delete'); ?>
 </td>
 </tr>
 

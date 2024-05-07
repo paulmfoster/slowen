@@ -2,11 +2,9 @@
 
 <!-- This screen is for single transactions with possible splits. -->
 
-<?php extract($data); ?>
-
-<form action="<?php echo $this->return; ?>" method="post">
-<?php $this->form->hidden('txntype'); ?>
-<?php $this->form->hidden('txnid'); ?>
+<form action="<?php echo $return; ?>" method="post">
+<?php $form->hidden('txntype'); ?>
+<?php $form->hidden('txnid'); ?>
 
 <?php $txn = $txns[0]; ?>
 
@@ -21,27 +19,27 @@
 
 <tr>
 <td class="tdlabel">Date</td>
-<td><?php $this->form->date('txn_dt'); ?></td>
+<td><?php $form->date('txn_dt'); ?></td>
 <td>
 
 <tr>
 <td class="tdlabel">Check No</td>
-<td><?php $this->form->text('checkno'); ?></td>
+<td><?php $form->text('checkno'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Payee</td>
-<td><?php $this->form->select('payee_id'); ?></td>
+<td><?php $form->select('payee_id'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Memo</td>
-<td><?php $this->form->text('memo'); ?></td>
+<td><?php $form->text('memo'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Category/Acct</td>
-<td><?php $this->form->select('to_acct'); ?></td>
+<td><?php $form->select('to_acct'); ?></td>
 </tr>
 
 <tr>
@@ -63,26 +61,26 @@
 </tr>
 
 <?php for ($k = 0; $k < $max_splits; $k++): ?>
-<?php $this->form->hidden('split_id', $splits[$k]['id']); ?>
+<?php $form->hidden('split_id', $splits[$k]['id']); ?>
 
 <tr>
 <td class="tdlabel">Split Payee <?php echo $k + 1; ?></td>
-<td><?php $this->form->select('split_payee_id', $splits[$k]['payee_id']); ?></td>
+<td><?php $form->select('split_payee_id', $splits[$k]['payee_id']); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Split To Acct <?php echo $k + 1; ?></td>
-<td><?php $this->form->select('split_to_acct', $splits[$k]['to_acct']); ?></td>
+<td><?php $form->select('split_to_acct', $splits[$k]['to_acct']); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Split Memo <?php echo $k + 1; ?></td>
-<td><?php $this->form->text('split_memo', $splits[$k]['memo']); ?></td>
+<td><?php $form->text('split_memo', $splits[$k]['memo']); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Split Amount <?php echo $k + 1; ?></td>
-<td><?php $this->form->text('split_amount', int2dec($splits[$k]['amount'])); ?></td>
+<td><?php $form->text('split_amount', int2dec($splits[$k]['amount'])); ?></td>
 </tr>
 
 <?php endfor; ?>
@@ -90,9 +88,9 @@
 </table>
 
 <p>
-<?php $this->form->submit('save'); ?>
+<?php $form->submit('save'); ?>
 &nbsp;
-<?php form::abandon('index.php?c=txn&m=show&txnid=' . $txn['txnid']); ?>
+<?php form::abandon('showtxn.php?txnid=' . $txn['txnid']); ?>
 </p>
 
 

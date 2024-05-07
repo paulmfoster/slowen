@@ -1,8 +1,6 @@
 <?php include VIEWDIR . 'head.view.php' ?>
 
-<?php extract($data); ?>
-
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 
 <?php $row = 0; ?>
 
@@ -137,9 +135,9 @@ else {
 <?php endif; /* has splits */ ?>
 
 <p>
-<?php $this->form->submit('confirm'); ?>
+<?php $form->submit('confirm'); ?>
 &nbsp;
-<?php form::abandon('index.php?c=txn&m=add'); ?>
+<?php form::abandon('addtxn.php'); ?>
 </p>
 
 </form>

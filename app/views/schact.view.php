@@ -1,7 +1,5 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
 <?php if ($r === FALSE): ?>
 <h2>No scheduled transactions.</h2>
 <?php else: ?>
@@ -10,7 +8,7 @@
 an <em>actual</em> transaction for this month. Check the boxes of<br/>
 any scheduled transactions you wish to activate.</h2>
 
-<form action="<?php echo $this->return; ?>" method="post">
+<form action="<?php echo $return; ?>" method="post">
 
 <?php $row = 0; ?>
 <table class="border-rules">

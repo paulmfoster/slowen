@@ -1,5 +1,5 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
-<?php extract($data); ?>
+
 <?php if ($txns === FALSE): ?>
 <h3>No transactions for this category/time period...</h3>
 <?php else: ?>

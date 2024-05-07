@@ -10,15 +10,11 @@ class database
 	/**
 	 * Constructor.
 	 *
-	 * You must pass a $cfg array to this function which contains all the
-	 * necessary fields to implement a connection to the database type you
-	 * choose. At a minimum (for SQLite3):
-	 * 
-	 * 'dbdriv' => 'SQLite3',
-	 * 'dbdata' => 'mydatabasefile'
+     * Normally, the DSN which is used by the driver is stored in the
+     * config file. For SQLite, it might look like: "sqlite:myfile.sqlite3".
 	 * 
 	 * See the PDO driver for your database to determine which fields must
-	 * be defined.
+	 * be defined in the DSN.
 	 *
 	 */
 
@@ -47,11 +43,6 @@ class database
 
 		$this->driver = $parms[0];
 	}
-
-    function logging($on)
-    {
-        $this->dbh->logging($on);
-    }
 
 	function status()
 	{
@@ -136,7 +127,7 @@ class database
 
 	function version()
 	{
-		return 2.6;
+		return 2.7;
 	}
 };
 

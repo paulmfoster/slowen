@@ -1,6 +1,6 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 
 <!-- Preliminary screen -->
 
@@ -10,7 +10,7 @@
 <label for="from_acct">Account to reconcile</label>
 </td>
 <td>
-<?php $this->form->select('from_acct'); ?>
+<?php $form->select('from_acct'); ?>
 </td>
 </tr>
 
@@ -25,7 +25,7 @@ are normally positive.</td>
 <label for="stmt_start_bal">Starting balance</label>
 </td>
 <td>
-<?php $this->form->text('stmt_start_bal'); ?>
+<?php $form->text('stmt_start_bal'); ?>
 </td>
 </tr>
 
@@ -34,7 +34,7 @@ are normally positive.</td>
 <label for="stmt_end_bal">Ending balance</label>
 </td>
 <td>
-<?php $this->form->text('stmt_end_bal'); ?>
+<?php $form->text('stmt_end_bal'); ?>
 </td>
 </tr>
 
@@ -43,7 +43,7 @@ are normally positive.</td>
 <label for="stmt_close_date">Closing Date</label>
 </td>
 <td>
-<?php $this->form->date('stmt_close_date'); ?>
+<?php $form->date('stmt_close_date'); ?>
 </td>
 </tr>
 
@@ -56,27 +56,27 @@ are normally positive.</td>
 <td>
 <label for="Payee">Payee</label>
 </td>
-<td><?php $this->form->select('payee_id'); ?></td>
+<td><?php $form->select('payee_id'); ?></td>
 </tr>
 
 <tr>
 <td>
 <label for="Payee">To Account</label>
 </td>
-<td><?php $this->form->select('to_acct'); ?></td>
+<td><?php $form->select('to_acct'); ?></td>
 </tr>
 <tr>
 
 <td>
 <label for="fee">Fee Amount</label>
 </td>
-<td><?php $this->form->text('fee'); ?></td>
+<td><?php $form->text('fee'); ?></td>
 </tr>
 
 </table>
 
 <p>
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 &nbsp;
 <?php form::abandon('reconcile.php'); ?>
 </p>

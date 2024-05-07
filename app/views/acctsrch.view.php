@@ -1,11 +1,11 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 
 <label for="category">Search by category</label>
-<?php $this->form->select('category'); ?>
+<?php $form->select('category'); ?>
 &nbsp;
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 
 </form>
 

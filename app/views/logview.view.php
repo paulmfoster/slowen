@@ -1,7 +1,5 @@
 <?php include 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
 <?php if ($recs === FALSE): ?>
 <h3>No log records to display.</h3>
 <?php else: ?>
@@ -34,7 +32,7 @@
 
 <p>
 <strong>Purging the log removes all log entries older than 30 days. </strong>
-<?php form::button('Purge Log', 'index.php?c=dblog&m=purge'); ?>
+<?php form::button('Purge Log', 'purgelog.php'); ?>
 </p>
 
 <?php endif; ?>

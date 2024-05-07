@@ -1,17 +1,15 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
+<form method="post" action="<?php echo $return; ?>">
 
-<form method="post" action="<?php echo $this->return; ?>">
-
-<?php $this->form->hidden('txnid'); ?>
+<?php $form->hidden('txnid'); ?>
 
 <p>
 <label>CONFIRM you wish to void this transaction</label>
 &nbsp;
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 &nbsp;
-<?php form::abandon("register.php?acct_id={$txns[0]['from_acct']}"); ?>
+<?php form::abandon("register.php?id={$txns[0]['from_acct']}"); ?>
 </form>
 </p>
 

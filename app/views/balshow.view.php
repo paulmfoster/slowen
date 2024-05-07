@@ -1,5 +1,4 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
-<?php extract($data); ?>
 
 <?php $j = 0; /* table shading counter */ ?>
 

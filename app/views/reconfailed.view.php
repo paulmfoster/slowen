@@ -1,5 +1,4 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
-<?php extract($data); ?>
 
 <h2><?php echo $data['from_acct_name']; ?></h2>
 

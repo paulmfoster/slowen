@@ -16,7 +16,7 @@
 class pdosqlite3
 {
 	var $handle, $dd = array();
-    public $db_status, $result, $dbh, $log_status;
+    public $db_status, $result, $dbh;
 
 	function __construct($dsn)
 	{
@@ -34,44 +34,7 @@ class pdosqlite3
 		catch (PDOException $e) {
             die('DATABASE ERROR: ' . $e->getMessage());
 		}
-
-        $this->log_status = FALSE;
 	}
-
-    /**
-     * Sets status of logging on or off.
-     *
-     * @param boolean logging is on or off
-     */
-
-    function logging($on)
-    {
-        $this->log_status = $on;
-
-        if ($this->log_status) {
-            $sql = "CREATE TABLE IF NOT EXISTS sqllog (
-id integer primary key autoincrement,
-timestamp varchar(19),
-ltype char(6),
-ltable varchar(255),
-lfields varchar(1024),
-lwhere varchar(1024))";
-            $this->query($sql);
-        }
-    }
-
-    /**
-     * Log a SQL statement.
-     *
-     * @param string the SQL statement
-     */
-
-    function log($logtype, $table, $fields, $where)
-    {
-        $timestamp = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO sqllog (timestamp, ltype, ltable, lfields, lwhere) VALUES ('$timestamp', '$logtype', '$table', '$fields', '$where')";
-        $this->query($sql);
-    }
 
 	/**
 	 * Report status of database.
@@ -363,15 +326,6 @@ lwhere varchar(1024))";
 
 		$val = $this->result->execute($values);
 
-        if ($this->log_status && $val) {
-            $max = count($fields);
-            for ($i = 0; $i < $max; $i++) {
-                $flds[] = "{$fields[$i]} = {$values[$i]}";
-            }
-		    $fields_clause = implode(', ', $flds);
-            $this->log('INSERT', $table, $fields_clause, NULL);
-        }
-
         return $val;
 	}
 
@@ -416,15 +370,6 @@ lwhere varchar(1024))";
 
 	    $val = $this->result->execute($values);
 
-        if ($this->log_status && $val) {
-            $max = count($fields);
-            for ($i = 0; $i < $max; $i++) {
-                $flds[] = "{$fields[$i]} = {$values[$i]}";
-            }
-		    $flds_clause = implode(', ', $flds);
-            $this->log('UPDATE', $table, $flds_clause, $where_clause);
-        }
-
         return $val;
 	}
 
@@ -451,9 +396,6 @@ lwhere varchar(1024))";
 		}
 		$this->query($sql);
 
-        if ($this->log_status) {
-            $this->log('DELETE', $table, NULL, $where_clause);
-        }
 	}
 
 	function commit()

@@ -1,9 +1,7 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
-<form method="post" action="<?php echo $this->return; ?>">
-<?php $this->form->hidden('id'); ?>
+<form method="post" action="<?php echo $return; ?>">
+<?php $form->hidden('id'); ?>
 <table>
 
 <tr>
@@ -92,7 +90,7 @@
 </table>
 
 <p>
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 
 </form>
 

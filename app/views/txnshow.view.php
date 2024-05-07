@@ -1,7 +1,5 @@
 <?php include VIEWDIR . 'head.view.php' ?>
 
-<?php extract($data); ?>
-
 <?php $row = 0; ?>
 <?php $p = 0; ?>
 
@@ -168,10 +166,10 @@ else {
 <?php endforeach; ?>
 
 <p>
-<?php form::button('Edit', 'index.php?c=txn&m=edit&txnid=' . $txns[0]['txnid']); ?>
+<?php form::button('Edit', 'edittxn.php?txnid=' . $txns[0]['txnid']); ?>
 &nbsp;
 <?php if ($txns[0]['status'] != 'V'): ?>
-<?php form::button('Void', 'index.php?c=txn&m=void&txnid=' . $txns[0]['txnid']); ?>
+<?php form::button('Void', 'voidtxn.php?txnid=' . $txns[0]['txnid']); ?>
 &nbsp;
 <?php endif; ?>
 <?php form::abandon("index.php"); ?>

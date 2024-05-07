@@ -1,11 +1,11 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 <strong>Enter year for yearly audit.</strong>
 
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 <table>
 <tr>
-	<td><?php $this->form->select('year'); ?></td>
-	<td><?php $this->form->submit('s1'); ?></td>
+	<td><?php $form->select('year'); ?></td>
+	<td><?php $form->submit('s1'); ?></td>
 </tr>
 </table>
 </form>

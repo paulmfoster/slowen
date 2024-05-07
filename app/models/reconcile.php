@@ -102,10 +102,12 @@ class reconcile
 
 		// get the opening balance for this account
 		$comp_start_bal = $acct['open_bal'];
+
 		// add up all the transactions for this account
 		$sql = "select sum(amount) as total from journal where from_acct = $from_acct";
 		$all_txns = $this->db->query($sql)->fetch();
 		$comp_all_txns = $all_txns['total'];
+
 		// get the ending balance for this account
 		$comp_end_bal = $comp_start_bal + $comp_all_txns;
 
@@ -160,7 +162,8 @@ class reconcile
 		$this->unclear_all($from_acct);
 		// set marked transactions as temporarily cleared ('C')
 		$this->db->update('journal', ['status' => 'C'], "id in ($ids)");
-		$this->db->delete('recon');
+        // delete any prior saved data for this reconciliation
+		$this->db->delete('recon', "from_acct = $from_acct");
 		$d = [
 			'from_acct' => $from_acct,
 			'stmt_start_bal' => dec2int($stmt_start_bal),

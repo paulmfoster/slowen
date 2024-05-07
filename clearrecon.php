@@ -1,0 +1,93 @@
+<?php
+
+// NOTE: This is where the user clears the transactions for a
+// reconciliation.
+
+include 'init.php';
+
+$reconcile = model('reconcile', $db);
+
+// check for a reconciliation in progress (recon table)
+$saved = $reconcile->get_saved_work($_POST['from_acct']);
+if ($saved !== FALSE) {
+    redirect('contrecon.php?from_acct=' . $_POST['from_acct']);
+    exit();
+}
+
+$acct = $reconcile->get_account($_POST['from_acct']);
+$errors = 0;
+
+if (!filled_out($_POST, ['stmt_start_bal', 'stmt_end_bal'])) {
+    // user failed to provide either of the stmt balances we asked for
+    $errors++;
+    emsg('F', 'Beginning and/or ending balance omitted');
+} 
+
+if (empty($_POST['stmt_close_date'])) {
+    // user omitted a statement close date
+    $errors++;
+    emsg('F', 'No closing date provided');
+}
+
+if ($acct['rec_bal'] != dec2int($_POST['stmt_start_bal'])) {
+    // starting balances don't match
+    $errors++;
+    emsg('F', "Statement and computer starting balances don't match.");
+}
+
+if ($errors) {
+    redirect('prerecon.php');
+}
+
+if (!empty($_POST['fee'])) {
+    // create transaction for the statement fee
+    $reconcile->add_statement_fee($_POST['from_acct'], $_POST['payee_id'], $_POST['to_acct'], $_POST['fee'], $_POST['stmt_close_date']);
+}
+
+$from_acct = $acct['id'];
+$from_acct_name = $acct['name'];
+
+$stmt_start_bal = $_POST['stmt_start_bal'];
+$stmt_end_bal = $_POST['stmt_end_bal'];
+$stmt_close_date = $_POST['stmt_close_date'];
+$txns = $reconcile->get_uncleared_transactions($_POST['from_acct']);
+
+// hidden fields...
+$fields = array(
+    'from_acct' => array(
+        'name' => 'from_acct',
+        'type' => 'hidden',
+        'value' => $from_acct
+    ),
+    'stmt_start_bal' => array(
+        'name' => 'stmt_start_bal',
+        'type' => 'hidden',
+        'value' => $stmt_start_bal
+    ),
+    'stmt_end_bal' => array(
+        'name' => 'stmt_end_bal',
+        'type' => 'hidden',
+        'value' => $stmt_end_bal
+    ),
+    'stmt_close_date' => array(
+        'name' => 'stmt_close_date',
+        'type' => 'hidden',
+        'value' => $stmt_close_date
+    ),
+    'from_acct_name' => array(
+        'name' => 'from_acct_name',
+        'type' => 'hidden',
+        'value' => $from_acct_name
+    ),
+    's3' => array(
+        'name' => 's3',
+        'type' => 'submit',
+        'value' => 'Continue'
+    )
+);
+
+$form->set($fields);
+$page_title = 'Reconcile: Clear Transactions';
+$return = 'finrecon.php';
+include VIEWDIR . 'reconlist.view.php';
+

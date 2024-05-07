@@ -1,5 +1,4 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
-<?php extract($data); ?>
 <?php if ($expenses === FALSE): ?>
 <h2>No expenses for the week</h2>
 <?php else: ?>

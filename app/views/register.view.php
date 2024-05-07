@@ -1,7 +1,5 @@
 <?php include 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
 <?php $row = 0; ?>
 
 <h2>Register for <?php echo $acct['name']; ?></h2>
@@ -27,11 +25,11 @@
 <tr class="row<?php echo $row++ & 1;?>">
 <td>
 
-<a href="<?php echo 'index.php?c=txn&m=show&txnid=' . $txn['txnid']; ?>">Show</a>
+<a href="<?php echo 'showtxn.php?txnid=' . $txn['txnid']; ?>">Show</a>
 <br/>
-<a href="<?php echo 'index.php?c=txn&m=edit&txnid=' . $txn['txnid']; ?>">Edit</a>
+<a href="<?php echo 'edittxn.php?txnid=' . $txn['txnid']; ?>">Edit</a>
 <br/>
-<a href="<?php echo 'index.php?c=txn&m=void&txnid=' . $txn['txnid']; ?>">Void</a>
+<a href="<?php echo 'voidtxn.php?txnid=' . $txn['txnid']; ?>">Void</a>
 
 </td>
 <?php $txndt = new xdate(); ?>

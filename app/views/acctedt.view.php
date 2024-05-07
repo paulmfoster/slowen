@@ -1,9 +1,7 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
-<form method="post" action="<?php echo $this->return; ?>">
-<?php $this->form->hidden('id'); ?>
+<form method="post" action="<?php echo $return; ?>">
+<?php $form->hidden('id'); ?>
 <table>
 
 <tr>
@@ -22,7 +20,7 @@ Parent
 </label>
 </td>
 <td>
-<?php $this->form->select('parent', $acct['parent']); ?>
+<?php $form->select('parent', $acct['parent']); ?>
 </td>
 </tr>
 
@@ -33,7 +31,7 @@ Open Date
 </label>
 </td>
 <td>
-<?php $this->form->date('open_dt', $acct['open_dt']); ?>
+<?php $form->date('open_dt', $acct['open_dt']); ?>
 </td>
 </tr>
 
@@ -44,7 +42,7 @@ Reconciliation Date
 </label>
 </td>
 <td>
-<?php $this->form->date('recon_dt', $acct['recon_dt']); ?>
+<?php $form->date('recon_dt', $acct['recon_dt']); ?>
 </td>
 </tr>
 
@@ -55,7 +53,7 @@ Account Type
 </label>
 </td>
 <td>
-<?php $this->form->select('acct_type', $acct['acct_type']); ?>
+<?php $form->select('acct_type', $acct['acct_type']); ?>
 </td>
 </tr>
 
@@ -66,7 +64,7 @@ Name
 </label>
 </td>
 <td>
-<?php $this->form->text('name', $acct['name']); ?>
+<?php $form->text('name', $acct['name']); ?>
 </td>
 </tr>
 
@@ -77,7 +75,7 @@ Description
 </label>
 </td>
 <td>
-<?php $this->form->text('descrip', $acct['descrip']); ?>
+<?php $form->text('descrip', $acct['descrip']); ?>
 </td>
 </tr>
 
@@ -88,7 +86,7 @@ Opening Balance
 </label>
 </td>
 <td>
-<?php $this->form->text('open_bal', int2dec($acct['open_bal'])); ?>
+<?php $form->text('open_bal', int2dec($acct['open_bal'])); ?>
 </td>
 </tr>
 
@@ -99,14 +97,14 @@ Reconciled Balance
 </label>
 </td>
 <td>
-<?php $this->form->text('rec_bal', int2dec($acct['rec_bal'])); ?>
+<?php $form->text('rec_bal', int2dec($acct['rec_bal'])); ?>
 </td>
 </tr>
 
 </table>
 
 <p>
-<?php $this->form->submit('s1'); ?>
+<?php $form->submit('s1'); ?>
 </p>
 
 </form>

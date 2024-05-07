@@ -1,7 +1,5 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
 <?php if ($list == FALSE): ?>
 <h3>No records available.</h3>
 <?php else: ?>

@@ -1,17 +1,16 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
-<?php extract($data); ?>
-<form method="post" action="<?php echo $this->return; ?>">
+<form method="post" action="<?php echo $return; ?>">
 
 <!-- Listing screen -->
 
 <?php $row = 0; ?>
 
 <!-- data from prior screen -->
-<?php $this->form->hidden('stmt_start_bal'); ?>
-<?php $this->form->hidden('stmt_close_date'); ?>
-<?php $this->form->hidden('stmt_end_bal'); ?>
-<?php $this->form->hidden('from_acct'); ?>
-<?php $this->form->hidden('from_acct_name'); ?>
+<?php $form->hidden('stmt_start_bal'); ?>
+<?php $form->hidden('stmt_close_date'); ?>
+<?php $form->hidden('stmt_end_bal'); ?>
+<?php $form->hidden('from_acct'); ?>
+<?php $form->hidden('from_acct_name'); ?>
 
 <h2><?php echo $from_acct_name; ?></h2>
 
@@ -56,9 +55,9 @@
 
 </table>
 <p>
-<?php $this->form->submit('s3'); ?>
+<?php $form->submit('s3'); ?>
 &nbsp;
-<?php form::abandon('index.php?c=recon&m=prelim'); ?>
+<?php form::abandon('prerecon.php'); ?>
 </p>
 </form>
 

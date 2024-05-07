@@ -331,7 +331,8 @@ class transaction
 		}
 
 		if ($r[0]['split']) {
-			$this->db->update('splits', array('amount' => 0), "txnid = $txnid");
+            $jnlid = $r[0]['id'];
+			$this->db->update('splits', array('amount' => 0), "jnlid = $jnlid");
 		}
 
 		$s = array('status' => 'V', 'amount' => 0);

@@ -1,7 +1,5 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<?php extract($data); ?>
-
 <?php if ($transactions === FALSE): ?>
 <h3>No transactions for this payee...</h3>
 <?php else: ?>
@@ -29,7 +27,7 @@ a check number, you may find that the splits share that check number.
 <?php $max_txns = count($transactions); ?>
 <?php for ($j = 0; $j < $max_txns; $j++): ?>
 <tr class="row<?php echo $k++ & 1;?>">
-<td><a href="<?php echo 'index.php?c=txn&m=show&txnid=' . $transactions[$j]['txnid']; ?>">Show</a></td>
+<td><a href="<?php echo 'showtxn.php?txnid=' . $transactions[$j]['txnid']; ?>">Show</a></td>
 <td><?php echo $transactions[$j]['from_acct_name']; ?></td>
 <?php $txndt = new xdate(); ?>
 <?php $txndt->from_iso($transactions[$j]['txn_dt']); ?>

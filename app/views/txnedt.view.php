@@ -2,11 +2,9 @@
 
 <!-- This screen is for single transactions with possible splits. -->
 
-<?php extract($data); ?>
-
-<form action="<?php echo $this->return; ?>" method="post">
-<?php $this->form->hidden('txntype'); ?>
-<?php $this->form->hidden('txnid'); ?>
+<form action="<?php echo $return; ?>" method="post">
+<?php $form->hidden('txntype'); ?>
+<?php $form->hidden('txnid'); ?>
 
 <?php $txn = $txns[0]; ?>
 
@@ -21,27 +19,27 @@
 
 <tr>
 <td class="tdlabel">Date</td>
-<td><?php $this->form->date('txn_dt'); ?></td>
+<td><?php $form->date('txn_dt'); ?></td>
 <td>
 
 <tr>
 <td class="tdlabel">Check No</td>
-<td><?php $this->form->text('checkno'); ?></td>
+<td><?php $form->text('checkno'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Payee</td>
-<td><?php $this->form->select('payee_id'); ?></td>
+<td><?php $form->select('payee_id'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Memo</td>
-<td><?php $this->form->text('memo'); ?></td>
+<td><?php $form->text('memo'); ?></td>
 </tr>
 
 <tr>
 <td class="tdlabel">Category/Acct</td>
-<td><?php $this->form->select('to_acct'); ?></td>
+<td><?php $form->select('to_acct'); ?></td>
 </tr>
 
 <tr>
@@ -58,8 +56,8 @@
 <tr>
 <td class="tdlabel">Amount</td>
 <td>
-<?php if (array_key_exists('amount', $this->form->fields)): ?>
-<?php $this->form->text('amount', int2dec($txn['amount'])); ?>
+<?php if (array_key_exists('amount', $form->fields)): ?>
+<?php $form->text('amount', int2dec($txn['amount'])); ?>
 <?php else: ?>
 <?php echo int2dec($txn['amount']); ?>
 <?php endif; ?>
@@ -68,9 +66,9 @@
 </table>
 
 <p>
-<?php $this->form->submit('save'); ?>
+<?php $form->submit('save'); ?>
 &nbsp;
-<?php form::abandon('index.php?c=txn&m=show&txnid=' . $txn['txnid']); ?>
+<?php form::abandon('showtxn.php?txnid=' . $txn['txnid']); ?>
 </p>
 
 
