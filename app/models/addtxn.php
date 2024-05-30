@@ -155,7 +155,7 @@ class addtxn
         }
 
         $xfer = FALSE;
-        if ($from['acct_type'] == 'C' || $from['acct_type'] == 'S') {
+        if ($from['acct_type'] == 'C' || $from['acct_type'] == 'S' || $from['acct_type'] == 'R') {
             switch ($to['acct_type']) {
             case 'R':
             case 'C':
