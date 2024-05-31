@@ -72,7 +72,7 @@ class txn extends controller
         }
 
         if ($txns[0]['split'] == 1) {
-            $splits = $this->trans->get_splits($txns[0]['txnid']);
+            $splits = $this->trans->get_splits($txns[0]['id']);
         }
         else {
             $splits = [];
