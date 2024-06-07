@@ -4,7 +4,7 @@
 
 include 'init.php';
 
-$from_acct = $_GET['from_acct'] ?? NULL;
+$from_acct = $_POST['from_acct'] ?? NULL;
 if (is_null($from_acct))
     redirect('prerecon.php');
 

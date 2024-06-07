@@ -181,7 +181,7 @@ class scheduled
 	/**
 	 * Activate a single scheduled transaction.
 	 *
-	 * This method takes the data for a scheduled transaction and creates a
+	 * This method takes the date for a scheduled transaction and creates a
 	 * new transaction in the journal table from that data. It also updates
      * the "last" field in the scheduled table. This fails if the next date
      * is later than this month.
