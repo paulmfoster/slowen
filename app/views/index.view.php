@@ -45,6 +45,35 @@ Here you can search through all the transactions for a given expense category.
 
 <hr/>
 
+<h3>Budget Menu</h3>
+
+<dl>
+
+<dt>Show Budget</dt>
+<dd>This shows the entire budget laid out.</dd>
+
+<dt>Add Account</dt>
+<dd>Add an account to the budget.</dd>
+
+<dt>Edit Account</dt>
+<dd>Change the basic parameters of a budget account.</dd>
+
+<dt>Delete Account</dt>
+<dd>Delete a budget account and its metadata.</dd>
+
+<dt>New Week</dt>
+<dd>Budgets are designed to be done once a week, at the end of the week. This choice adds a week to the date,
+and adds any payments and additional setasides, etc.</dd>
+
+<dt>Print Budget</dt>
+<dd>Print out the current budget for your records at any time.</dd>
+
+<dt>Help/Design</dt>
+<dd>This explains how the budget module works and how to use it.</dd>
+
+<hr/>
+
+
 <h3>Payees Menu</h3>
 
 <dl>

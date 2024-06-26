@@ -90,6 +90,15 @@ $nav_links = [
         'List Accounts' => 'listacct.php',
 		'Search By Account' => 'srchacct.php'
 	],
+    'Budget' => [
+        'Show Budget' => 'showbgt.php',
+        'Add Account' => 'addbline.php',
+        'Edit Account' => 'editbline.php',
+        'Delete Account' => 'delbline.php',
+        'New Week' => 'editbgt.php',
+        'Print Budget' => 'printbgt.php',
+        'Help/Design' => 'helpbgt.php'
+    ],
 	'Help' => [
 		'Introduction' => 'index.php',
 		'History' => 'history.php'

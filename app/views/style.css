@@ -7,6 +7,10 @@ body {
 	padding: 0;
 }
 
+.textbox {
+    width: 50%
+}
+
 .container {
 	display: grid;
 	/* grid-template-columns: 12% repeat(7, 1fr); */

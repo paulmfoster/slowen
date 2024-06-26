@@ -2,10 +2,20 @@
 
 include 'init.php';
 
-$report = model('report', $db);
+$bg = model('budget', $db);
+$cells = $bg->get_cells();
 
-fork('s1', 'P', 'index.php');
-list($txns, $bal) = $report->budget($_POST['from'], $_POST['to'], $_POST['category']);
-$page_title = 'Budget Query Results';
-include VIEWDIR . 'bgtshow.view.php';
+if ($cells === FALSE) {
+    $totals = FALSE;
+}
+else {
+    $wedate = $cells[0]['wedate'];
+    $xwedate = new xdate;
+    $xwedate->from_iso($wedate);
+    $hr_wedate = $xwedate->to_amer();
+    $totals = $bg->get_totals($cells);
+}
+
+$page_title = 'Budget List';
+include VIEWDIR . 'showbgt.view.php';
 
