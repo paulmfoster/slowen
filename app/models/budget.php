@@ -300,10 +300,11 @@ class budget
             and status != 'V'";
 
         $payments = $this->db->query($sql)->fetch_all();
+
         if ($payments) {
             foreach ($payments as $pmt) {
                 for ($i = 0; $i < $max; $i++) {
-                    if ($cells[$i]['acctnum'] == $pmt['from_acct']) {
+                    if ($cells[$i]['from_acct'] == $pmt['from_acct']) {
                         $cells[$i]['paid'] += $pmt['amount'];
                     }
                 }
@@ -352,8 +353,9 @@ class budget
             // advance the date
             $xto = new xdate;
             $xto = $xfrom;
-            $xto->add_days(7);
+            $xto->add_days(6);
             $to = $xto->to_iso();
+
             $hr_wedate = $xto->to_amer();
 
 			// update wedates
