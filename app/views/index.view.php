@@ -111,7 +111,7 @@ multiple payees, or depositors.
 
 <hr/>
 
-<h3>Scheduled Manu</h3>
+<h3>Scheduled Menu</h3>
 
 Scheduled transactions are those which you create, but which don't actually become
 real transactions until you tell the system to "activate" them. For example, if Netflix
@@ -123,7 +123,10 @@ to "activate".
 <dt>Add Transaction</dt>
 <dd>
 
-This creates a transaction which can be activated at some future time.
+This creates a transaction which can be activated on some future date. You specify what 
+all the details of the transaction, how often it recurs (e.g. monthly), and what the last
+date for that transaction was. When "activated", it will then recur on that date in the
+next month, year, etc.
 </dd>
 
 <dt>Delete Transaction</dt>
@@ -140,10 +143,11 @@ This shows all the transactions which can be scheduled to happen later.
 <dd>
 This allows you to convert a "scheduled" transaction into a real one. This screen shows
 you all the scheduled transactions, and allows you to check off each one you want to
-turn into a real transaction for this month. Normally, you would run this option at the
-beginning of every month. <strong>Caution:</strong> Nothing prevents you from running
-this option repeatedly in a month, possibly giving you duplicate transactions.
-Pay attention.
+turn into a real transaction for this month. You would normally run this once at the beginning
+of the month. Once a transaction has been "scheduled" and "activated" it puts a copy of that
+transaction into the appropriate account on the appropriate date. If you accidentally run
+"activate" more than once in a month, it should have no effect. Once a transaction has been
+created for a given month, the system won't add the same transaction again for that month.
 </dd>
 
 </dl>
