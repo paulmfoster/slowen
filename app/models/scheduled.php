@@ -110,6 +110,20 @@ class scheduled
 		return $txns;
 	}
 
+    /**
+     * Fetch a single scheduled record.
+     *
+     * @param int ID of scheduled transaction
+     * @return array the transaction
+     */
+
+    function fetch_single_scheduled($id)
+    {
+        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled2 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct where s.id = $id";
+		$txn = $this->db->query($sql)->fetch();
+        return $txn;
+    }
+
 	/**
 	 * Delete selected scheduled transactions.
 	 *
@@ -264,5 +278,21 @@ class scheduled
 
 		return $howmany;
 	}
+
+    /**
+     * Update a scheduled transaction.
+     *
+     * @param array the POST array
+     * @return boolean TRUE for success, else FALSE
+     */
+
+    function update_scheduled($post)
+    {
+        $rec = $this->db->prepare('scheduled2', $post);
+
+        $result = $this->db->update('scheduled2', $rec, "id = {$rec['id']}");
+
+        return $result;
+    }
 
 }

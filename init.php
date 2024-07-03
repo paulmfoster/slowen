@@ -121,6 +121,7 @@ $nav_links = [
 	'Scheduled' => [
 		'Add Transaction' => 'addsched.php',
 		'Delete Transaction' => 'delsched.php',
+        'Edit Transaction' => 'editsched.php',
         'List Transactions' => 'listsched.php',
 		'Activate Transaction' => 'actsched.php'
 	],
