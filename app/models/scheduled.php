@@ -288,6 +288,15 @@ class scheduled
 
     function update_scheduled($post)
     {
+        $credit = $post['cr_amount'] ?? NULL;
+        $debit = $post['dr_amount'] ?? NULL;
+        if (is_null($credit) || strlen(trim($credit)) == 0) {
+            $post['amount'] = -dec2int($debit);
+        }
+        elseif (is_null($debit) || strlen(trim($debit)) == 0) {
+            $post['amount'] = dec2int($credit);
+        }
+
         $rec = $this->db->prepare('scheduled2', $post);
 
         $result = $this->db->update('scheduled2', $rec, "id = {$rec['id']}");
