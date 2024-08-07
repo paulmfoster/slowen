@@ -162,4 +162,26 @@ case 'W': echo 'Weekly';
 
 </form>
 
+<?php $row = 0; /* table shading counter */ ?>
+
+<h2>Balances as of: <?php echo $today; ?></h2>
+
+<table>
+<tr>
+<th>Account Name</th><th>Balance</th>
+</tr>
+<?php foreach ($bals as $bal): ?>
+<?php if ($bal['balance'] != 0): ?>
+<tr class="row<?php echo ($row++ & 1);?>">
+<td><?php echo $bal['name']; ?></td>
+<?php if ($bal['balance'] < 0): ?>
+<td align="right" class="red"><?php echo int2dec($bal['balance']); ?></td>
+<?php else: ?>
+<td align="right"><?php echo int2dec($bal['balance']); ?></td>
+<?php endif; ?>
+</tr>
+<?php endif; ?>
+<?php endforeach; ?>
+</table>
+
 <?php include VIEWDIR . 'footer.view.php'; ?>

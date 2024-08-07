@@ -207,6 +207,13 @@ for ($i = 0; $i < $max; $i++) {
 
 $form->set($fields);
 
+$report = model('report', $db);
+$bals = $report->get_balances($cells[0]['wedate']);
+$nbals = count($bals);
+$dt = new xdate();
+$dt->from_iso($cells[0]['wedate']);
+$today = $dt->to_amer();
+
 $page_title = 'Edit Budget';
 $return = 'editbgt.php';
 include VIEWDIR . 'editbgt.view.php';
