@@ -112,7 +112,6 @@ $fields = array(
 $form->set($fields);
 $focus_field = 'from_acct';
 $page_title = 'Add Scheduled Transaction';
-// $return = 'index.php?c=sched&m=save';
 $return = 'savesched.php';
 
 include VIEWDIR . 'schadd.view.php';

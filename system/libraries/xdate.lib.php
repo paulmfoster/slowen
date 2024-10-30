@@ -183,6 +183,10 @@ class xdate
 	/**
 	 * Add months to date object
      *
+     * Add a number of months to the date object. After this, check to see
+     * if $this->day is later than the last day of the for this month, adjust
+     * it 
+     *
 	 * @param integer $nummonths Number of months to add (or subtract, if negative)
 	 */
 
@@ -193,6 +197,8 @@ class xdate
 		$d = $this->day;
 
 		$this->month += $nummonths;
+
+        // adjust month and optionally year
 		if ($this->month <= 0) {
 			while ($this->month <= 0) {
 				$this->month += 12;

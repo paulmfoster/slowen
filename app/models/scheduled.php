@@ -171,7 +171,7 @@ class scheduled
 	 *
 	 * @param xdate The reference date (last time)
 	 * @param integer The frequency for this job
-	 * @param string The periodicity of the job
+	 * @param char period (M, Q, D, Y, W)
 	 *
 	 * @return xdate The next date
      */

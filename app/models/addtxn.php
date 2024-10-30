@@ -124,6 +124,7 @@ class addtxn
                     break;
                 case 'Q':
                     $raccts['from'][] = $a;
+                    $raccts['to'][] = $a;
                     break;
                 default:
                     // I, E, A
@@ -160,6 +161,7 @@ class addtxn
             case 'R':
             case 'C':
             case 'S':
+            case 'Q':
                 $xfer = TRUE;
                 break;
             }
