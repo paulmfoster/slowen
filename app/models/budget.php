@@ -239,17 +239,17 @@ class budget
                 for ($i = 0; $i < $max; $i++) {
 
                     // NOTE: "from" account matches are done first. These
-                    are typically credit cards. If we get a match on a
-                    credit card (the credit card paid something else), we
-                    must add addlsa. After "from" testing, "to" and "payee"
-                    matching is done. For matches, we add to the "paid" for
-                    that account.
+                    // are typically credit cards. If we get a match on a
+                    // credit card (the credit card paid something else), we
+                    // must add addlsa. After "from" testing, "to" and "payee"
+                    // matching is done. For matches, we add to the "paid" for
+                    // that account.
 
                     if ($cells[$i]['from_acct'] == $exp['from_acct']) {
                         if ($cells[$i]['payee_id'] == 0) {
                             $cells[$i]['addlsa'] -= $exp['amount'];
                         }
-                        elseif ($cells[$i]['payee_id'] == $exp['payee_id'] {
+                        elseif ($cells[$i]['payee_id'] == $exp['payee_id']) {
                             $cells[$i]['addlsa'] -= $exp['amount'];
                         }
                     }
