@@ -238,20 +238,34 @@ class budget
             foreach ($expenses as $exp) {
                 for ($i = 0; $i < $max; $i++) {
 
-                    // NOTE: The same transaction may be scanned twice
-                    // below. For example, the Netflix budget account will
-                    // have a debit on the Visa card to pay it. That will
-                    // cause a paid amount to the Netflix account, and an
-                    // additional setaside for the Visa card.
+                    // NOTE: "from" account matches are done first. These
+                    are typically credit cards. If we get a match on a
+                    credit card (the credit card paid something else), we
+                    must add addlsa. After "from" testing, "to" and "payee"
+                    matching is done. For matches, we add to the "paid" for
+                    that account.
 
-                    if ($cells[$i]['to_acct'] == $exp['to_acct']) {
-                        $cells[$i]['paid'] -= $exp['amount'];
-                    }
-                    if ($cells[$i]['payee_id'] == $exp['payee_id']) {
-                        $cells[$i]['paid'] -= $exp['amount'];
-                    }
                     if ($cells[$i]['from_acct'] == $exp['from_acct']) {
-                        $cells[$i]['addlsa'] -= $exp['amount'];
+                        if ($cells[$i]['payee_id'] == 0) {
+                            $cells[$i]['addlsa'] -= $exp['amount'];
+                        }
+                        elseif ($cells[$i]['payee_id'] == $exp['payee_id'] {
+                            $cells[$i]['addlsa'] -= $exp['amount'];
+                        }
+                    }
+
+                    if ($cells[$i]['to_acct'] == 0) {
+                        if ($cells[$i]['payee_id'] == $exp['payee_id']) {
+                            $cells[$i]['paid'] -= $exp['amount'];
+                        }
+                    }
+                    elseif ($cells[$i]['to_acct'] == $exp['to_acct']) {
+                        if ($cells[$i]['payee_id'] == 0) {
+                            $cells[$i]['paid'] -= $exp['amount'];
+                        }
+                        elseif ($cells[$i]['payee_id'] == $exp['payee_id']) {
+                            $cells[$i]['paid'] -= $exp['amount'];
+                        }
                     }
                 }
             }
