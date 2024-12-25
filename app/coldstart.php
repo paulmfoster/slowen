@@ -36,11 +36,12 @@ $schema = [
     stmt_start_bal integer, 
     stmt_end_bal integer, 
     stmt_close_date date)",
-"CREATE TABLE scheduled2 (
+"CREATE TABLE scheduled3 (
     id integer primary key autoincrement, 
     from_acct integer not null references accounts(id), 
-    freq integer not null,
+    freq integer default 1,
     period char(1) not null,
+    occ integer default 0,
     payee_id integer references payees(id), 
     to_acct integer references accounts(id), 
     memo varchar(35), 

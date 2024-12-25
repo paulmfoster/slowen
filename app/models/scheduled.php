@@ -45,7 +45,7 @@ class scheduled
 			'amount' => dec2int($amount)
 		];
 
-		$this->db->insert('scheduled2', $rec);
+		$this->db->insert('scheduled3', $rec);
 		
 		if ($post['xfer'] ?? FALSE) {
 			$rec = [
@@ -59,7 +59,7 @@ class scheduled
 				'amount' => - dec2int($amount)
 			];
 
-			$this->db->insert('scheduled2', $rec);
+			$this->db->insert('scheduled3', $rec);
 		}
 
 		return TRUE;
@@ -101,7 +101,7 @@ class scheduled
 	function fetch_scheduled()
 	{
 		// fetch transaction and payee name
-        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled2 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct";
+        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled3 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct";
 		$txns = $this->db->query($sql)->fetch_all();
 		if ($txns === FALSE) {
 			return FALSE;
@@ -119,7 +119,7 @@ class scheduled
 
     function fetch_single_scheduled($id)
     {
-        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled2 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct where s.id = $id";
+        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled3 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct where s.id = $id";
 		$txn = $this->db->query($sql)->fetch();
         return $txn;
     }
@@ -139,7 +139,7 @@ class scheduled
 		foreach ($post as $key => $val) {
 			if (strpos($key, 'id_') === 0) {
 				$id = (int) substr($key, 3);
-				$this->db->delete('scheduled2', "id = $id");
+				$this->db->delete('scheduled3', "id = $id");
 			}
 		}
 
@@ -162,73 +162,47 @@ class scheduled
 		return $ret;
 	}
 
-    /**
-     * Returns the next date in a recurring date series.
-	 *
-     * Based on the period and frequency, it returns a date the appropriate
-     * amount of time in the future.
-	 * Return is in ISO date format
-	 *
-	 * @param xdate The reference date (last time)
-	 * @param integer The frequency for this job
-	 * @param char period (M, Q, D, Y, W)
-	 *
-	 * @return xdate The next date
-     */
-
-    function get_next_date($dt, $freq, $period)
-    {
-        if ($period == 'M')
-			$dt->add_months($freq);
-		elseif ($period == 'Q')
-			$dt->add_months(3 * $freq);
-        elseif ($period == 'D')
-			$dt->add_days($freq);
-        elseif ($period == 'Y')
-			$dt->add_years($freq);
-		elseif ($period == 'W')
-			$dt->add_days($freq * 7);
-
-        return $dt;
-    }
-
 	/**
 	 * Activate a single scheduled transaction.
 	 *
-	 * This method takes the date for a scheduled transaction and creates a
-	 * new transaction in the journal table from that data. It also updates
-     * the "last" field in the scheduled table. This fails if the next date
-     * is later than this month.
+     * Take the ID of a scheduled transaction, and repeat that transaction
+     * as needed for the current month. 
+     *
+     * NOTE: This routine detects the current date, and generates
+     * transactions within the current month. Therefore, it should only be
+     * run once per month, and will only generate transactions for that
+     * month. 
 	 *
 	 * @param integer $id The transaction ID
+     * @return integer number of transactions generated
 	 */
 
 	private function activate_single($id)
 	{
-		$sql = "SELECT * FROM scheduled2 WHERE id = $id";
+        $howmany = 0;
+
+		$sql = "SELECT * FROM scheduled3 WHERE id = $id";
 		$rec = $this->db->query($sql)->fetch();
 
-        $limit = new xdate();
-        $limit->day_after_month();
+        $dt = new xdate();
 
-        $lastdt = new xdate();
-        $lastdt->from_iso($rec['last']);
+        $from = clone $dt;
+        $from->day = 1;
 
-        $nextdt = $this->get_next_date($lastdt, $rec['freq'], $rec['period']);
+        $to = clone $dt;
+        $to->end_of_month();
 
-        if ($nextdt->before($limit)) {
+        $rpts = library('repeats');
 
-            $snextdt = $nextdt->to_iso();
+        $dates = $rpts->next($rec->$last, $rec->period, $rec->freq, $rec->occ, $from, $to);
 
-            // update the "last" field in scheduled table
-            $this->db->update('scheduled2', ['last' => $snextdt], "id = $id");
-
+        foreach ($dates as $date) {
             // update journal
             $r = [
-                'txn_dt' => $snextdt,
+                'txn_dt' => $date,
                 'txnid' => $this->get_next_txnid(),
                 'checkno' => '',
-                'memo' => $rec['memo'] ?? '',
+                'memo' => $rec['memo'] ?? 'scheduled transaction',
                 'amount' => $rec['amount'],
                 'from_acct' => $rec['from_acct'],
                 'to_acct' => $rec['to_acct'],
@@ -237,13 +211,15 @@ class scheduled
                 'status' => ' ',
                 'recon_dt' => ''
             ];
-
 		    $this->db->insert('journal', $r);
 
-            return TRUE;
+            // update the "last" field in scheduled table
+            $this->db->update('scheduled3', ['last' => $date], "id = $id");
+
+            $howmany++;
         }
 
-        return FALSE;
+        return $howmany;
 	}
 
 	/**
@@ -267,12 +243,8 @@ class scheduled
 		foreach ($post as $key => $val) {
 			if (strpos($key, 'id_') === 0) {
 				$id = (int) substr($key, 3);
-                do {
-                    // repeat until the month is over
-                    $result = $this->activate_single($id);
-                    if ($result)
-                        $howmany++;
-                } while ($result);
+                $result = $this->activate_single($id);
+                $howmany += $result;
 			}
 		}
 
@@ -297,9 +269,9 @@ class scheduled
             $post['amount'] = dec2int($credit);
         }
 
-        $rec = $this->db->prepare('scheduled2', $post);
+        $rec = $this->db->prepare('scheduled3', $post);
 
-        $result = $this->db->update('scheduled2', $rec, "id = {$rec['id']}");
+        $result = $this->db->update('scheduled3', $rec, "id = {$rec['id']}");
 
         return $result;
     }
