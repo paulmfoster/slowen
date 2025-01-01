@@ -2,7 +2,7 @@
 
 class scheduled
 {
-    public $db;
+    public $db, $rpts;
 
 	function __construct($db)
 	{
@@ -192,14 +192,15 @@ class scheduled
         $to = clone $dt;
         $to->end_of_month();
 
-        $rpts = library('repeats');
+        $dates = $this->rpts->next($rec['last'], $rec['period'], $rec['freq'], $rec['occ'], $from, $to);
 
-        $dates = $rpts->next($rec->$last, $rec->period, $rec->freq, $rec->occ, $from, $to);
+        $this->db->begin();
 
         foreach ($dates as $date) {
+            $isodate = $date->to_iso();
             // update journal
             $r = [
-                'txn_dt' => $date,
+                'txn_dt' => $isodate,
                 'txnid' => $this->get_next_txnid(),
                 'checkno' => '',
                 'memo' => $rec['memo'] ?? 'scheduled transaction',
@@ -214,10 +215,12 @@ class scheduled
 		    $this->db->insert('journal', $r);
 
             // update the "last" field in scheduled table
-            $this->db->update('scheduled3', ['last' => $date], "id = $id");
+            $this->db->update('scheduled3', ['last' => $isodate], "id = $id");
 
             $howmany++;
         }
+
+        $this->db->commit();
 
         return $howmany;
 	}
@@ -239,6 +242,8 @@ class scheduled
 
 	function activate_scheduled($post)
 	{
+        $this->rpts = model('repeats', $this->db);
+
         $howmany = 0;
 		foreach ($post as $key => $val) {
 			if (strpos($key, 'id_') === 0) {

@@ -4,7 +4,17 @@
 
 class repeats
 {
-    public $dates[];
+    public $dates;
+
+    function __construct()
+    {
+        $this->clear();
+    }
+
+    function clear()
+    {
+        $this->dates = [];
+    }
 
     function get()
     {
@@ -268,29 +278,36 @@ class repeats
 
     function next($last, $period, $frequency, $occurrence, $from, $to)
     {
+        $xlast = new xdate;
+        $xlast->from_iso($last);
         $jfrom = $from->jday();
         $jto = $to->jday();
-        $dates = [];
 
         switch ($period) {
         case 'D':
-            $dates = day_repeats($last, $frequency, $jfrom, $jto);
+            $this->clear();
+            $this->day_repeats($xlast, $frequency, $jfrom, $jto);
             break;
         case 'W':
-            $dates = week_repeats($last, $frequency, $jfrom, $jto);
+            $this->clear();
+            $this->week_repeats($xlast, $frequency, $jfrom, $jto);
             break;
         case 'M':
-            $dates = month_repeats($last, $frequency, $occurrence, $jfrom, $jto);
+            $this->clear();
+            $this->month_repeats($xlast, $frequency, $occurrence, $jfrom, $jto);
             break;
         case 'Q':
-            $dates = quarter_repeats($last, $frequency, $jfrom, $jto);
+            $this->clear();
+            $this->quarter_repeats($xlast, $frequency, $jfrom, $jto);
             break;
         case 'Y':
-            $dates = year_repeats($last, $frequency, $jfrom, $jto);
+            $this->clear();
+            $this->year_repeats($xlast, $frequency, $jfrom, $jto);
             break;
         }
 
-        return $dates;
+        return $this->dates;
+
     }
 }
 
