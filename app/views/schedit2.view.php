@@ -24,6 +24,11 @@
 </tr>
 
 <tr>
+<td><label>Occurrence in Month</label></td>
+<td><?php $form->select('occ'); ?></td>
+</tr>
+
+<tr>
 <td><label>Last Date</label></td>
 <td><?php $form->date('last'); ?></td>
 </tr>

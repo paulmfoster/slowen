@@ -1,5 +1,7 @@
 <?php
 
+// Pick which transaction to edit.
+
 include 'init.php';
 
 $sched = model('scheduled', $db);

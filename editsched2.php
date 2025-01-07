@@ -49,6 +49,14 @@ $period_options[] = ['lbl' => 'Month', 'val' => 'M'];
 $period_options[] = ['lbl' => 'Quarter', 'val' => 'Q'];
 $period_options[] = ['lbl' => 'Year', 'val' => 'Y'];
 
+$occ_options = [];
+$occ_options[] = ['lbl' => 'Every', 'val' => 0];
+$occ_options[] = ['lbl' => 'First', 'val' => 1];
+$occ_options[] = ['lbl' => 'Second', 'val' => 2];
+$occ_options[] = ['lbl' => 'Third', 'val' => 3];
+$occ_options[] = ['lbl' => 'Fourth', 'val' => 4];
+$occ_options[] = ['lbl' => 'Last', 'val' => 5];
+
 $dom_options = [];
 for ($i = 1; $i < 31; $i++) {
     $dom_options[] = ['lbl' => $i, 'val' => $i];
@@ -78,6 +86,12 @@ $fields = array(
         'type' => 'select',
         'options' => $period_options,
         'value' => $txn['period']
+    ),
+    'occ' => array(
+        'name' => 'occ',
+        'type' => 'select',
+        'options' => $occ_options,
+        'value' => $txn['occ']
     ),
     'last' => array(
         'name' => 'last',

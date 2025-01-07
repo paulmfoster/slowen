@@ -46,6 +46,14 @@ for ($i = 1; $i < 31; $i++) {
     $dom_options[] = ['lbl' => $i, 'val' => $i];
 }
 
+$occ_options = [];
+$occ_options[] = ['lbl' => 'Every', 'val' => 0];
+$occ_options[] = ['lbl' => 'First', 'val' => 1];
+$occ_options[] = ['lbl' => 'Second', 'val' => 2];
+$occ_options[] = ['lbl' => 'Third', 'val' => 3];
+$occ_options[] = ['lbl' => 'Fourth', 'val' => 4];
+$occ_options[] = ['lbl' => 'Last', 'val' => 5];
+
 $dt = new xdate();
 
 $fields = array(
@@ -64,6 +72,11 @@ $fields = array(
         'name' => 'period',
         'type' => 'select',
         'options' => $period_options
+    ),
+    'occ' => array(
+        'name' => 'occ',
+        'type' => 'select',
+        'options' => $occ_options
     ),
     'last' => array(
         'name' => 'last',

@@ -38,6 +38,7 @@ class scheduled
 			'from_acct' => $post['from_acct'],
             'freq' => $post['freq'],
             'period' => $post['period'],
+            'occ' => $post['occ'],
             'last' => $post['last'],
 			'payee_id' => $post['payee_id'],
 			'to_acct' => $post['to_acct'],
@@ -52,6 +53,7 @@ class scheduled
 				'from_acct' => $post['to_acct'],
                 'freq' => $post['freq'],
                 'period' => $post['period'],
+                'occ' => $post['occ'],
                 'last' => $post['last'],
 				'payee_id' => $post['payee_id'],
 				'to_acct' => $post['from_acct'],
@@ -119,7 +121,7 @@ class scheduled
 
     function fetch_single_scheduled($id)
     {
-        $sql = "select s.id as id, last, from_acct, freq, period, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled3 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct where s.id = $id";
+        $sql = "select s.id as id, last, from_acct, freq, period, occ, s.payee_id as payee_id, to_acct, memo, amount, p.name as payee_name, a1.name as from_acct_name, a2.name as to_acct_name from scheduled3 as s left join payees as p on p.id = s.payee_id left join accounts as a1 on a1.id = s.from_acct left join accounts as a2 on a2.id = s.to_acct where s.id = $id";
 		$txn = $this->db->query($sql)->fetch();
         return $txn;
     }

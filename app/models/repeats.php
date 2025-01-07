@@ -49,7 +49,7 @@ class repeats
             while ($dt->day_of_week() != $dow)
                 $dt->add_days(1);
         }
-        elseif ($occ < 5) {
+        elseif ($occ > 1 && $occ < 5) {
             while ($dt->day_of_week() != $dow)
                 $dt->add_days(1);
 
