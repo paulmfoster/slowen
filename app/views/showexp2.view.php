@@ -6,6 +6,8 @@
 <table>
 <tr><th>Date</th><th>Account</th><th>Payee</th><th>Memo</th><th>Category</th><th>Amount</th></tr>
 
+<?php $balance = 0; ?>
+
 <?php foreach ($expenses as $expense): ?>
 
 <tr>
@@ -35,10 +37,20 @@
 <?php echo int2dec($expense['amount']); ?>
 </td>
 
-
 </tr>
 
+<?php $balance += $expense['amount']; ?>
+
 <?php endforeach; ?>
+
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td align="right"><strong><?php echo int2dec($balance); ?></strong></td>
+</tr>
 
 </table>
 

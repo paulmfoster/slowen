@@ -34,6 +34,6 @@ $page_title = 'Weekly Expenses';
 $focus_field = 'from_date';
 $return = 'showexp2.php';
 
-include VIEWDIR . 'expenses.view.php';
+include VIEWDIR . 'showexp.view.php';
 
 
