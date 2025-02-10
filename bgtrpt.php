@@ -46,5 +46,5 @@ $fields = [
 $form->set($fields);
 $page_title = 'Budget Query';
 $focus_field = 'from';
-$return = 'showbgt.php';
-include VIEWDIR . 'budget.view.php';
+$return = 'bgtrpt2.php';
+include VIEWDIR . 'bgtrpt.view.php';

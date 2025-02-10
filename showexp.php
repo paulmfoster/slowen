@@ -33,7 +33,6 @@ $form->set($fields);
 $page_title = 'Weekly Expenses';
 $focus_field = 'from_date';
 $return = 'showexp2.php';
-// $return = 'index.php?c=rpt&m=expshow';
 
 include VIEWDIR . 'expenses.view.php';
 

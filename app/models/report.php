@@ -106,21 +106,13 @@ class report
 		$where = "txn_dt >= '$from' AND txn_dt <= '$to' AND to_acct = $category AND status != 'V'";
 		$sql = $this->transactions_sql($where);
 		$txns = $this->db->query($sql)->fetch_all();
-		$max = count($txns);
-		$balance = 0;
-		for ($i = 0; $i < $max; $i++) {
-			/*
-			if ($txns[$i]['amount'] < 0) {
-				$txns[$i]['debit'] = - $txns[$i]['amount'];
-				$txns[$i]['credit'] = '';
-			}
-			elseif ($txns[$i]['amount'] > 0) {
-				$txns[$i]['credit'] = $txns[$i]['amount'];
-				$txns[$i]['debit'] = '';
-			}
-			 */
-			$balance += $txns[$i]['amount'];
-		}
+        if ($txns == FALSE)
+            return [[], 0];
+
+        $balance = 0;
+        foreach ($txns as $txn) {
+            $balance += $txn['amount'];
+        }
 		return [$txns, $balance];
 	}
 
@@ -160,7 +152,6 @@ class report
 	 * Get all data needed to display the balances of all bank accounts as of a given date
 	 *
 	 * @param string $last_dt If NULL, balance is from all transactions; else only those to selected date
-	 *
 	 * @return array Contains all relevant data for each account displayed.
 	 */
 
