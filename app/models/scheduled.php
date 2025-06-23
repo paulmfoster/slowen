@@ -164,67 +164,67 @@ class scheduled
 		return $ret;
 	}
 
-	/**
+		/**
 	 * Activate a single scheduled transaction.
 	 *
-     * Take the ID of a scheduled transaction, and repeat that transaction
-     * as needed for the current month. 
-     *
-     * NOTE: This routine detects the current date, and generates
-     * transactions within the current month. Therefore, it should only be
-     * run once per month, and will only generate transactions for that
-     * month. 
+	 * Take the ID of a scheduled transaction, and repeat that transaction
+	 * as needed for the current month. 
+	 *
+	 * NOTE: This routine detects the current date, and generates
+	 * transactions within the current month. Therefore, it should only be
+	 * run once per month, and will only generate transactions for that
+	 * month. 
 	 *
 	 * @param integer $id The transaction ID
-     * @return integer number of transactions generated
+	 * @return integer number of transactions generated
 	 */
 
 	private function activate_single($id)
 	{
-        $howmany = 0;
+		$howmany = 0;
 
 		$sql = "SELECT * FROM scheduled3 WHERE id = $id";
 		$rec = $this->db->query($sql)->fetch();
 
-        $dt = new xdate();
+		$dt = new xdate();
 
-        $from = clone $dt;
-        $from->day = 1;
+		$from = clone $dt;
+		$from->day = 1;
 
-        $to = clone $dt;
-        $to->end_of_month();
+		$to = clone $dt;
+		$to->end_of_month();
 
-        $dates = $this->rpts->next($rec['last'], $rec['period'], $rec['freq'], $rec['occ'], $from, $to);
+		$dates = $this->rpts->next($rec['last'], $rec['period'], $rec['freq'], $rec['occ'], $from, $to);
 
-        $this->db->begin();
+		$this->db->begin();
 
-        foreach ($dates as $date) {
-            $isodate = $date->to_iso();
-            // update journal
-            $r = [
-                'txn_dt' => $isodate,
-                'txnid' => $this->get_next_txnid(),
-                'checkno' => '',
-                'memo' => $rec['memo'] ?? 'scheduled transaction',
-                'amount' => $rec['amount'],
-                'from_acct' => $rec['from_acct'],
-                'to_acct' => $rec['to_acct'],
-                'payee_id' => $rec['payee_id'],
-                'split' => 0,
-                'status' => ' ',
-                'recon_dt' => ''
-            ];
-		    $this->db->insert('journal', $r);
+		foreach ($dates as $date) {
+			$isodate = $date->to_iso();
+			// update journal
+			$r = [
+				'txn_dt' => $isodate,
+				'txnid' => $this->get_next_txnid(),
+				'checkno' => '',
+				'memo' => $rec['memo'] ?? 'scheduled transaction',
+				'amount' => $rec['amount'],
+				'from_acct' => $rec['from_acct'],
+				'to_acct' => $rec['to_acct'],
+				'payee_id' => $rec['payee_id'],
+				'split' => 0,
+				'status' => ' ',
+				'recon_dt' => ''
+			];
+			$this->db->insert('journal', $r);
 
-            // update the "last" field in scheduled table
-            $this->db->update('scheduled3', ['last' => $isodate], "id = $id");
+			// update the "last" field in scheduled table
+			$this->db->update('scheduled3', ['last' => $isodate], "id = $id");
 
-            $howmany++;
-        }
+			$howmany++;
+		}
 
-        $this->db->commit();
+		$this->db->commit();
 
-        return $howmany;
+		return $howmany;
 	}
 
 	/**

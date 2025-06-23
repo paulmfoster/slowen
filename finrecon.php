@@ -7,6 +7,7 @@ $reconcile = model('reconcile', $db);
 if (count($_POST) == 0)
     redirect('prerecon.php');
 
+// FIXME: where do we get POST['status'] from? I can't find it
 if (!empty($_POST['status'])) {
     $cleared_list = implode(', ', $_POST['status']);
     $data = $reconcile->check_reconciliation($_POST['from_acct'], $_POST['stmt_start_bal'], 

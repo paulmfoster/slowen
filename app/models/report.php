@@ -201,23 +201,23 @@ class report
 	
 	function get_expenses($from_date, $to_date)
 	{
-        $sql = "select journal.*, 
-        a.name as from_acct_name, 
-        b.name as to_acct_name, 
-        payees.name as payee_name from journal 
-        join accounts as a on a.id = journal.from_acct 
-        join accounts as b on b.id = journal.to_acct 
-        join payees on payees.id = journal.payee_id
-        where b.acct_type = 'E' 
-        and journal.txn_dt >= '$from_date' 
-        and journal.txn_dt <= '$to_date' 
-        order by to_acct_name";
+		$sql = "select journal.*, 
+		a.name as from_acct_name, 
+		b.name as to_acct_name, 
+		payees.name as payee_name from journal 
+		join accounts as a on a.id = journal.from_acct 
+		join accounts as b on b.id = journal.to_acct 
+		join payees on payees.id = journal.payee_id
+		where b.acct_type = 'E' 
+		and journal.txn_dt >= '$from_date' 
+		and journal.txn_dt <= '$to_date' 
+		order by to_acct_name";
 
 		$result = $this->db->query($sql)->fetch_all();
 
-        if ($result === FALSE) {
-            return FALSE;
-        }
+		if ($result === FALSE) {
+			return FALSE;
+		}
 
 		return $result;
 	}

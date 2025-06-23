@@ -70,10 +70,11 @@ $not_there = FALSE;
 if (!file_exists($dsn[1])) {
     $not_there = TRUE;
 }
-$db = load('database', $cfg['dsn']);
-if ($not_there) {
-    genpop($db, APPDIR . 'coldstart.php');
-}
+if ($not_there)
+    $db = make_tables($cfg['dsn'], APPDIR . 'coldstart.sqlite');
+else
+    $db = load('database', $cfg['dsn']);
+
 
 load('errors');
 load('messages');

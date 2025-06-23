@@ -117,13 +117,16 @@ class transaction
 	{
 		// get transaction data
 		switch ($type) {
-			case 'F':
+            case 'F':
+                // the register screen
 				$sql = $this->transactions_sql('journal.from_acct = ' . $param);
 				break;
 			case 'P':
+                // search by payee
 				$sql = $this->transactions_sql('journal.payee_id = ' . $param);
 				break;
 			case 'C':
+                // search by account/category
 				$sql = $this->transactions_sql('journal.to_acct = ' . $param);
 				break;
 		}
