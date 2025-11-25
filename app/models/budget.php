@@ -451,8 +451,9 @@ class budget
         $p = load('pdf_report');
         $p->add_page();
         $p->set_margins(5, 0, 0);
-        // $p->print_line($cfg['app_name'] . ' for week ending ' . pdate::iso2am($wedate));
-        $top = 'Budget for week ending ' . $xwedate->to_amer();
+	$p->center($cfg['app_name']);
+	$p->skip_line();
+	$top = 'Budget for week ending ' . $xwedate->to_amer();
         $p->center($top);
         $p->skip_line();
 
