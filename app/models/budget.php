@@ -120,6 +120,12 @@ class budget
 	return $over_budget;
     }
 
+    /**
+     * The staging table contains all the cells of a budget in progress.
+     * Here we fetch the contents of the table. If the table is empby,
+     * we return false.
+     */
+
     function get_staging()
     {
 	// avoid fetching the id field
@@ -137,6 +143,11 @@ class budget
 	}
 	return $results;
     }
+
+    /**
+     * The cells table contains the contents of the last budget. Here we
+     * fetch that data to start the new budget.
+     */
 
     function get_cells()
     {
@@ -156,16 +167,6 @@ class budget
 	}
 
 	return $results;
-    }
-
-    function put_staging($recs)
-    {
-	$this->db->delete('staging');
-	foreach ($recs as $rec) {
-	    // this is done to remove the "red" field, etc.
-	    $trec = $this->db->prepare('staging', $rec);
-	    $this->db->insert('staging', $trec);
-	}
     }
 
     /**
@@ -196,6 +197,13 @@ class budget
 	return $cells;
     }
 
+    /**
+     * Swap the priorsa and newsa columns.
+     *
+     * This is what make it difficult or impossible to implement budgeting
+     * in a spreadsheet.
+     */
+    
     private function swap($cells)
     {
 	$max = count($cells);
@@ -337,6 +345,13 @@ class budget
         return $cells;
     }
 
+    /**
+     * Start budget.
+     *
+     * We fetch the staging table first, in case we have a budget in
+     * progress. Else, we just fetch the cells.
+     */
+
     function start()
     {
 	$cells = $this->get_staging();
@@ -388,17 +403,29 @@ class budget
 	    $cells = $this->recalculate($cells);
 	    $totals = $this->get_totals($cells);
 
-	    $this->put_staging($cells);
+	    $this->to_staging($cells);
 	}
 
 	return [$to, $hr_wedate, $cells, $totals];
     }
+
+    /**
+     * Restart budget.
+     *
+     * Delete the contents of the staging table, which tells the system
+     * you're no longer in progress on a budget. Then just start the
+     * budget.
+     */
 
     function restart()
     {
 	$this->db->delete('staging');
 	return $this->start();
     }
+
+    /**
+     * Write cells to staging.
+     */
 
     function to_staging($cells)
     {
@@ -411,7 +438,6 @@ class budget
 	}
 
 	$this->db->commit();
-
     }
 
     function post2cells($post)
