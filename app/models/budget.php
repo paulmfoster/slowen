@@ -230,6 +230,10 @@ class budget
         $max = count($cells);
 
         $to_date = $cells[0]['wedate'];
+	$to = new xdate;
+	$to->from_iso($to_date);
+	$to->add_days(-7);
+	$to_date = $to->to_iso();
         $from = new xdate;
         $from->from_iso($to_date);
         $from->add_days(-6);
@@ -308,9 +312,16 @@ class budget
         $max = count($cells);
 
         $to_date = $cells[0]['wedate'];
+
+	$to = new xdate;
+	$to->from_iso($to_date);
+	$to->add_days(-7);
+
         $from = new xdate;
         $from->from_iso($to_date);
-        $from->add_days(-6);
+        // $from->add_days(-6);
+        $from->add_days(-13);
+
         $from_date = $from->to_iso();
 
         $sql = "select journal.* from journal, accounts 
@@ -329,7 +340,7 @@ class budget
                     if ($cells[$i]['from_acct'] == $pmt['from_acct']) {
                         $cells[$i]['paid'] += $pmt['amount'];
                     }
-                }
+        }
             }
         }
 
@@ -421,6 +432,11 @@ class budget
     {
 	$this->db->delete('staging');
 	return $this->start();
+    }
+
+    function abandon()
+    {
+	$this->db->delete('staging');
     }
 
     /**

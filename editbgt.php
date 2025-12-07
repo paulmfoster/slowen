@@ -31,6 +31,10 @@ elseif (isset($_POST['comp1']) || isset($_POST['comp2'])) {
     emsg('S', 'Budget editing is COMPLETE');
     redirect('showbgt.php');
 }
+elseif (isset($_POST['abandon1']) || isset($_POST['abandon2'])) {
+    $bg->abandon();
+    redirect('showbgt.php');
+}
 else {
     // first time through; or after restart
     list($wedate, $hr_wedate, $cells, $totals) = $bg->start();
@@ -48,6 +52,11 @@ $fields = [
         'name' => 'hr_wedate',
         'type' => 'hidden',
         'value' => $hr_wedate
+    ],
+    'abandon1' => [
+        'name' => 'abandon1',
+        'type' => 'submit',
+        'value' => 'Abandon'
     ],
     'restart1' => [
         'name' => 'restart1',
@@ -68,6 +77,11 @@ $fields = [
         'name' => 'comp1',
         'type' => 'submit',
         'value' => 'Complete'
+    ],
+    'abandon2' => [
+        'name' => 'abandon2',
+        'type' => 'submit',
+        'value' => 'Abandon'
     ],
     'restart2' => [
         'name' => 'restart2',

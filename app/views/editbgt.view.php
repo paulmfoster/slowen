@@ -10,6 +10,7 @@
 <!-- buttons -->
 
 <p>
+<?php $form->submit('abandon1'); ?>
 <?php $form->submit('restart1'); ?>
 <?php $form->submit('recalc1'); ?>
 <?php $form->submit('save1'); ?>
@@ -142,6 +143,7 @@ case 'W': echo 'Weekly';
 <!-- buttons -->
 
 <p>
+<?php $form->submit('abandon2'); ?>        
 <?php $form->submit('restart2'); ?>
 <?php $form->submit('recalc2'); ?>
 <?php $form->submit('save2'); ?>
