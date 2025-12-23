@@ -4,26 +4,24 @@ include 'init.php';
 $bg = model('budget', $db);
 
 if (isset($_POST['restart1']) || isset($_POST['restart2'])) {
-    list($wedate, $hr_wedate, $cells, $totals) = $bg->restart();
+    list($fromdate, $todate, $wedate, $cells, $totals) = $bg->restart();
     emsg('S', 'Budget has been RESTARTED');
 }
 elseif (isset($_POST['recalc1']) || isset($_POST['recalc2'])) {
     $cells = $bg->post2cells($_POST);
     $cells = $bg->recalculate($cells);
     $totals = $bg->get_totals($cells);
-    $wedate = $cells[0]['wedate'];
-    $xwedate = new xdate;
-    $xwedate->from_iso($wedate);
-    $hr_wedate = $xwedate->to_amer();
+
+    list($fromdate, $todate, $wedate) = $bg->get_dates_on_restart($cells[0]['wedate']);
+
     emsg('S', 'Budget has been RECALCULATED');
 }
 elseif (isset($_POST['save1']) || isset($_POST['save2'])) {
     $cells = $bg->save($_POST);
     $totals = $bg->get_totals($cells);
-    $wedate = $cells[0]['wedate'];
-    $xwedate = new xdate;
-    $xwedate->from_iso($wedate);
-    $hr_wedate = $xwedate->to_amer();
+
+    list($fromdate, $todate, $wedate) = $bg->get_dates_on_restart($cells[0]['wedate']);
+
     emsg('S', 'The budget has been SAVED');
 }
 elseif (isset($_POST['comp1']) || isset($_POST['comp2'])) {
@@ -37,7 +35,7 @@ elseif (isset($_POST['abandon1']) || isset($_POST['abandon2'])) {
 }
 else {
     // first time through; or after restart
-    list($wedate, $hr_wedate, $cells, $totals) = $bg->start();
+    list($fromdate, $todate, $wedate, $cells, $totals) = $bg->start();
 }
 
 $max = count($cells);
@@ -46,12 +44,12 @@ $fields = [
     'wedate' => [
         'name' => 'wedate',
         'type' => 'hidden',
-        'value' => $wedate
+        'value' => $wedate->to_iso()
     ],
     'hr_wedate' => [
         'name' => 'hr_wedate',
         'type' => 'hidden',
-        'value' => $hr_wedate
+        'value' => $wedate->to_amer()
     ],
     'abandon1' => [
         'name' => 'abandon1',
@@ -222,12 +220,13 @@ for ($i = 0; $i < $max; $i++) {
 $form->set($fields);
 
 $report = model('report', $db);
-$bals = $report->get_balances($cells[0]['wedate']);
+$bals = $report->get_balances($todate->to_iso());
 $nbals = count($bals);
-$dt = new xdate();
-$dt->from_iso($cells[0]['wedate']);
-$today = $dt->to_amer();
+
+$budgetweek = $wedate->to_amer();
+$totalsweek = $todate->to_amer();
 
 $page_title = 'Edit Budget';
 $return = 'editbgt.php';
 include VIEWDIR . 'editbgt.view.php';
+

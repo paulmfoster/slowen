@@ -234,6 +234,7 @@ class budget
 	$to->from_iso($to_date);
 	$to->add_days(-7);
 	$to_date = $to->to_iso();
+
         $from = new xdate;
         $from->from_iso($to_date);
         $from->add_days(-6);
@@ -356,6 +357,48 @@ class budget
         return $cells;
     }
 
+    // on start
+    function get_dates_on_start($isodate)
+    {
+	$todate = new xdate;
+	$todate->from_iso($isodate);
+
+	$fromdate = clone $todate;
+	$fromdate->add_days(-6);
+
+	$wedate = clone $todate;
+	$wedate->add_days(7);
+
+	$v = [
+	    $fromdate,
+	    $todate,
+	    $wedate
+	];
+
+	return $v;
+    }
+
+    // on restart
+    function get_dates_on_restart($isodate)
+    {
+	$wedate = new xdate;
+	$wedate->from_iso($isodate);
+
+	$todate = clone $wedate;
+	$todate->add_days(-7);
+
+	$fromdate = clone $todate;
+	$fromdate->add_days(-6);
+
+	$v = [
+	    $fromdate,
+	    $todate,
+	    $wedate
+	];
+
+	return $v;
+    }
+
     /**
      * Start budget.
      *
@@ -369,39 +412,27 @@ class budget
 
 	if ($cells !== FALSE) {
 
-	    $totals = $this->get_totals($cells);
-	    $wedate = $cells[0]['wedate'];
-	    $to = $wedate;
+	    // if there are staging records (i.e. in progress)
 
-	    $todate = new xdate;
-	    $todate->from_iso($to);
-	    $hr_wedate = $todate->to_amer();
+	    $totals = $this->get_totals($cells);
+
+	    list($fromdate, $todate, $wedate) = $this->get_dates_on_restart($cells[0]['wedate']);
 
 	    emsg('S', 'Budget has been RESUMED');
 	}
 	else {
 
-	    // grab data
+	    // brand new budget
+
 	    $cells = $this->get_cells();
 
-	    // get from date
-	    $xfrom = new xdate;
-	    $xfrom->from_iso($cells[0]['wedate']);
-	    $xfrom->add_days(1);
-	    $from = $xfrom->to_iso();
-
-	    // advance the date
-	    $xto = new xdate;
-	    $xto = $xfrom;
-	    $xto->add_days(6);
-	    $to = $xto->to_iso();
-
-	    $hr_wedate = $xto->to_amer();
+	    list($fromdate, $todate, $wedate) = $this->get_dates_on_start($cells[0]['wedate']);
+	    $xwedate = $wedate->to_iso();
 
 	    // update wedates
 	    $max = count($cells);
 	    for ($i = 0; $i < $max; $i++) {
-		$cells[$i]['wedate'] = $to;
+		$cells[$i]['wedate'] = $xwedate;
 	    }
 
 	    $cells = $this->swap($cells);
@@ -417,7 +448,7 @@ class budget
 	    $this->to_staging($cells);
 	}
 
-	return [$to, $hr_wedate, $cells, $totals];
+	return [$fromdate, $todate, $wedate, $cells, $totals];
     }
 
     /**

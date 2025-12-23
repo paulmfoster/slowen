@@ -1,6 +1,6 @@
 <?php include VIEWDIR . 'head.view.php'; ?>
 
-<h2>Budget for week ending <?php echo $hr_wedate; ?></h2>
+<h2>Budget for week ending <?php echo $budgetweek; ?></h2>
 
 <form action="<?php echo $return; ?>" method="post">
 
@@ -153,20 +153,18 @@ case 'W': echo 'Weekly';
 <!-- end buttons -->
 
 <p>
-<strong>Enter</strong> (the Enter key) will effectively hit the first button...<br/>
+<strong>Abandon</strong> the budget process and revert to pre-budget numbers<br/>
 <strong>Restart</strong> and eliminate all changes made to this point.<br/>
-<strong>Restart</strong> eliminates all changes to the budget and starts fresh.<br/>
 <strong>Recalculate</strong> recalculates the "New S/A" column and the Totals row.<br/>
 <strong>Save</strong> saves your work to disk, but does not end the edit process.<br/>
-<strong>Complete</strong> Saves your budget and marks it as completed.<br/>
-<strong>NOTE: The "Complete" step does not save what's on screen; it works from your last "Save" step. Save before you hit "Complete"</strong>
+<strong>Complete</strong> marks your budget as complete. Does not "save" your work. See above.<br/>
 </p>
 
 </form>
 
 <?php $row = 0; /* table shading counter */ ?>
 
-<h2>Balances as of: <?php echo $today; ?></h2>
+<h2>Balances as of: <?php echo $totalsweek; ?></h2>
 
 <table>
 <tr>
