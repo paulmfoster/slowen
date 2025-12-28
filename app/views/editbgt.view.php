@@ -160,7 +160,7 @@ case 'W': echo 'Weekly';
 <strong>Complete</strong> marks your budget as complete. Does not "save" your work. See above.<br/>
 </p>
 
-</form>
+<form>
 
 <?php $row = 0; /* table shading counter */ ?>
 

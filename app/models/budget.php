@@ -520,6 +520,9 @@ class budget
         $wedate = $cells[0]['wedate'];
         $xwedate = new xdate;
         $xwedate->from_iso($wedate);
+	$bwedate = clone $xwedate;
+	$bwedate->add_days(-7);
+	$xbwedate = $bwedate->to_iso();
 
         $p = load('pdf_report');
         $p->add_page();
@@ -550,7 +553,7 @@ class budget
 	$p->print_line('', TRUE);
 
 	$total = 0;
-	$bals = $this->get_balances($wedate);
+	$bals = $this->get_balances($xbwedate);
 	foreach ($bals as $bal) {
 	    if ($bal['amount'] != 0) {
 		$line = sprintf("%35s %8.2f", $bal['name'], int2dec($bal['amount']));
