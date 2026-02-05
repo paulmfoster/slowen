@@ -552,6 +552,12 @@ class budget
 	$p->print_line('', TRUE);
 	$p->print_line('', TRUE);
 
+	// Weekending label for stats
+
+	$line = '                        W/E Date: ' . sprintf("%10s", $bwedate->to_amer());
+	$p->print_line($line, TRUE);
+	$p->print_line('', TRUE);
+
 	$total = 0;
 	$bals = $this->get_balances($xbwedate);
 	foreach ($bals as $bal) {
