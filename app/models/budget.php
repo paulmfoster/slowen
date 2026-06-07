@@ -61,7 +61,7 @@ class budget
 
     function __construct($database_object)
     {
-	$this->db = $database_object;
+        $this->db = $database_object;
     }
 
     /**
@@ -73,26 +73,26 @@ class budget
 
     function get_totals($recs)
     {
-	$totals = [
-	    'wklysa' => 0,
-	    'priorsa' => 0,
-	    'addlsa' => 0,
-	    'paid' => 0,
-	    'newsa' => 0
-	];
+        $totals = [
+            'wklysa' => 0,
+            'priorsa' => 0,
+            'addlsa' => 0,
+            'paid' => 0,
+            'newsa' => 0
+        ];
 
-	foreach ($recs as $rec) {
-	    $totals['wklysa'] += $rec['wklysa'];
-	    $totals['priorsa'] += $rec['priorsa'];
-	    $totals['addlsa'] += $rec['addlsa'];
-	    $totals['paid'] += $rec['paid'];
-	    $totals['newsa'] += $rec['newsa'];
-	}
+        foreach ($recs as $rec) {
+            $totals['wklysa'] += $rec['wklysa'];
+            $totals['priorsa'] += $rec['priorsa'];
+            $totals['addlsa'] += $rec['addlsa'];
+            $totals['paid'] += $rec['paid'];
+            $totals['newsa'] += $rec['newsa'];
+        }
 
-	return $totals;
+        return $totals;
     }
 
-	/**
+    /**
      * Determine whether a combination of period, typdue and newsa is
      * over-budget.
      *
@@ -103,21 +103,21 @@ class budget
      * @param int typdue
      * @param int newsa
      * @return boolean TRUE if over, FALSE if not
-	 */
+     */
 
     function red($period, $typdue, $newsa)
     {
-	switch ($period) {
-	    case 'M':
-	    case 'Y':
-	    case 'S':
-		$over_budget = ($typdue != 0 && $newsa >= $typdue) ? TRUE : FALSE;
-		break;
-	    default:
-		$over_budget = FALSE;
-		break;
-	}
-	return $over_budget;
+        switch ($period) {
+        case 'M':
+        case 'Y':
+        case 'S':
+            $over_budget = ($typdue != 0 && $newsa >= $typdue) ? TRUE : FALSE;
+            break;
+        default:
+            $over_budget = FALSE;
+            break;
+        }
+        return $over_budget;
     }
 
     /**
@@ -128,20 +128,20 @@ class budget
 
     function get_staging()
     {
-	// avoid fetching the id field
-	// $sql = "SELECT acctname, acctnum, accttype, wedate, typdue, period, wklysa, priorsa, addlsa, paid, newsa FROM staging ORDER BY acctname";
-	$sql = "SELECT b.acctname, b.from_acct, b.payee_id, b.to_acct,
-	b.period, b.typdue, c.acctnum, c.wedate, c.wklysa, c.priorsa, c.addlsa,
-	c.paid, c.newsa FROM staging AS c JOIN blines AS b ON b.id = c.acctnum";
-	$results = $this->db->query($sql)->fetch_all();
-	if ($results !== FALSE) {
-	    // set up "red" field
-	    $nresults = count($results);
-	    for ($i = 0; $i < $nresults; $i++) {
-		$results[$i]['red'] = $this->red($results[$i]['period'], $results[$i]['typdue'], $results[$i]['newsa']);
-	    }
-	}
-	return $results;
+        // avoid fetching the id field
+        // $sql = "SELECT acctname, acctnum, accttype, wedate, typdue, period, wklysa, priorsa, addlsa, paid, newsa FROM staging ORDER BY acctname";
+        $sql = "SELECT b.acctname, b.from_acct, b.payee_id, b.to_acct,
+            b.period, b.typdue, c.acctnum, c.wedate, c.wklysa, c.priorsa, c.addlsa,
+            c.paid, c.newsa FROM staging AS c JOIN blines AS b ON b.id = c.acctnum";
+        $results = $this->db->query($sql)->fetch_all();
+        if ($results !== FALSE) {
+            // set up "red" field
+            $nresults = count($results);
+            for ($i = 0; $i < $nresults; $i++) {
+                $results[$i]['red'] = $this->red($results[$i]['period'], $results[$i]['typdue'], $results[$i]['newsa']);
+            }
+        }
+        return $results;
     }
 
     /**
@@ -151,22 +151,22 @@ class budget
 
     function get_cells()
     {
-	// avoid fetching the id field
-	// $sql = "SELECT acctname, acctnum, accttype, wedate, typdue, period, wklysa, priorsa, addlsa, paid, newsa  FROM cells ORDER BY acctname";
-	$sql = "SELECT b.acctname, b.from_acct, b.payee_id, b.to_acct,
-	b.period, b.typdue, c.acctnum, c.wedate, c.wklysa, c.priorsa, c.addlsa,
-	c.paid, c.newsa FROM cells AS c JOIN blines AS b ON b.id = c.acctnum ORDER BY b.acctname";
-	$results = $this->db->query($sql)->fetch_all();
+        // avoid fetching the id field
+        // $sql = "SELECT acctname, acctnum, accttype, wedate, typdue, period, wklysa, priorsa, addlsa, paid, newsa  FROM cells ORDER BY acctname";
+        $sql = "SELECT b.acctname, b.from_acct, b.payee_id, b.to_acct,
+            b.period, b.typdue, c.acctnum, c.wedate, c.wklysa, c.priorsa, c.addlsa,
+            c.paid, c.newsa FROM cells AS c JOIN blines AS b ON b.id = c.acctnum ORDER BY b.acctname";
+        $results = $this->db->query($sql)->fetch_all();
 
-	if ($results != FALSE) {
-	    // set up "red" field
-	    $nresults = count($results);
-	    for ($i = 0; $i < $nresults; $i++) {
-		$results[$i]['red'] = $this->red($results[$i]['period'], $results[$i]['typdue'], $results[$i]['newsa']);
-	    }
-	}
+        if ($results != FALSE) {
+            // set up "red" field
+            $nresults = count($results);
+            for ($i = 0; $i < $nresults; $i++) {
+                $results[$i]['red'] = $this->red($results[$i]['period'], $results[$i]['typdue'], $results[$i]['newsa']);
+            }
+        }
 
-	return $results;
+        return $results;
     }
 
     /**
@@ -179,22 +179,22 @@ class budget
 
     function recalculate($cells)
     {
-	$periods = [
-	    'W' => 1,
-	    'M' => 4,
-	    'Q' => 13,
-	    'S' => 26,
-	    'Y' => 52
-	];
+        $periods = [
+            'W' => 1,
+            'M' => 4,
+            'Q' => 13,
+            'S' => 26,
+            'Y' => 52
+        ];
 
-	$max = count($cells);
-	for ($i = 0; $i < $max; $i++) {
-	    $cells[$i]['wklysa'] = floor($cells[$i]['typdue'] / $periods[$cells[$i]['period']]);
-	    $cells[$i]['newsa'] = $cells[$i]['priorsa'] + $cells[$i]['addlsa'] - $cells[$i]['paid'];
-	    $cells[$i]['red'] = $this->red($cells[$i]['period'], $cells[$i]['typdue'], $cells[$i]['newsa']);
-	}
+        $max = count($cells);
+        for ($i = 0; $i < $max; $i++) {
+            $cells[$i]['wklysa'] = floor($cells[$i]['typdue'] / $periods[$cells[$i]['period']]);
+            $cells[$i]['newsa'] = $cells[$i]['priorsa'] + $cells[$i]['addlsa'] - $cells[$i]['paid'];
+            $cells[$i]['red'] = $this->red($cells[$i]['period'], $cells[$i]['typdue'], $cells[$i]['newsa']);
+        }
 
-	return $cells;
+        return $cells;
     }
 
     /**
@@ -203,15 +203,15 @@ class budget
      * This is what make it difficult or impossible to implement budgeting
      * in a spreadsheet.
      */
-    
+
     private function swap($cells)
     {
-	$max = count($cells);
-	for ($i = 0; $i < $max; $i++) {
-	    $cells[$i]['priorsa'] = $cells[$i]['newsa'];
-	}
+        $max = count($cells);
+        for ($i = 0; $i < $max; $i++) {
+            $cells[$i]['priorsa'] = $cells[$i]['newsa'];
+        }
 
-	return $cells;
+        return $cells;
     }
 
     private function zero_payments($cells)
@@ -230,10 +230,10 @@ class budget
         $max = count($cells);
 
         $to_date = $cells[0]['wedate'];
-	$to = new xdate;
-	$to->from_iso($to_date);
-	$to->add_days(-7);
-	$to_date = $to->to_iso();
+        $to = new xdate;
+        $to->from_iso($to_date);
+        $to->add_days(-7);
+        $to_date = $to->to_iso();
 
         $from = new xdate;
         $from->from_iso($to_date);
