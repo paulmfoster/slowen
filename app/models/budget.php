@@ -314,14 +314,14 @@ class budget
 
         $to_date = $cells[0]['wedate'];
 
-	$to = new xdate;
-	$to->from_iso($to_date);
-	$to->add_days(-7);
+        $to = new xdate;
+        $to->from_iso($to_date);
+        $to->add_days(-7);
+        $to_date = $to->to_iso();
 
         $from = new xdate;
         $from->from_iso($to_date);
-        // $from->add_days(-6);
-        $from->add_days(-13);
+        $from->add_days(-6);
 
         $from_date = $from->to_iso();
 
@@ -341,7 +341,7 @@ class budget
                     if ($cells[$i]['from_acct'] == $pmt['from_acct']) {
                         $cells[$i]['paid'] += $pmt['amount'];
                     }
-        }
+                }
             }
         }
 
@@ -360,43 +360,43 @@ class budget
     // on start
     function get_dates_on_start($isodate)
     {
-	$todate = new xdate;
-	$todate->from_iso($isodate);
+        $todate = new xdate;
+        $todate->from_iso($isodate);
 
-	$fromdate = clone $todate;
-	$fromdate->add_days(-6);
+        $fromdate = clone $todate;
+        $fromdate->add_days(-6);
 
-	$wedate = clone $todate;
-	$wedate->add_days(7);
+        $wedate = clone $todate;
+        $wedate->add_days(7);
 
-	$v = [
-	    $fromdate,
-	    $todate,
-	    $wedate
-	];
+        $v = [
+            $fromdate,
+            $todate,
+            $wedate
+        ];
 
-	return $v;
+        return $v;
     }
 
     // on restart
     function get_dates_on_restart($isodate)
     {
-	$wedate = new xdate;
-	$wedate->from_iso($isodate);
+        $wedate = new xdate;
+        $wedate->from_iso($isodate);
 
-	$todate = clone $wedate;
-	$todate->add_days(-7);
+        $todate = clone $wedate;
+        $todate->add_days(-7);
 
-	$fromdate = clone $todate;
-	$fromdate->add_days(-6);
+        $fromdate = clone $todate;
+        $fromdate->add_days(-6);
 
-	$v = [
-	    $fromdate,
-	    $todate,
-	    $wedate
-	];
+        $v = [
+            $fromdate,
+            $todate,
+            $wedate
+        ];
 
-	return $v;
+        return $v;
     }
 
     /**
@@ -408,47 +408,48 @@ class budget
 
     function start()
     {
-	$cells = $this->get_staging();
+        $cells = $this->get_staging();
 
-	if ($cells !== FALSE) {
+        if ($cells !== FALSE) {
 
-	    // if there are staging records (i.e. in progress)
+            // if there are staging records (i.e. in progress)
 
-	    $totals = $this->get_totals($cells);
+            $totals = $this->get_totals($cells);
 
-	    list($fromdate, $todate, $wedate) = $this->get_dates_on_restart($cells[0]['wedate']);
+            list($fromdate, $todate, $wedate) = $this->get_dates_on_restart($cells[0]['wedate']);
 
-	    emsg('S', 'Budget has been RESUMED');
-	}
-	else {
+            emsg('S', 'Budget has been RESUMED');
+        }
+        else {
 
-	    // brand new budget
+            // brand new budget
 
-	    $cells = $this->get_cells();
+            $cells = $this->get_cells();
 
-	    list($fromdate, $todate, $wedate) = $this->get_dates_on_start($cells[0]['wedate']);
-	    $xwedate = $wedate->to_iso();
+            list($fromdate, $todate, $wedate) = $this->get_dates_on_start($cells[0]['wedate']);
+            $xwedate = $wedate->to_iso();
 
-	    // update wedates
-	    $max = count($cells);
-	    for ($i = 0; $i < $max; $i++) {
-		$cells[$i]['wedate'] = $xwedate;
-	    }
+            // update wedates
+            $max = count($cells);
+            for ($i = 0; $i < $max; $i++) {
+                $cells[$i]['wedate'] = $xwedate;
+            }
 
-	    $cells = $this->swap($cells);
-	    $cells = $this->zero_payments($cells);
-	    $cells = $this->update_addlsa($cells);
+            // swap new s/a with prior s/a
+            $cells = $this->swap($cells);
+            $cells = $this->zero_payments($cells);
+            $cells = $this->update_addlsa($cells);
 
-	    $cells = $this->get_expenses($cells);
-	    $cells = $this->get_payments($cells);
+            $cells = $this->get_expenses($cells);
+            $cells = $this->get_payments($cells);
 
-	    $cells = $this->recalculate($cells);
-	    $totals = $this->get_totals($cells);
+            $cells = $this->recalculate($cells);
+            $totals = $this->get_totals($cells);
 
-	    $this->to_staging($cells);
-	}
+            $this->to_staging($cells);
+        }
 
-	return [$fromdate, $todate, $wedate, $cells, $totals];
+        return [$fromdate, $todate, $wedate, $cells, $totals];
     }
 
     /**
@@ -461,13 +462,13 @@ class budget
 
     function restart()
     {
-	$this->db->delete('staging');
-	return $this->start();
+        $this->db->delete('staging');
+        return $this->start();
     }
 
     function abandon()
     {
-	$this->db->delete('staging');
+        $this->db->delete('staging');
     }
 
     /**
@@ -476,39 +477,39 @@ class budget
 
     function to_staging($cells)
     {
-	$this->db->begin();
+        $this->db->begin();
 
-	$this->db->delete('staging');
-	foreach ($cells as $cell) {
-	    $cell = $this->db->prepare('staging', $cell);
-	    $this->db->insert('staging', $cell);
-	}
+        $this->db->delete('staging');
+        foreach ($cells as $cell) {
+            $cell = $this->db->prepare('staging', $cell);
+            $this->db->insert('staging', $cell);
+        }
 
-	$this->db->commit();
+        $this->db->commit();
     }
 
     function post2cells($post)
     {
-	$cells = [];
-	$max = count($post['acctname']);
+        $cells = [];
+        $max = count($post['acctname']);
 
-	for ($i = 0; $i < $max; $i++) {
-	    $cells[$i]['from_acct'] = (int) $post['from_acct'][$i];
-	    $cells[$i]['payee_id'] = (int) $post['payee_id'][$i];
-	    $cells[$i]['to_acct'] = (int) $post['to_acct'][$i];
-	    $cells[$i]['period'] = $post['period'][$i];
-	    $cells[$i]['typdue'] = $post['typdue'][$i];
-	    $cells[$i]['acctname'] = $post['acctname'][$i];
-	    $cells[$i]['acctnum'] = $post['acctnum'][$i];
-	    $cells[$i]['wedate'] = $post['wedate'];
-	    $cells[$i]['wklysa'] = dec2int($post['wklysa'][$i]);
-	    $cells[$i]['priorsa'] = dec2int($post['priorsa'][$i]);
-	    $cells[$i]['addlsa'] = dec2int($post['addlsa'][$i]);
-	    $cells[$i]['paid'] = dec2int($post['paid'][$i]);
-	    $cells[$i]['newsa'] = dec2int($post['newsa'][$i]);
-	}
+        for ($i = 0; $i < $max; $i++) {
+            $cells[$i]['from_acct'] = (int) $post['from_acct'][$i];
+            $cells[$i]['payee_id'] = (int) $post['payee_id'][$i];
+            $cells[$i]['to_acct'] = (int) $post['to_acct'][$i];
+            $cells[$i]['period'] = $post['period'][$i];
+            $cells[$i]['typdue'] = $post['typdue'][$i];
+            $cells[$i]['acctname'] = $post['acctname'][$i];
+            $cells[$i]['acctnum'] = $post['acctnum'][$i];
+            $cells[$i]['wedate'] = $post['wedate'];
+            $cells[$i]['wklysa'] = dec2int($post['wklysa'][$i]);
+            $cells[$i]['priorsa'] = dec2int($post['priorsa'][$i]);
+            $cells[$i]['addlsa'] = dec2int($post['addlsa'][$i]);
+            $cells[$i]['paid'] = dec2int($post['paid'][$i]);
+            $cells[$i]['newsa'] = dec2int($post['newsa'][$i]);
+        }
 
-	return $cells;
+        return $cells;
     }
 
     function print()
@@ -520,16 +521,16 @@ class budget
         $wedate = $cells[0]['wedate'];
         $xwedate = new xdate;
         $xwedate->from_iso($wedate);
-	$bwedate = clone $xwedate;
-	$bwedate->add_days(-7);
-	$xbwedate = $bwedate->to_iso();
+        $bwedate = clone $xwedate;
+        $bwedate->add_days(-7);
+        $xbwedate = $bwedate->to_iso();
 
         $p = load('pdf_report');
         $p->add_page();
         $p->set_margins(5, 0, 0);
-	$p->center($cfg['app_name']);
-	$p->skip_line();
-	$top = 'Budget for week ending ' . $xwedate->to_amer();
+        $p->center($cfg['app_name']);
+        $p->skip_line();
+        $top = 'Budget for week ending ' . $xwedate->to_amer();
         $p->center($top);
         $p->skip_line();
 
@@ -549,35 +550,35 @@ class budget
         $line = sprintf('TOTALS:                         %7.2f %7.2f %7.2f %7.2f %7.2f', int2dec($totals['wklysa']), int2dec($totals['priorsa']), int2dec($totals['addlsa']), int2dec($totals['paid']), int2dec($totals['newsa']));
         $p->print_line($line, TRUE);
 
-	$p->print_line('', TRUE);
-	$p->print_line('', TRUE);
+        $p->print_line('', TRUE);
+        $p->print_line('', TRUE);
 
-	// Weekending label for stats
+        // Weekending label for stats
 
-	$line = '                        W/E Date: ' . sprintf("%10s", $bwedate->to_amer());
-	$p->print_line($line, TRUE);
-	$p->print_line('', TRUE);
+        $line = '                        W/E Date: ' . sprintf("%10s", $bwedate->to_amer());
+        $p->print_line($line, TRUE);
+        $p->print_line('', TRUE);
 
-	$total = 0;
-	$bals = $this->get_balances($xbwedate);
-	foreach ($bals as $bal) {
-	    if ($bal['amount'] != 0) {
-		$line = sprintf("%35s %8.2f", $bal['name'], int2dec($bal['amount']));
-		$p->print_line($line, TRUE);
-		$total += $bal['amount'];
-	    }
-	}
+        $total = 0;
+        $bals = $this->get_balances($xbwedate);
+        foreach ($bals as $bal) {
+            if ($bal['amount'] != 0) {
+                $line = sprintf("%35s %8.2f", $bal['name'], int2dec($bal['amount']));
+                $p->print_line($line, TRUE);
+                $total += $bal['amount'];
+            }
+        }
 
-	$line = '                                   ---------';
-	$p->print_line($line, TRUE);
-	$line = '                                    ' . sprintf("%8.2f", int2dec($total));
-	$p->print_line($line, TRUE);
+        $line = '                                   ---------';
+        $p->print_line($line, TRUE);
+        $line = '                                    ' . sprintf("%8.2f", int2dec($total));
+        $p->print_line($line, TRUE);
 
-	$line = '                          Setasides ' . sprintf("%8.2f", int2dec($totals['newsa']));
-	$p->print_line($line, TRUE);
-	$cashbills = $total - $totals['newsa'];
-	$line = '                         CASH/BILLS ' . sprintf("%8.2f", int2dec($cashbills));
-	$p->print_line($line, TRUE);
+        $line = '                          Setasides ' . sprintf("%8.2f", int2dec($totals['newsa']));
+        $p->print_line($line, TRUE);
+        $cashbills = $total - $totals['newsa'];
+        $line = '                         CASH/BILLS ' . sprintf("%8.2f", int2dec($cashbills));
+        $p->print_line($line, TRUE);
 
         $p->output(PRINTDIR . 'budget.pdf');
         emsg('S', 'Print budget PDF <a href="' . PRINTDIR . 'budget.pdf">HERE</a>');
@@ -592,37 +593,37 @@ class budget
 
     function save($post)
     {
-	$cells = $this->post2cells($post);
-	$cells = $this->recalculate($cells);	
-	$this->to_staging($cells);
-	return $cells;
+        $cells = $this->post2cells($post);
+        $cells = $this->recalculate($cells);	
+        $this->to_staging($cells);
+        return $cells;
     }
 
     function complete($post)
     {
-	$cells = $this->get_staging();
-	$this->db->begin();
+        $cells = $this->get_staging();
+        $this->db->begin();
 
-	$this->db->delete('staging');
-	$this->db->delete('cells');
-	foreach ($cells as $cell) {
-	    // remove "red" field and others belonging to blines
-	    $ccell = $this->db->prepare('cells', $cell);
-	    $this->db->insert('cells', $ccell);
-	    $hcell = $this->db->prepare('history', $cell);
-	    $this->db->insert('history', $hcell);
-	}
+        $this->db->delete('staging');
+        $this->db->delete('cells');
+        foreach ($cells as $cell) {
+            // remove "red" field and others belonging to blines
+            $ccell = $this->db->prepare('cells', $cell);
+            $this->db->insert('cells', $ccell);
+            $hcell = $this->db->prepare('history', $cell);
+            $this->db->insert('history', $hcell);
+        }
 
-	$this->db->commit();
+        $this->db->commit();
 
-	$this->print();
+        $this->print();
     }
 
     function get_accounts()
     {
-	$sql = "SELECT * FROM blines ORDER BY acctname";
-	$result = $this->db->query($sql)->fetch_all();
-	return $result;
+        $sql = "SELECT * FROM blines ORDER BY acctname";
+        $result = $this->db->query($sql)->fetch_all();
+        return $result;
     }
 
     function get_account($id)
@@ -650,9 +651,9 @@ class budget
 
     function get_latest_wedate()
     {
-	$sql = "SELECT wedate FROM cells LIMIT 1";
-	$e = $this->db->query($sql)->fetch();
-	return $e['wedate'];
+        $sql = "SELECT wedate FROM cells LIMIT 1";
+        $e = $this->db->query($sql)->fetch();
+        return $e['wedate'];
     }
 
     /**
@@ -669,41 +670,41 @@ class budget
 
     function add_account($post)
     {
-	$rec = [
-	    'acctname' => $post['acctname'],
-	    'period' => $post['period'],
-	    'typdue' => (!isset($post['typdue']) || empty($post['typdue'])) ? 0 : dec2int($post['typdue']),
-	    'from_acct' => $post['from_acct'] ?? 0,
-	    'to_acct' => $post['to_acct'] ?? 0,
-	    'payee_id' => $post['payee_id'] ?? 0,
-	    'priorsa' => (!isset($post['priorsa']) || empty($post['priorsa'])) ? 0 : dec2int($post['priorsa'])
-	];
+        $rec = [
+            'acctname' => $post['acctname'],
+            'period' => $post['period'],
+            'typdue' => (!isset($post['typdue']) || empty($post['typdue'])) ? 0 : dec2int($post['typdue']),
+            'from_acct' => $post['from_acct'] ?? 0,
+            'to_acct' => $post['to_acct'] ?? 0,
+            'payee_id' => $post['payee_id'] ?? 0,
+            'priorsa' => (!isset($post['priorsa']) || empty($post['priorsa'])) ? 0 : dec2int($post['priorsa'])
+        ];
 
-	$bline = $this->db->prepare('blines', $rec);
-	$this->db->insert('blines', $bline);
-	$acctnum = $this->db->lastid('blines');
+        $bline = $this->db->prepare('blines', $rec);
+        $this->db->insert('blines', $bline);
+        $acctnum = $this->db->lastid('blines');
 
-	$periods = [
-	    'W' => 1,
-	    'M' => 4,
-	    'Q' => 13,
-	    'S' => 26,
-	    'Y' => 52
-	];
+        $periods = [
+            'W' => 1,
+            'M' => 4,
+            'Q' => 13,
+            'S' => 26,
+            'Y' => 52
+        ];
 
-	$rec['acctnum'] = $acctnum;
-	$rec['wedate'] = $this->get_latest_wedate();
-	// using floor() here may mean the user as to adjust addlsa
-	// constantly
-	$rec['wklysa'] = ceil($rec['typdue'] / $periods[$rec['period']]);
-	$rec['addlsa'] = 0;
-	$rec['paid'] = 0;
-	$rec['newsa'] = $rec['priorsa'] + $rec['addlsa'] - $rec['paid'];
+        $rec['acctnum'] = $acctnum;
+        $rec['wedate'] = $this->get_latest_wedate();
+        // using floor() here may mean the user as to adjust addlsa
+        // constantly
+        $rec['wklysa'] = ceil($rec['typdue'] / $periods[$rec['period']]);
+        $rec['addlsa'] = 0;
+        $rec['paid'] = 0;
+        $rec['newsa'] = $rec['priorsa'] + $rec['addlsa'] - $rec['paid'];
 
-	$trec = $this->db->prepare('cells', $rec);
-	$this->db->insert('cells', $trec);
+        $trec = $this->db->prepare('cells', $rec);
+        $this->db->insert('cells', $trec);
 
-	return TRUE;
+        return TRUE;
     }
 
     function update_account($post)
@@ -723,57 +724,57 @@ class budget
 
     function delete_account($post)
     {
-	$this->db->delete('cells', "acctnum = {$post['id']}");
-	$this->db->delete('blines', "id = {$post['id']}");
-	return TRUE;
+        $this->db->delete('cells', "acctnum = {$post['id']}");
+        $this->db->delete('blines', "id = {$post['id']}");
+        return TRUE;
     }
 
     function get_from_accounts()
     {
-	$sql = "SELECT id, name, acct_type FROM accounts WHERE acct_type IN ('C', 'R', 'S', 'L', 'Q') AND parent != 0 ORDER BY lower(name)";
-	$from_accts = $this->db->query($sql)->fetch_all();
-	array_unshift($from_accts, ['id' => 0, 'name' => 'NONE', 'acct_type' => ' ']);
-	return $from_accts;
+        $sql = "SELECT id, name, acct_type FROM accounts WHERE acct_type IN ('C', 'R', 'S', 'L', 'Q') AND parent != 0 ORDER BY lower(name)";
+        $from_accts = $this->db->query($sql)->fetch_all();
+        array_unshift($from_accts, ['id' => 0, 'name' => 'NONE', 'acct_type' => ' ']);
+        return $from_accts;
     }
 
     function get_to_accounts()
     {
-	$sql = "SELECT id, name, acct_type FROM accounts ORDER BY lower(name)";
-	$to_accts = $this->db->query($sql)->fetch_all();
-	array_unshift($to_accts, ['id' => 0, 'name' => 'NONE', 'acct_type' => ' ']);
-	return $to_accts;
+        $sql = "SELECT id, name, acct_type FROM accounts ORDER BY lower(name)";
+        $to_accts = $this->db->query($sql)->fetch_all();
+        array_unshift($to_accts, ['id' => 0, 'name' => 'NONE', 'acct_type' => ' ']);
+        return $to_accts;
     }
 
     function get_payees()
     {
-	$sql = "SELECT * FROM payees ORDER BY lower(name)";
-	$payees = $this->db->query($sql)->fetch_all();
-	array_unshift($payees, ['id' => 0, 'name' => 'NONE']);
-	return $payees;
+        $sql = "SELECT * FROM payees ORDER BY lower(name)";
+        $payees = $this->db->query($sql)->fetch_all();
+        array_unshift($payees, ['id' => 0, 'name' => 'NONE']);
+        return $payees;
     }
 
     function version()
     {
-	return 6.5;
+        return 6.6;
     }
 
     function get_balances($isodt)
     {
-	$sql = "SELECT id, name, rec_bal FROM accounts WHERE acct_type in ('C', 'S') ORDER BY name";
-	$accts = $this->db->query($sql)->fetch_all();
+        $sql = "SELECT id, name, rec_bal FROM accounts WHERE acct_type in ('C', 'S') ORDER BY name";
+        $accts = $this->db->query($sql)->fetch_all();
 
-	foreach ($accts as $acct) {
-	    $sql = "SELECT sum(amount) AS amount FROM journal WHERE (status = ' ' OR status = 'C') AND txn_dt <= '$isodt' AND from_acct = {$acct['id']}";
-	    $amount = $this->db->query($sql)->fetch();
+        foreach ($accts as $acct) {
+            $sql = "SELECT sum(amount) AS amount FROM journal WHERE (status = ' ' OR status = 'C') AND txn_dt <= '$isodt' AND from_acct = {$acct['id']}";
+            $amount = $this->db->query($sql)->fetch();
 
-	    $recs[] = [
-		'id' => $acct['id'],
-		'name' => $acct['name'],
-		'amount' => $acct['rec_bal'] + $amount['amount']
-	    ];
-	}
+            $recs[] = [
+                'id' => $acct['id'],
+                'name' => $acct['name'],
+                'amount' => $acct['rec_bal'] + $amount['amount']
+            ];
+        }
 
-	return $recs;
+        return $recs;
     }
 };
 
