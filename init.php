@@ -2,13 +2,22 @@
 
 error_reporting(E_ALL);
 
-// CAUTION: Edit this file at your own risk. Upgrades to Grotworx may
-// overwrite any changes made.
+function mklink($filename, $linkdir, $extdir)
+{
+    $success = true;
+    if (!file_exists($linkdir . $filename)) {
+        if (file_exists($extdir . $filename)) {
+            if (!symlink($extdir . $filename, $linkdir . $filename)) {
+                echo "Creating symlink failed: " . $linkdir . $filename . ' => ' . $extdir . $filename . '<br>';
+                $success = false;
+            }
+        }
+    }
+    return $success;
+}
 
 // define system directories
 define('SYSDIR', 'system/');
-define('INCDIR', SYSDIR . 'includes/');
-define('LIBDIR', SYSDIR . 'libraries/');
 
 // define application directories
 define('APPDIR', 'app/');
@@ -20,8 +29,55 @@ define('MODELDIR', APPDIR . 'models/');
 define('VIEWDIR', APPDIR . 'views/');
 define('CTLDIR', APPDIR . 'controllers/');
 
+// This code is common to many/most controllers
+session_start();
+if (!file_exists(CFGDIR . 'config.ini')) {
+    copy(CFGDIR . 'config.sample', CFGDIR . 'config.ini');
+}
+$cfg = parse_ini_file(CFGDIR . 'config.ini');
+
+// set up includes directory
+$incdir = SYSDIR . 'includes';
+if (!is_link($incdir)) {
+    if (isset($cfg['extincdir'])) {
+        if (!symlink($cfg['extincdir'], $incdir)) {
+            dir("<h1>Fail on symlinking includes dir.</h1>");
+        }
+    }
+    else {
+        die("<h1><code>extincdir<code> not set in config file.</h1>");
+    }
+}
+define('INCDIR', SYSDIR . 'includes/');
+
+// set up library directory
+$libdir = SYSDIR . 'libraries';
+if (!is_link($libdir)) {
+    if (isset($cfg['extlibdir'])) {
+        if (!symlink($cfg['extlibdir'], $libdir)) {
+            die("<h1>Fail on symlinking libraries dir.</h1>");
+        }
+    }
+    else {
+        die("<h1><code>extlibdir<code> not set in config file.</h1>");
+    }
+}
+define('LIBDIR', SYSDIR . 'libraries/');
+
 // provide common utilities
 include INCDIR . 'utils.inc.php';
+
+// database
+$dsn = explode(':', $cfg['dsn']);
+$not_there = FALSE;
+if (!file_exists($dsn[1])) {
+    $not_there = TRUE;
+}
+if ($not_there)
+    $db = make_tables($cfg['dsn'], APPDIR . 'coldstart.sqlite');
+else
+    $db = load('database', $cfg['dsn']);
+
 define('DECIMALS', 2);
 define('DECIMAL_SYMBOL', '.');
 
@@ -57,24 +113,6 @@ $statuses = array(
 	'V' => 'Void',
 	' ' => 'Uncleared'
 );
-
-// This code is common to many/most controllers
-session_start();
-if (!file_exists(CFGDIR . 'config.ini')) {
-    copy(CFGDIR . 'config.sample', CFGDIR . 'config.ini');
-}
-$cfg = parse_ini_file(CFGDIR . 'config.ini');
-
-$dsn = explode(':', $cfg['dsn']);
-$not_there = FALSE;
-if (!file_exists($dsn[1])) {
-    $not_there = TRUE;
-}
-if ($not_there)
-    $db = make_tables($cfg['dsn'], APPDIR . 'coldstart.sqlite');
-else
-    $db = load('database', $cfg['dsn']);
-
 
 load('errors');
 load('messages');

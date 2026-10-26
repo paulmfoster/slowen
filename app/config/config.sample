@@ -4,4 +4,6 @@ language = en_us
 dsn = "sqlite:app/data/slowen.sq3"
 app_name = Slowen
 ; change this to 0 to avoid having to confirm transactions
-confirm_transactions = 1
+confirm_transactions = 0
+extincdir = /home/paulf/public_html/grotworx/system/includes/
+extlibdir = /home/paulf/public_html/grotworx/system/libraries/
