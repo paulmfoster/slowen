@@ -43,6 +43,10 @@ class payee
 
 	function add_payee($name)
 	{
+        $sql = "SELECT id FROM payees WHERE name = '$name'";
+        $rec = $this->db->query($sql)->fetch();
+        if ($rec != FALSE)
+            return FALSE;
 		$sql = 'SELECT max(id) as lastid FROM payees';
 		$rec = $this->db->query($sql)->fetch();
 		$this->db->insert('payees', array('id' => $rec['lastid'] + 1, 'name' => $name));
